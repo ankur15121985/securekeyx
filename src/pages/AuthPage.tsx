@@ -30,9 +30,10 @@ export default function AuthPage() {
         toast.success(data.message);
         setStep('otp');
       } else {
-        toast.error(data.error);
+        toast.error(data.error || 'Request failed');
       }
     } catch (err) {
+      console.error('Handshake request error:', err);
       toast.error('Connection error');
     } finally {
       setLoading(false);
@@ -57,9 +58,10 @@ export default function AuthPage() {
         toast.success('Login successful');
         navigate('/dashboard');
       } else {
-        toast.error(data.error);
+        toast.error(data.error || 'Verification failed');
       }
     } catch (err) {
+      console.error('OTP verify error:', err);
       toast.error('Connection error');
     } finally {
       setLoading(false);

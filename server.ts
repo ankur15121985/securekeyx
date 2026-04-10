@@ -65,6 +65,10 @@ function useMemoryStore() {
 }
 
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
+});
 app.use(cors({
   origin: process.env.APP_URL || '*', // In production, this should be restricted
   credentials: true
@@ -77,7 +81,7 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https://picsum.photos"],
-      connectSrc: ["'self'"],
+      connectSrc: ["'self'", "*"],
     },
   },
   referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
@@ -88,7 +92,7 @@ app.disable('x-powered-by');
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // Limit each IP to 10 OTP requests per window
+  max: 100, // Increased for testing
   message: { error: 'Too many authentication attempts. Please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
