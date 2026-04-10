@@ -73,19 +73,19 @@ app.use(cors({
   origin: process.env.APP_URL || '*', // In production, this should be restricted
   credentials: true
 }));
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdnjs.cloudflare.com"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      imgSrc: ["'self'", "data:", "https://picsum.photos"],
-      connectSrc: ["'self'", "*"],
-    },
-  },
-  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
-}));
+// app.use(helmet({
+//   contentSecurityPolicy: {
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdnjs.cloudflare.com"],
+//       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+//       fontSrc: ["'self'", "https://fonts.gstatic.com"],
+//       imgSrc: ["'self'", "data:", "https://picsum.photos"],
+//       connectSrc: ["'self'", "*"],
+//     },
+//   },
+//   referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+// }));
 
 // Disable X-Powered-By header
 app.disable('x-powered-by');
@@ -106,8 +106,8 @@ const apiLimiter = rateLimit({
   validate: { xForwardedForHeader: false },
 });
 
-app.use('/api/', apiLimiter);
-app.use('/api/auth/', authLimiter);
+// app.use('/api/', apiLimiter);
+// app.use('/api/auth/', authLimiter);
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-key';
 
@@ -128,25 +128,15 @@ const authenticate = (req: any, res: any, next: any) => {
 // --- API Routes ---
 
 // OTP Request
-app.post('/api/auth/otp-request', 
-  body('mobile').isMobilePhone('any').trim().escape(),
-  async (req: any, res: any) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { mobile } = req.body;
+app.post('/api/auth/otp-request', async (req: any, res: any) => {
+  console.log('OTP Request received:', req.body);
+  const { mobile } = req.body;
   if (!mobile) return res.status(400).json({ error: 'Mobile number required' });
 
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  
-  // Store OTP in Redis for 5 minutes
+  const otp = '123456'; // Fixed for easier testing
   await redis.set(`otp:${mobile}`, otp, 'EX', 300);
-  
-  console.log(`[MOCK OTP] Mobile: ${mobile}, OTP: ${otp}`);
-  
-  res.json({ message: 'OTP sent successfully (Check console for mock OTP)' });
+  console.log(`[DEBUG] Mobile: ${mobile}, OTP: ${otp}`);
+  res.json({ message: 'OTP sent successfully (Use 123456)' });
 });
 
 // OTP Verify
