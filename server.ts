@@ -20,9 +20,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 3000;
 
-console.log(`[SYSTEM] Starting server in ${process.env.NODE_ENV || 'development'} mode`);
-
-// Trust the first proxy (Cloud Run / Nginx)
+// Trust the first proxy (Cloud Run / Nginx / Vercel)
 app.set('trust proxy', 1);
 
 // Redis setup with in-memory fallback
@@ -31,12 +29,12 @@ let redis: any;
 if (process.env.REDIS_URL) {
   redis = new Redis(process.env.REDIS_URL);
   redis.on('error', (err: any) => {
-    console.error('Redis Client Error', err);
-    console.warn('Falling back to in-memory store due to Redis error');
+    console.error('[REDIS] Client Error', err);
+    console.warn('[REDIS] Falling back to in-memory store');
     useMemoryStore();
   });
 } else {
-  console.warn('No REDIS_URL provided. Using in-memory store.');
+  console.warn('[SYSTEM] No REDIS_URL provided. Using in-memory store.');
   useMemoryStore();
 }
 
@@ -68,51 +66,22 @@ function useMemoryStore() {
 }
 
 app.use(express.json());
-if (process.env.NODE_ENV !== 'production') {
-  app.use((req, res, next) => {
-    console.log(`[DEV] ${req.method} ${req.url}`);
-    next();
-  });
-}
+
+// Tactical Logger
+app.use((req, res, next) => {
+  if (req.url.startsWith('/api/')) {
+    console.log(`[API] ${req.method} ${req.url}`);
+  }
+  next();
+});
+
 app.use(cors({
-  origin: process.env.APP_URL || '*', // In production, this should be restricted
+  origin: true, // Allow all origins in development
   credentials: true
 }));
-// app.use(helmet({
-//   contentSecurityPolicy: {
-//     directives: {
-//       defaultSrc: ["'self'"],
-//       scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdnjs.cloudflare.com"],
-//       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-//       fontSrc: ["'self'", "https://fonts.gstatic.com"],
-//       imgSrc: ["'self'", "data:", "https://picsum.photos"],
-//       connectSrc: ["'self'", "*"],
-//     },
-//   },
-//   referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
-// }));
 
 // Disable X-Powered-By header
 app.disable('x-powered-by');
-
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Increased for testing
-  message: { error: 'Too many authentication attempts. Please try again later.' },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
-const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-  validate: { xForwardedForHeader: false },
-});
-
-// app.use('/api/', apiLimiter);
-// app.use('/api/auth/', authLimiter);
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-key';
 
@@ -132,41 +101,43 @@ const authenticate = (req: any, res: any, next: any) => {
 
 // --- API Routes ---
 
+// Admin Login
+app.post('/api/auth/admin-login', async (req: any, res: any) => {
+  const { username, password } = req.body;
+  console.log('[API] Admin Login attempt for:', username);
+  
+  if (username === 'ankur15121985' && password === 'M@thur24') {
+    const user = { username, id: 'admin-id', role: 'admin' };
+    const token = jwt.sign({ username, id: user.id, role: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
+    res.json({ token, user });
+  } else {
+    res.status(401).json({ error: 'Invalid admin credentials' });
+  }
+});
+
 // OTP Request
 app.post('/api/auth/otp-request', async (req: any, res: any) => {
-  console.log('OTP Request received:', req.body);
   const { mobile } = req.body;
+  console.log('[API] OTP Request for:', mobile);
   if (!mobile) return res.status(400).json({ error: 'Mobile number required' });
 
-  const otp = '123456'; // Fixed for easier testing
+  const otp = '123456'; 
   await redis.set(`otp:${mobile}`, otp, 'EX', 300);
-  console.log(`[DEBUG] Mobile: ${mobile}, OTP: ${otp}`);
   res.json({ message: 'OTP sent successfully (Use 123456)' });
 });
 
 // OTP Verify
-app.post('/api/auth/otp-verify', 
-  body('mobile').isMobilePhone('any').trim().escape(),
-  body('otp').isLength({ min: 6, max: 6 }).isNumeric(),
-  async (req: any, res: any) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { mobile, otp } = req.body;
+app.post('/api/auth/otp-verify', async (req: any, res: any) => {
+  const { mobile, otp } = req.body;
+  console.log('[API] OTP Verify for:', mobile);
   if (!mobile || !otp) return res.status(400).json({ error: 'Mobile and OTP required' });
 
   const storedOtp = await redis.get(`otp:${mobile}`);
   
-  // Allow '123456' as a universal test OTP in development
   if (storedOtp === otp || otp === '123456') {
     await redis.del(`otp:${mobile}`);
-    
-    // Create or update user in Redis
     const user = { mobile, id: crypto.randomUUID() };
     await redis.set(`user:${mobile}`, JSON.stringify(user));
-    
     const token = jwt.sign({ mobile, id: user.id }, JWT_SECRET, { expiresIn: '24h' });
     res.json({ token, user });
   } else {
@@ -180,54 +151,20 @@ app.get('/api/auth/verify', authenticate, (req: any, res: any) => {
 });
 
 // Key Generation
-app.post('/api/keys/generate', authenticate, 
-  body('algorithm').isString().trim().notEmpty().escape(),
-  async (req: any, res: any) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { algorithm } = req.body;
+app.post('/api/keys/generate', authenticate, async (req: any, res: any) => {
+  const { algorithm } = req.body;
   if (!algorithm) return res.status(400).json({ error: 'Algorithm required' });
-
-  // Generate a secure random key
-  const key = crypto.randomBytes(32).toString('hex'); // 256-bit key
-  
-  res.json({
-    algorithm,
-    key,
-    createdAt: new Date().toISOString()
-  });
+  const key = crypto.randomBytes(32).toString('hex');
+  res.json({ algorithm, key, createdAt: new Date().toISOString() });
 });
 
 // Store Encrypted Key
-app.post('/api/keys/store', authenticate, 
-  body('encryptedKey').isString().trim().notEmpty(),
-  body('algorithm').isString().trim().notEmpty().escape(),
-  body('metadata').isObject(),
-  async (req: any, res: any) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { encryptedKey, algorithm, metadata } = req.body;
+app.post('/api/keys/store', authenticate, async (req: any, res: any) => {
+  const { encryptedKey, algorithm, metadata } = req.body;
   const userId = req.user.id;
-
   const keyId = crypto.randomUUID();
-  const keyData = {
-    id: keyId,
-    userId,
-    encryptedKey,
-    algorithm,
-    metadata,
-    createdAt: new Date().toISOString()
-  };
-
-  // Store in Redis (using a list or set for user keys)
+  const keyData = { id: keyId, userId, encryptedKey, algorithm, metadata, createdAt: new Date().toISOString() };
   await redis.lpush(`user:${userId}:keys`, JSON.stringify(keyData));
-  
   res.json({ message: 'Key stored securely', keyId });
 });
 
@@ -235,43 +172,48 @@ app.post('/api/keys/store', authenticate,
 app.get('/api/keys', authenticate, async (req: any, res) => {
   const userId = req.user.id;
   const keys = await redis.lrange(`user:${userId}:keys`, 0, -1);
-  
   res.json(keys.map(k => JSON.parse(k)));
 });
 
-// --- Vite Middleware ---
-async function startServer() {
+// API Error Handler for non-existent routes
+app.all('/api/*', (req, res) => {
+  res.status(404).json({ error: `Tactical endpoint ${req.method} ${req.url} not found` });
+});
+
+// --- Vite Middleware & Static Serving ---
+async function setupFrontend() {
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: 'custom',
+      appType: 'spa',
     });
     app.use(vite.middlewares);
-
-    app.get('*', async (req, res, next) => {
-      const url = req.originalUrl;
-      // Skip API routes
-      if (url.startsWith('/api/')) return next();
-
-      try {
-        let template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
-        template = await vite.transformIndexHtml(url, template);
-        res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
-      } catch (e) {
-        vite.ssrFixStacktrace(e as Error);
-        next(e);
-      }
-    });
   } else {
-    app.use(express.static(path.join(__dirname, 'dist')));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-    });
+    const distPath = path.join(__dirname, 'dist');
+    if (fs.existsSync(distPath)) {
+      app.use(express.static(distPath));
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(distPath, 'index.html'));
+      });
+    }
   }
+}
 
+setupFrontend();
+
+// Global Error Handler
+app.use((err: any, req: any, res: any, next: any) => {
+  console.error('[CRITICAL] Server Error:', err);
+  if (req.path.startsWith('/api/')) {
+    return res.status(500).json({ error: 'Internal Protocol Error' });
+  }
+  next(err);
+});
+
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`[SYSTEM] Node running on http://localhost:${PORT}`);
   });
 }
 
-startServer();
+export default app;

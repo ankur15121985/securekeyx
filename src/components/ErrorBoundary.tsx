@@ -2,8 +2,17 @@ import * as React from 'react';
 import { AlertTriangle, RefreshCcw, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-export class ErrorBoundary extends (React.Component as any) {
-  constructor(props: any) {
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
       hasError: false,
@@ -11,7 +20,7 @@ export class ErrorBoundary extends (React.Component as any) {
     };
   }
 
-  static getDerivedStateFromError(error: any) {
+  static getDerivedStateFromError(error: Error) {
     return { hasError: true, error };
   }
 
