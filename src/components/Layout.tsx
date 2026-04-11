@@ -46,12 +46,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/30 relative overflow-hidden">
+    <div className="min-h-screen text-foreground font-sans selection:bg-primary/30 relative overflow-hidden">
       {/* India Sci-Fi Background Elements */}
-      <div className="scanlines" />
-      <div className="mandala-overlay" />
-      <div className="fixed inset-0 tactical-grid opacity-20 pointer-events-none" />
-      <div className="fixed inset-0 tactical-grid-fine pointer-events-none" />
+      <div className="fixed inset-0 z-[-10] pointer-events-none overflow-hidden">
+        <div className="tactical-bg" />
+        <div className="scanlines" />
+        <div className="mandala-overlay" />
+        <div className="absolute inset-0 tactical-grid opacity-20" />
+        <div className="absolute inset-0 tactical-grid-fine opacity-30" />
+      </div>
       
       {/* Navigation */}
       <nav className="border-b-4 border-primary bg-background/95 backdrop-blur-md sticky top-0 z-50 shadow-lg">

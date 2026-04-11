@@ -104,16 +104,27 @@
     overflow-x: hidden;
     line-height: 1.8; /* Increased for readability */
     font-size: 18px; /* Increased for older users */
+  }
+
+  .tactical-bg {
+    position: absolute;
+    inset: 0;
     background-image: 
       linear-gradient(to bottom, 
-        hsla(var(--india-saffron), 0.05) 0%, 
-        hsla(var(--india-white), 0.05) 50%, 
-        hsla(var(--india-green), 0.05) 100%
+        hsl(var(--india-saffron) / 0.25) 0%, 
+        hsl(var(--india-white) / 0.1) 50%, 
+        hsl(var(--india-green) / 0.25) 100%
       ),
-      radial-gradient(circle at 10% 10%, hsla(var(--army-olive), 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 90% 10%, hsla(var(--navy-blue), 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 50% 90%, hsla(var(--airforce-blue), 0.08) 0%, transparent 40%);
+      radial-gradient(circle at 15% 15%, hsl(var(--army-olive) / 0.3) 0%, transparent 60%),
+      radial-gradient(circle at 85% 15%, hsl(var(--navy-blue) / 0.3) 0%, transparent 60%),
+      radial-gradient(circle at 50% 85%, hsl(var(--airforce-blue) / 0.3) 0%, transparent 60%);
     background-attachment: fixed;
+    animation: pulse-bg 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulse-bg {
+    0% { opacity: 0.8; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.05); }
   }
   @media (max-width: 768px) {
     body {
@@ -127,7 +138,7 @@
 
 /* India Sci-Fi Patterns */
 .mandala-overlay {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -137,7 +148,6 @@
   background-size: 200px 200px;
   opacity: 0.05;
   pointer-events: none;
-  z-index: -1;
   animation: rotate 120s linear infinite;
 }
 
@@ -169,7 +179,7 @@
 
 /* Sci-Fi / Military Effects */
 .scanlines {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -185,7 +195,6 @@
   );
   background-size: 100% 2px, 3px 100%;
   pointer-events: none;
-  z-index: 100;
   opacity: 0.3;
 }
 
