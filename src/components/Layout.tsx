@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Shield, Key, LayoutDashboard, LogOut, Lock, Terminal, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from './ThemeToggle';
@@ -9,6 +9,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isAuthenticated, setIsAuthenticated] = React.useState(!!localStorage.getItem('token'));
+
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const verifyToken = async () => {
@@ -38,7 +40,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = '/';
+    setIsAuthenticated(false);
+    navigate('/auth');
   };
 
   return (

@@ -167,7 +167,13 @@ if (process.env.NODE_ENV !== 'production') {
   const possiblePaths = [
     path.join(process.cwd(), 'dist'),
     path.join(__dirname, 'dist'),
-    path.join(__dirname, '..', 'dist')
+    path.join(__dirname, '..', 'dist'),
+    path.join(__dirname, '..', '..', 'dist'),
+    path.resolve('dist'),
+    path.resolve('../dist'),
+    path.join(process.cwd(), '.vercel/output/static'), // Vercel output path
+    '/var/task/dist',
+    '/var/task/project/dist'
   ];
   
   let distPath = '';
@@ -177,6 +183,28 @@ if (process.env.NODE_ENV !== 'production') {
       break;
     }
   }
+
+  // Debug route to help identify file structure on Vercel
+  app.get('/api/debug/files', (req, res) => {
+    try {
+      const currentDir = process.cwd();
+      const files = fs.readdirSync(currentDir);
+      const dirnameFiles = fs.readdirSync(__dirname);
+      res.json({
+        cwd: currentDir,
+        dirname: __dirname,
+        cwdFiles: files,
+        dirnameFiles: dirnameFiles,
+        possiblePaths,
+        env: {
+          NODE_ENV: process.env.NODE_ENV,
+          VERCEL: process.env.VERCEL
+        }
+      });
+    } catch (err) {
+      res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    }
+  });
 
   if (distPath) {
     console.log(`[SYSTEM] Serving static assets from: ${distPath}`);
