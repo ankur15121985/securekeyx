@@ -6,6 +6,9 @@ import cors from 'cors';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+import { rateLimit } from 'express-rate-limit';
+import { body, validationResult } from 'express-validator';
 
 dotenv.config();
 
@@ -68,6 +71,21 @@ if (process.env.REDIS_URL) {
 
 app.use(express.json());
 
+// Security Hardening
+app.use(helmet({
+  contentSecurityPolicy: false, // Disable for Vite dev compatibility
+}));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests from this IP, please try again after 15 minutes' }
+});
+
+app.use('/api/', limiter);
+
 // Tactical Logger
 app.use((req, res, next) => {
   if (req.url.startsWith('/api/')) {
@@ -102,17 +120,30 @@ const authenticate = (req: any, res: any, next: any) => {
 // --- API Routes ---
 
 // Login
-app.post('/api/auth/login', async (req: any, res: any) => {
-  const { username, password } = req.body;
-  console.log('[API] Login attempt for:', username);
-  
-  if (username === 'ankur15121985' && password === 'M@thur24') {
-    const user = { username, id: 'admin-id', role: 'admin' };
-    const token = jwt.sign({ username, id: user.id, role: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
-    res.json({ token, user });
-  } else {
-    res.status(401).json({ error: 'Invalid credentials' });
-  }
+app.post('/api/auth/login', 
+  [
+    body('username').trim().notEmpty().withMessage('Username is required'),
+    body('password').notEmpty().withMessage('Password is required'),
+  ],
+  async (req: any, res: any) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { username, password } = req.body;
+    console.log('[API] Login attempt for:', username);
+    
+    const ADMIN_USER = process.env.ADMIN_USERNAME || 'ankur15121985';
+    const ADMIN_PASS = process.env.ADMIN_PASSWORD || 'M@thur24';
+
+    if (username === ADMIN_USER && password === ADMIN_PASS) {
+      const user = { username, id: 'admin-id', role: 'admin' };
+      const token = jwt.sign({ username, id: user.id, role: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
+      res.json({ token, user });
+    } else {
+      res.status(401).json({ error: 'Invalid credentials' });
+    }
 });
 
 // Token Verification

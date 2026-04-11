@@ -30,38 +30,38 @@ export default function AlgorithmSelection() {
 
   return (
     <div className="space-y-12 pb-20">
-      <header className="text-center space-y-4 max-w-3xl mx-auto">
-        <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 uppercase tracking-[0.3em] text-[10px] rounded-none px-4 py-1">
-          Cryptographic Library v4.0.2
+      <header className="text-center space-y-6 max-w-4xl mx-auto">
+        <Badge variant="outline" className="bg-primary/10 text-primary border-2 border-primary/30 uppercase tracking-[0.4em] text-xs rounded-none px-6 py-2">
+          Cryptographic Library v4.0.2 // IND-SEC-LIB
         </Badge>
-        <h1 className="text-6xl font-extrabold tracking-tight text-foreground uppercase leading-none">Protocol Library</h1>
-        <p className="text-muted-foreground text-sm font-medium leading-relaxed">
-          Explore our tactical repository of <span className="text-primary font-bold">100+</span> high-speed encryption protocols. 
+        <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-foreground uppercase leading-none">Protocol Library</h1>
+        <p className="text-xl text-muted-foreground font-bold uppercase tracking-widest leading-relaxed">
+          Explore our tactical repository of <span className="text-primary font-black">100+</span> high-speed encryption protocols. 
           From military-grade AES to post-quantum neural candidates.
         </p>
       </header>
 
       {/* Search and Filter */}
-      <div className="sticky top-20 z-30 bg-background/90 backdrop-blur-xl border border-border p-6 space-y-6 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-1 h-full bg-primary/30" />
-        <div className="flex flex-col md:flex-row gap-6">
+      <div className="sticky top-20 z-30 bg-background/95 backdrop-blur-xl border-4 border-primary p-8 space-y-8 shadow-[0_0_50px_rgba(0,0,0,0.3)] relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
+        <div className="flex flex-col lg:flex-row gap-8">
           <div className="relative flex-grow">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-primary" />
             <Input 
               placeholder="SEARCH PROTOCOL REPOSITORY..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-12 bg-background border-border rounded-none h-14 text-foreground focus:ring-primary uppercase font-bold tracking-widest text-xs"
+              className="pl-16 bg-background border-2 border-border rounded-none h-20 text-foreground focus:ring-primary uppercase font-black tracking-[0.2em] text-sm"
             />
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar">
+          <div className="flex gap-3 overflow-x-auto pb-4 lg:pb-0 no-scrollbar">
             {categories.map(cat => (
               <Button
                 key={cat}
                 variant={activeCategory === cat ? 'default' : 'outline'}
                 onClick={() => setActiveCategory(cat)}
-                className={`rounded-none h-14 uppercase font-black text-[10px] tracking-[0.2em] px-8 transition-all ${
-                  activeCategory === cat ? 'bg-primary text-primary-foreground shadow-[0_0_15px_rgba(var(--primary),0.3)]' : 'border-border text-muted-foreground hover:text-primary hover:border-primary/50'
+                className={`rounded-none h-20 uppercase font-black text-xs tracking-[0.3em] px-10 transition-all border-2 ${
+                  activeCategory === cat ? 'bg-primary text-primary-foreground border-primary shadow-[0_0_20px_rgba(var(--primary),0.4)]' : 'border-border text-muted-foreground hover:text-primary hover:border-primary'
                 }`}
               >
                 {cat}
@@ -69,19 +69,19 @@ export default function AlgorithmSelection() {
             ))}
           </div>
         </div>
-        <div className="flex justify-between items-center text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <Terminal className="w-3 h-3 text-primary" />
+        <div className="flex justify-between items-center text-xs font-black uppercase tracking-[0.4em] text-muted-foreground pt-2 border-t-2 border-border">
+          <div className="flex items-center gap-3">
+            <Terminal className="w-4 h-4 text-primary" />
             <span>Active Protocols: {filteredAlgos.length}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Filter className="w-3 h-3" />
+          <div className="flex items-center gap-3">
+            <Filter className="w-4 h-4" />
             <span>Filter: {activeCategory}</span>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         <AnimatePresence mode="popLayout">
           {filteredAlgos.map((algo, i) => (
             <motion.div
@@ -92,58 +92,58 @@ export default function AlgorithmSelection() {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
             >
-              <Card className="bg-card border-border hover:border-primary/50 transition-all rounded-none group h-full flex flex-col relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-1 h-full bg-primary/0 group-hover:bg-primary transition-all" />
-                <div className={`absolute top-0 right-0 w-32 h-32 -mr-12 -mt-12 rotate-45 opacity-5 group-hover:opacity-10 transition-opacity ${algo.bg}`} />
+              <Card className="bg-card border-2 border-border hover:border-primary transition-all rounded-none group h-full flex flex-col relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-2 h-full bg-primary/0 group-hover:bg-primary transition-all" />
+                <div className={`absolute top-0 right-0 w-48 h-48 -mr-16 -mt-16 rotate-45 opacity-5 group-hover:opacity-10 transition-opacity ${algo.bg}`} />
                 
-                <CardHeader className="p-8">
-                  <div className="flex justify-between items-start mb-6">
-                    <div className={`p-3 border border-border group-hover:border-primary/30 transition-all ${algo.bg} bg-opacity-5`}>
-                      <Shield className={`w-6 h-6 ${algo.color}`} />
+                <CardHeader className="p-10">
+                  <div className="flex justify-between items-start mb-8">
+                    <div className={`p-4 border-2 border-border group-hover:border-primary transition-all ${algo.bg} bg-opacity-5`}>
+                      <Shield className={`w-8 h-8 ${algo.color}`} />
                     </div>
-                    <Badge variant="outline" className="uppercase text-[8px] font-black border-border text-muted-foreground tracking-[0.2em] rounded-none px-2">
+                    <Badge variant="outline" className="uppercase text-[10px] font-black border-2 border-border text-muted-foreground tracking-[0.3em] rounded-none px-3 py-1">
                       {algo.level}
                     </Badge>
                   </div>
-                  <CardTitle className="text-xl font-black text-foreground uppercase tracking-tight group-hover:text-primary transition-colors leading-none">
+                  <CardTitle className="text-3xl font-black text-foreground uppercase tracking-tight group-hover:text-primary transition-colors leading-none">
                     {algo.name}
                   </CardTitle>
-                  <CardDescription className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold leading-relaxed line-clamp-2 pt-3">
+                  <CardDescription className="text-xs text-muted-foreground uppercase tracking-widest font-bold leading-relaxed line-clamp-3 pt-4">
                     {algo.desc}
                   </CardDescription>
                 </CardHeader>
 
-                <CardContent className="px-8 pb-8 flex-grow">
-                  <div className="space-y-5">
-                    <div className="flex items-start gap-3">
-                      <div className="p-1.5 bg-muted border border-border">
-                        <Info className="w-3 h-3 text-muted-foreground" />
+                <CardContent className="px-10 pb-10 flex-grow">
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-4">
+                      <div className="p-2 bg-muted border-2 border-border">
+                        <Info className="w-4 h-4 text-muted-foreground" />
                       </div>
                       <div className="space-y-1">
-                        <span className="text-[8px] font-black text-muted-foreground uppercase tracking-[0.2em] block">Category</span>
-                        <span className="text-[10px] text-foreground font-bold uppercase tracking-widest">{algo.category}</span>
+                        <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em] block">Category</span>
+                        <span className="text-xs text-foreground font-black uppercase tracking-widest">{algo.category}</span>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <div className="p-1.5 bg-primary/10 border border-primary/20">
-                        <Zap className="w-3 h-3 text-primary" />
+                    <div className="flex items-start gap-4">
+                      <div className="p-2 bg-primary/10 border-2 border-primary/20">
+                        <Zap className="w-4 h-4 text-primary" />
                       </div>
                       <div className="space-y-1">
-                        <span className="text-[8px] font-black text-primary uppercase tracking-[0.2em] block">Brute-Force Estimate</span>
-                        <span className="text-[10px] text-foreground font-mono font-bold">{algo.crackTime} Hours</span>
+                        <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] block">Brute-Force Estimate</span>
+                        <span className="text-xs text-foreground font-mono font-black">{algo.crackTime} Hours</span>
                       </div>
                     </div>
                   </div>
                 </CardContent>
 
-                <CardFooter className="border-t border-border p-6 bg-muted/30">
+                <CardFooter className="border-t-2 border-border p-8 bg-muted/30">
                   <Button 
                     onClick={() => handleSelect(algo.id)}
-                    className="w-full bg-background border border-border hover:bg-primary hover:border-primary hover:text-primary-foreground text-foreground rounded-none h-12 text-[10px] font-black uppercase tracking-[0.3em] transition-all relative overflow-hidden group/btn"
+                    className="w-full bg-background border-2 border-border hover:bg-primary hover:border-primary hover:text-primary-foreground text-foreground rounded-none h-16 text-xs font-black uppercase tracking-[0.4em] transition-all relative overflow-hidden group/btn"
                   >
                     <span className="relative z-10 flex items-center">
                       Initialize Protocol
-                      <ArrowRight className="ml-2 w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+                      <ArrowRight className="ml-3 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                     </span>
                   </Button>
                 </CardFooter>

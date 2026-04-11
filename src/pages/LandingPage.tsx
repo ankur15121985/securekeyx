@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { Helmet } from 'react-helmet-async';
 import { Shield, Key, Lock, Download, Zap, ShieldCheck, Terminal, Crosshair, Cpu, Globe, Smartphone, Apple, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -7,6 +8,11 @@ import { Link } from 'react-router-dom';
 export default function LandingPage() {
   return (
     <div className="space-y-32 pb-32">
+      <Helmet>
+        <title>Bharat Tactical Encryption | Military-Grade Asset Protection</title>
+        <meta name="description" content="Deploy high-entropy cryptographic assets across distributed networks with Bharat Tactical Encryption. Zero-knowledge architecture for mission-critical data protection." />
+        <link rel="canonical" href="https://ais-dev-uxw6iknxmq2grdo4ugt4l7-356645113135.asia-east1.run.app/" />
+      </Helmet>
       {/* Hero Section */}
       <section className="relative pt-20 pb-12">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-primary/5 blur-[120px] rounded-full -z-10" />
@@ -23,12 +29,12 @@ export default function LandingPage() {
             className="space-y-6"
           >
             <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.3em] mb-4 corner-bracket corner-bracket-tl corner-bracket-br">
-              <Terminal className="w-3 h-3" /> System Status: Secure
+              <div className="ashoka-chakra" /> System Status: Secure // IND-NODE
             </div>
-            <h1 className="text-7xl md:text-9xl font-extrabold tracking-tight text-foreground leading-[0.95] uppercase">
-              Tactical<br />
-              <span className="text-primary glitch-hover">Encryption</span><br />
-              Core
+            <h1 className="text-8xl md:text-[12rem] font-black tracking-tighter text-foreground leading-[0.85] uppercase">
+              BHARAT<br />
+              <span className="text-primary">TACTICAL</span><br />
+              ENCRYPTION
             </h1>
           </motion.div>
 
@@ -36,26 +42,21 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-xl text-muted-foreground max-w-2xl mx-auto font-medium leading-relaxed"
+            className="text-2xl md:text-3xl text-muted-foreground max-w-3xl mx-auto font-bold leading-relaxed uppercase tracking-tight"
           >
-            Deploy high-entropy cryptographic assets across distributed networks. 
+            Sovereign cryptographic infrastructure for the protection of national digital assets. 
             Zero-knowledge architecture for mission-critical data protection.
           </motion.p>
 
-            <div className="flex flex-wrap justify-center gap-6 pt-6">
+            <div className="flex flex-wrap justify-center gap-8 pt-12">
               <Link to="/auth">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 h-16 text-xs font-black uppercase tracking-[0.2em] rounded-none border border-primary/50 shadow-[0_0_20px_rgba(var(--primary),0.2)] group relative overflow-hidden">
-                  <span className="relative z-10 flex items-center gap-2">
-                    Initialize Protocol <Crosshair className="w-4 h-4" />
+                <Button size="lg" aria-label="Initialize Protocol" className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 h-20 text-sm font-black uppercase tracking-[0.3em] rounded-none border-2 border-primary shadow-[0_0_30px_rgba(var(--primary),0.3)] group relative overflow-hidden">
+                  <span className="relative z-10 flex items-center gap-3">
+                    Initialize Protocol <Crosshair className="w-6 h-6" />
                   </span>
                   <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
                 </Button>
               </Link>
-              <a href="#mobile-app">
-                <Button size="lg" variant="outline" className="border-border hover:bg-secondary text-foreground px-10 h-16 text-xs font-black uppercase tracking-[0.2em] rounded-none flex items-center gap-2">
-                  <Smartphone className="w-4 h-4" /> Download App
-                </Button>
-              </a>
             </div>
         </div>
       </section>
@@ -211,99 +212,52 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* Mobile App Section */}
-      <section id="mobile-app" className="space-y-12">
+      {/* Indian Forces Section */}
+      <section className="space-y-12">
         <div className="flex items-center gap-4">
           <div className="h-[1px] flex-grow bg-border" />
-          <h2 className="text-xs font-black uppercase tracking-[0.5em] text-primary">Mobile Command Node</h2>
+          <h2 className="text-xs font-black uppercase tracking-[0.5em] text-primary">Integrated Defense Protocols</h2>
           <div className="h-[1px] flex-grow bg-border" />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
-            <div className="space-y-4">
-              <h2 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-tighter leading-none">
-                SecureKeyX <span className="text-primary">On The Go</span>
-              </h2>
-              <p className="text-sm text-muted-foreground uppercase tracking-widest leading-relaxed font-medium max-w-lg">
-                Deploy the tactical encryption core directly to your mobile device. 
-                Full PWA support for Android and iOS with offline capabilities and hardware-level isolation.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="p-6 border border-border bg-card/50 space-y-4 relative overflow-hidden group">
-                <div className="absolute top-0 left-0 w-1 h-full bg-primary/20 group-hover:bg-primary transition-colors" />
-                <div className="flex items-center gap-3 text-primary">
-                  <Apple className="w-5 h-5" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">iOS Installation</span>
-                </div>
-                <ol className="text-[9px] text-muted-foreground uppercase tracking-widest space-y-2 font-bold">
-                  <li>1. Open in Safari</li>
-                  <li>2. Tap Share Icon</li>
-                  <li>3. Select "Add to Home Screen"</li>
-                </ol>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              icon: <Shield className="w-8 h-8" />,
+              title: "Indian Army",
+              desc: "Land-based tactical encryption for frontline communications and strategic asset protection.",
+              color: "var(--army-olive)"
+            },
+            {
+              icon: <Globe className="w-8 h-8" />,
+              title: "Indian Navy",
+              desc: "Maritime secure data tunnels for naval fleet coordination and deep-sea asset security.",
+              color: "var(--navy-blue)"
+            },
+            {
+              icon: <Zap className="w-8 h-8" />,
+              title: "Indian Air Force",
+              desc: "High-altitude cryptographic infrastructure for aerospace defense and rapid response nodes.",
+              color: "var(--airforce-blue)"
+            }
+          ].map((force, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.2 }}
+              className="p-10 bg-card border-2 border-border hover:border-primary/50 transition-all group relative overflow-hidden"
+              style={{ borderColor: `hsla(${force.color}, 0.2)` }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1" style={{ backgroundColor: `hsl(${force.color})` }} />
+              <div className="mb-8 p-4 w-fit bg-primary/5 border border-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                {force.icon}
               </div>
-
-              <div className="p-6 border border-border bg-card/50 space-y-4 relative overflow-hidden group">
-                <div className="absolute top-0 left-0 w-1 h-full bg-primary/20 group-hover:bg-primary transition-colors" />
-                <div className="flex items-center gap-3 text-primary">
-                  <Play className="w-5 h-5" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">Android Installation</span>
-                </div>
-                <ol className="text-[9px] text-muted-foreground uppercase tracking-widest space-y-2 font-bold">
-                  <li>1. Open in Chrome</li>
-                  <li>2. Tap Menu (3 dots)</li>
-                  <li>3. Select "Install App"</li>
-                </ol>
-              </div>
-            </div>
-
-            <div className="pt-4">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none px-12 h-14 font-black uppercase tracking-[0.3em] text-[10px] shadow-[0_0_20px_rgba(var(--primary),0.2)]">
-                Initialize Mobile Node
-              </Button>
-            </div>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="relative flex justify-center"
-          >
-            {/* Tactical Phone Mockup */}
-            <div className="w-64 h-[500px] bg-zinc-900 border-4 border-zinc-800 rounded-[3rem] relative overflow-hidden shadow-2xl">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-zinc-800 rounded-b-2xl z-20" />
-              <div className="absolute inset-0 bg-primary/5 tactical-grid opacity-20" />
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center space-y-6">
-                <div className="w-16 h-16 bg-primary/10 border border-primary/20 flex items-center justify-center relative">
-                  <Shield className="w-8 h-8 text-primary" />
-                  <div className="absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 border-primary/50" />
-                </div>
-                <div className="space-y-2">
-                  <div className="text-lg font-black text-foreground uppercase tracking-tighter">SECUREKEYX</div>
-                  <div className="text-[8px] font-bold text-primary uppercase tracking-[0.3em]">Tactical Node v4.0</div>
-                </div>
-                <div className="w-full h-1 bg-border relative">
-                  <div className="absolute inset-0 bg-primary/30 animate-pulse" />
-                </div>
-                <div className="text-[8px] text-muted-foreground uppercase tracking-widest leading-relaxed">
-                  Encrypted Tunnel Established <br />
-                  Node: 192.168.1.104
-                </div>
-              </div>
-            </div>
-            
-            {/* Decorative Elements */}
-            <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 blur-3xl rounded-full" />
-            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-primary/10 blur-3xl rounded-full" />
-          </motion.div>
+              <h3 className="text-xl font-black text-foreground mb-4 uppercase tracking-tight">{force.title}</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed uppercase tracking-widest font-medium">{force.desc}</p>
+            </motion.div>
+          ))}
         </div>
       </section>
     </div>

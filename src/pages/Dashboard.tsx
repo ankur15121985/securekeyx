@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Helmet } from 'react-helmet-async';
 import { Key, Shield, Clock, Download, Plus, ChevronRight, Activity, Lock, Unlock, X, Eye, EyeOff, Copy, Check, Zap, Terminal, ShieldAlert, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -270,21 +271,25 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="space-y-10">
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b border-border">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 text-[10px] font-black text-primary uppercase tracking-[0.3em]">
-            <Terminal className="w-3 h-3" /> Node Connection: Active
+    <div className="space-y-12">
+      <Helmet>
+        <title>Command Center | Bharat Tactical Encryption</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 pb-10 border-b-4 border-primary">
+        <div className="space-y-2">
+          <div className="flex items-center gap-3 text-xs font-black text-primary uppercase tracking-[0.4em]">
+            <Terminal className="w-4 h-4" /> Node Connection: Active // IND-NODE-01
           </div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-foreground uppercase leading-none">Command Center</h1>
-          <p className="text-sm text-muted-foreground font-medium">
-            Authenticated as: <span className="text-primary font-mono font-bold">{user.username || user.mobile || 'Unknown User'}</span>
+          <h1 className="text-5xl md:text-6xl font-black tracking-tighter text-foreground uppercase leading-none">Command Center</h1>
+          <p className="text-lg text-muted-foreground font-bold uppercase tracking-widest">
+            Authenticated as: <span className="text-primary font-black">{user.username || user.mobile || 'Unknown User'}</span>
           </p>
         </div>
         <Link to="/algorithms">
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-14 px-8 font-black uppercase tracking-[0.2em] text-[10px] border border-primary/50 shadow-[0_0_15px_rgba(var(--primary),0.2)] group relative overflow-hidden">
-            <span className="relative z-10 flex items-center gap-2">
-              <Plus className="w-4 h-4" /> Initialize New Protocol
+          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-20 px-12 font-black uppercase tracking-[0.3em] text-sm border-2 border-primary shadow-[0_0_30px_rgba(var(--primary),0.3)] group relative overflow-hidden">
+            <span className="relative z-10 flex items-center gap-3">
+              <Plus className="w-6 h-6" /> Initialize New Protocol
             </span>
             <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
           </Button>
@@ -292,24 +297,24 @@ export default function Dashboard() {
       </header>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         {[
-          { label: "Active Assets", value: keys.length, icon: <Key className="w-4 h-4" />, color: "text-primary" },
-          { label: "Security Tier", value: "OMEGA", icon: <Shield className="w-4 h-4" />, color: "text-primary" },
-          { label: "Network Status", value: "STABLE", icon: <Activity className="w-4 h-4" />, color: "text-primary" },
-          { label: "Threat Level", value: "ZERO", icon: <ShieldAlert className="w-4 h-4" />, color: "text-primary" },
+          { label: "Active Assets", value: keys.length, icon: <Key className="w-6 h-6" />, color: "text-primary" },
+          { label: "Security Tier", value: "OMEGA", icon: <Shield className="w-6 h-6" />, color: "text-primary" },
+          { label: "Network Status", value: "STABLE", icon: <Activity className="w-6 h-6" />, color: "text-primary" },
+          { label: "Threat Level", value: "ZERO", icon: <ShieldAlert className="w-6 h-6" />, color: "text-primary" },
         ].map((stat, i) => (
-          <Card key={i} className="bg-card border-border rounded-none relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-1 h-full bg-primary/20 group-hover:bg-primary transition-colors" />
-            <CardContent className="pt-8 pb-6">
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">{stat.label}</span>
+          <Card key={i} className="bg-card border-2 border-border rounded-none relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-2 h-full bg-primary/20 group-hover:bg-primary transition-colors" />
+            <CardContent className="pt-10 pb-8 px-8">
+              <div className="flex justify-between items-center mb-6">
+                <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.3em]">{stat.label}</span>
                 <div className={stat.color}>{stat.icon}</div>
               </div>
-              <div className="text-5xl font-extrabold text-foreground tracking-tight uppercase leading-none">{stat.value}</div>
+              <div className="text-6xl font-black text-foreground tracking-tighter uppercase leading-none">{stat.value}</div>
               
               {/* Decorative line */}
-              <div className="mt-6 h-[1px] w-full bg-border relative">
+              <div className="mt-8 h-1 w-full bg-border relative">
                 <div className="absolute inset-0 bg-primary/20 animate-pulse" />
               </div>
             </CardContent>
@@ -318,37 +323,37 @@ export default function Dashboard() {
       </div>
 
       {/* Security Monitor & Recent Keys */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        <section className="lg:col-span-2 space-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <section className="lg:col-span-2 space-y-10">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 bg-primary animate-pulse" />
-              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">Cryptographic Assets</h2>
+            <div className="flex items-center gap-4">
+              <div className="w-3 h-3 bg-primary animate-pulse" />
+              <h2 className="text-lg font-black text-foreground uppercase tracking-[0.3em]">Cryptographic Assets</h2>
             </div>
-            <Button variant="link" className="text-[10px] font-black text-primary uppercase tracking-widest p-0 h-auto hover:no-underline hover:opacity-80">
+            <Button variant="link" className="text-xs font-black text-primary uppercase tracking-widest p-0 h-auto hover:no-underline hover:opacity-80">
               Full Audit Trail
             </Button>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-6">
             {loading ? (
-              <div className="text-center py-20 text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em] animate-pulse">
+              <div className="text-center py-32 text-xs font-black text-muted-foreground uppercase tracking-[0.5em] animate-pulse">
                 Scanning Secure Enclave...
               </div>
             ) : keys.length === 0 ? (
-              <Card className="bg-card/30 border-dashed border-border rounded-none py-20">
-                <CardContent className="text-center space-y-6">
-                  <div className="mx-auto w-16 h-16 bg-muted border border-border rounded-none flex items-center justify-center relative">
-                    <Key className="w-8 h-8 text-muted-foreground" />
-                    <div className="absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 border-border" />
-                    <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 border-border" />
+              <Card className="bg-card/30 border-4 border-dashed border-border rounded-none py-32">
+                <CardContent className="text-center space-y-8">
+                  <div className="mx-auto w-24 h-24 bg-muted border-2 border-border rounded-none flex items-center justify-center relative">
+                    <Key className="w-12 h-12 text-muted-foreground" />
+                    <div className="absolute -top-2 -left-2 w-4 h-4 border-t-4 border-l-4 border-border" />
+                    <div className="absolute -bottom-2 -right-2 w-4 h-4 border-b-4 border-r-4 border-border" />
                   </div>
-                  <div className="space-y-2">
-                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">No assets found in current node.</p>
-                    <p className="text-[10px] text-muted-foreground/60 uppercase tracking-widest">Initialize your first encryption protocol to begin.</p>
+                  <div className="space-y-4">
+                    <p className="text-xl font-black text-muted-foreground uppercase tracking-widest">No assets found in current node.</p>
+                    <p className="text-xs text-muted-foreground/60 uppercase tracking-widest">Initialize your first encryption protocol to begin.</p>
                   </div>
                   <Link to="/algorithms">
-                    <Button variant="outline" className="border-border text-foreground rounded-none uppercase text-[10px] font-black tracking-widest h-12 px-8">
+                    <Button variant="outline" className="border-2 border-border text-foreground rounded-none uppercase text-xs font-black tracking-widest h-16 px-12">
                       Get Started
                     </Button>
                   </Link>
@@ -363,35 +368,35 @@ export default function Dashboard() {
                   transition={{ delay: i * 0.05 }}
                 >
                   <Card 
-                    className="bg-card border-border hover:border-primary/50 transition-all rounded-none group cursor-pointer relative overflow-hidden"
+                    className="bg-card border-2 border-border hover:border-primary transition-all rounded-none group cursor-pointer relative overflow-hidden"
                     onClick={() => setSelectedKey(key)}
                   >
-                    <div className="absolute top-0 left-0 w-1 h-full bg-primary/0 group-hover:bg-primary transition-all" />
-                    <CardContent className="p-6 flex items-center justify-between">
-                      <div className="flex items-center gap-6">
-                        <div className="w-14 h-14 bg-background border border-border rounded-none flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary/30 transition-all relative">
-                          <Key className="w-6 h-6 text-primary" />
-                          <div className="absolute top-0 left-0 w-1.5 h-1.5 border-t border-l border-primary/30" />
-                          <div className="absolute bottom-0 right-0 w-1.5 h-1.5 border-b border-r border-primary/30" />
+                    <div className="absolute top-0 left-0 w-2 h-full bg-primary/0 group-hover:bg-primary transition-all" />
+                    <CardContent className="p-8 flex items-center justify-between">
+                      <div className="flex items-center gap-8">
+                        <div className="w-20 h-20 bg-background border-2 border-border rounded-none flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary transition-all relative">
+                          <Key className="w-10 h-10 text-primary" />
+                          <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary/30" />
+                          <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary/30" />
                         </div>
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-3">
-                            <span className="text-lg font-black text-foreground uppercase tracking-tight leading-none">{key.algorithm}</span>
-                            <Badge variant="outline" className="text-[8px] font-black uppercase border-primary/20 text-primary bg-primary/5 rounded-none tracking-widest">Verified</Badge>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-4">
+                            <span className="text-2xl font-black text-foreground uppercase tracking-tight leading-none">{key.algorithm}</span>
+                            <Badge variant="outline" className="text-[10px] font-black uppercase border-primary/30 text-primary bg-primary/5 rounded-none tracking-widest px-3 py-1">Verified</Badge>
                           </div>
-                          <div className="flex items-center gap-2 text-[9px] text-muted-foreground font-bold uppercase tracking-widest">
-                            <Clock className="w-3 h-3" />
+                          <div className="flex items-center gap-3 text-xs text-muted-foreground font-bold uppercase tracking-widest">
+                            <Clock className="w-4 h-4" />
                             {new Date(key.createdAt).toLocaleString()}
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-8">
-                        <div className="hidden md:block text-right space-y-1">
-                          <div className="text-[8px] text-muted-foreground uppercase font-black tracking-[0.2em]">Asset Identifier</div>
-                          <div className="text-[10px] font-mono text-foreground font-bold">{key.id.toUpperCase()}</div>
+                      <div className="flex items-center gap-12">
+                        <div className="hidden md:block text-right space-y-2">
+                          <div className="text-[10px] text-muted-foreground uppercase font-black tracking-[0.3em]">Asset Identifier</div>
+                          <div className="text-xs font-mono text-foreground font-black">{key.id.toUpperCase()}</div>
                         </div>
-                        <div className="p-2 border border-border group-hover:border-primary/50 group-hover:bg-primary/5 transition-all">
-                          <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                        <div className="p-4 border-2 border-border group-hover:border-primary group-hover:bg-primary/5 transition-all">
+                          <ChevronRight className="w-8 h-8 text-muted-foreground group-hover:text-primary transition-colors" />
                         </div>
                       </div>
                     </CardContent>
@@ -403,66 +408,66 @@ export default function Dashboard() {
         </section>
 
         {/* Security Monitor Sidebar */}
-        <aside className="space-y-8">
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 bg-primary animate-pulse" />
-            <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">Security Monitor</h2>
+        <aside className="space-y-10">
+          <div className="flex items-center gap-4">
+            <div className="w-3 h-3 bg-primary animate-pulse" />
+            <h2 className="text-lg font-black text-foreground uppercase tracking-[0.3em]">Security Monitor</h2>
           </div>
           
-          <Card className="bg-card border-border rounded-none relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-[1px] bg-primary/30" />
-            <CardContent className="p-6 space-y-6">
-              <div className="space-y-4">
+          <Card className="bg-card border-2 border-border rounded-none relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-primary/30" />
+            <CardContent className="p-8 space-y-8">
+              <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Firewall Status</span>
-                  <Badge className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20 text-[8px] rounded-none">ACTIVE</Badge>
+                  <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">Firewall Status</span>
+                  <Badge className="bg-emerald-500/10 text-emerald-500 border-2 border-emerald-500/20 text-[10px] font-black rounded-none px-3 py-1">ACTIVE</Badge>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Intrusion Detection</span>
-                  <Badge className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20 text-[8px] rounded-none">NOMINAL</Badge>
+                  <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">Intrusion Detection</span>
+                  <Badge className="bg-emerald-500/10 text-emerald-500 border-2 border-emerald-500/20 text-[10px] font-black rounded-none px-3 py-1">NOMINAL</Badge>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">E2E Tunnel</span>
-                  <Badge className="bg-primary/10 text-primary border-primary/20 text-[8px] rounded-none">SECURE</Badge>
+                  <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">E2E Tunnel</span>
+                  <Badge className="bg-primary/10 text-primary border-2 border-primary/20 text-[10px] font-black rounded-none px-3 py-1">SECURE</Badge>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-border space-y-4">
-                <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Live Security Feed</h4>
-                <div className="space-y-3 font-mono text-[9px] text-muted-foreground uppercase">
-                  <div className="flex gap-2">
+              <div className="pt-6 border-t-2 border-border space-y-6">
+                <h4 className="text-xs font-black text-primary uppercase tracking-[0.4em]">Live Security Feed</h4>
+                <div className="space-y-4 font-mono text-[10px] text-muted-foreground uppercase font-bold">
+                  <div className="flex gap-3">
                     <span className="text-primary">[OK]</span>
                     <span>Handshake verified: Node 104</span>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     <span className="text-primary">[OK]</span>
                     <span>Encrypted tunnel established</span>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     <span className="text-amber-500">[!]</span>
                     <span>Unauthorized ping blocked</span>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     <span className="text-primary">[OK]</span>
                     <span>Integrity check: 100%</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4">
-                <Button variant="outline" className="w-full border-border text-[10px] font-black uppercase tracking-widest h-10 rounded-none hover:bg-primary/5">
+              <div className="pt-6">
+                <Button variant="outline" className="w-full border-2 border-border text-xs font-black uppercase tracking-widest h-14 rounded-none hover:bg-primary/5">
                   Run Deep Scan
                 </Button>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-primary/5 border-primary/20 rounded-none p-6 space-y-4">
-            <div className="flex items-center gap-2 text-primary">
-              <ShieldCheck className="w-4 h-4" />
-              <span className="text-[10px] font-black uppercase tracking-widest">Unhackable Core</span>
+          <Card className="bg-primary/5 border-2 border-primary/20 rounded-none p-8 space-y-6">
+            <div className="flex items-center gap-3 text-primary">
+              <ShieldCheck className="w-6 h-6" />
+              <span className="text-xs font-black uppercase tracking-[0.3em]">Unhackable Core</span>
             </div>
-            <p className="text-[9px] text-muted-foreground leading-relaxed uppercase tracking-widest">
+            <p className="text-[11px] text-muted-foreground leading-relaxed uppercase tracking-widest font-bold">
               Your assets are protected by a multi-layer zero-knowledge architecture. No private keys ever leave your local node.
             </p>
           </Card>
@@ -494,55 +499,55 @@ export default function Dashboard() {
                   <X className="w-4 h-4" />
                 </Button>
 
-                <CardHeader className="pt-12 pb-8 px-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className={`p-3 border ${unlockedKey ? 'border-primary bg-primary/10' : 'border-border bg-muted'} rounded-none`}>
-                      {unlockedKey ? <Unlock className="w-6 h-6 text-primary" /> : <Lock className="w-6 h-6 text-muted-foreground" />}
+                <CardHeader className="pt-16 pb-10 px-12">
+                  <div className="flex items-center gap-6 mb-6">
+                    <div className={`p-5 border-2 ${unlockedKey ? 'border-primary bg-primary/10' : 'border-border bg-muted'} rounded-none`}>
+                      {unlockedKey ? <Unlock className="w-10 h-10 text-primary" /> : <Lock className="w-10 h-10 text-muted-foreground" />}
                     </div>
-                    <div className="space-y-1">
-                      <CardTitle className="text-2xl font-black text-foreground uppercase tracking-tighter leading-none">
+                    <div className="space-y-2">
+                      <CardTitle className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tighter leading-none">
                         {unlockedKey ? 'Access Granted' : 'Secure Authorization'}
                       </CardTitle>
-                      <div className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">
+                      <div className="text-xs font-black text-primary uppercase tracking-[0.4em]">
                         Protocol: {selectedKey.algorithm}
                       </div>
                     </div>
                   </div>
-                  <CardDescription className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
+                  <CardDescription className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
                     {unlockedKey 
                       ? `Target asset decrypted successfully. Retrieval protocols initialized.`
                       : `Multi-factor authorization required. Provide personal decryption passphrase to unlock asset enclave.`}
                   </CardDescription>
                 </CardHeader>
 
-                <CardContent className="px-10 pb-10 space-y-8">
+                <CardContent className="px-12 pb-12 space-y-10">
                   {!unlockedKey ? (
-                    <div className="space-y-6">
-                      <div className="space-y-3">
-                        <label className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.3em] flex items-center gap-2">
-                          <Terminal className="w-3 h-3" /> Authorization Passphrase
+                    <div className="space-y-8">
+                      <div className="space-y-4">
+                        <label className="text-xs font-black text-muted-foreground uppercase tracking-[0.4em] flex items-center gap-3">
+                          <Terminal className="w-4 h-4" /> Authorization Passphrase
                         </label>
                         <Input
                           type="password"
                           placeholder="ENTER SECRET PASSPHRASE"
                           value={passphrase}
                           onChange={(e) => setPassphrase(e.target.value)}
-                          className="bg-background border-border rounded-none text-foreground h-14 font-bold tracking-widest focus-visible:ring-primary uppercase text-xs"
+                          className="bg-background border-2 border-border rounded-none text-foreground h-16 font-black tracking-[0.2em] focus-visible:ring-primary uppercase text-sm px-6"
                           onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
                         />
                       </div>
                       <Button 
                         onClick={handleUnlock}
-                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-14 font-black uppercase tracking-[0.2em] text-xs shadow-[0_0_20px_rgba(var(--primary),0.2)]"
+                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-20 font-black uppercase tracking-[0.3em] text-sm shadow-[0_0_30px_rgba(var(--primary),0.3)]"
                       >
                         Authorize Decryption
                       </Button>
                     </div>
                   ) : (
-                    <div className="space-y-8">
+                    <div className="space-y-10">
                       <div className="relative group">
-                        <div className="absolute -inset-1 bg-primary/20 rounded-none blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-                        <div className="relative bg-background border border-primary/30 p-8 font-mono text-sm break-all min-h-[120px] flex items-center justify-center text-center overflow-hidden">
+                        <div className="absolute -inset-2 bg-primary/20 rounded-none blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                        <div className="relative bg-background border-2 border-primary/30 p-10 font-mono text-lg break-all min-h-[160px] flex items-center justify-center text-center overflow-hidden">
                           {/* Background Grid for Key Display */}
                           <div className="absolute inset-0 tactical-grid opacity-10 pointer-events-none" />
                           
@@ -558,41 +563,41 @@ export default function Dashboard() {
                             <span className="text-muted-foreground/30 tracking-[0.8em] font-black relative z-10">••••••••••••••••••••••••••••••••</span>
                           )}
                         </div>
-                        <div className="absolute right-4 top-4 flex gap-2">
+                        <div className="absolute right-6 top-6 flex gap-3">
                           <Button 
                             variant="ghost" 
                             size="icon" 
                             onClick={() => setShowKey(!showKey)}
-                            className="h-10 w-10 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border border-border"
+                            className="h-12 w-12 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border-2 border-border"
                           >
-                            {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            {showKey ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
                           </Button>
                           <Button 
                             variant="ghost" 
                             size="icon" 
                             onClick={copyToClipboard}
-                            className="h-10 w-10 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border border-border"
+                            className="h-12 w-12 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border-2 border-border"
                           >
-                            {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
+                            {copied ? <Check className="w-6 h-6 text-primary" /> : <Copy className="w-6 h-6" />}
                           </Button>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-2 gap-6">
                         <Button 
                           onClick={downloadKeyFile}
                           variant="outline" 
-                          className="border-border hover:bg-secondary text-foreground rounded-none h-14 font-black uppercase tracking-[0.2em] text-[10px]"
+                          className="border-2 border-border hover:bg-secondary text-foreground rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
                         >
-                          <Download className="w-4 h-4 mr-2" />
+                          <Download className="w-5 h-5 mr-3" />
                           Download Asset
                         </Button>
                         <Button 
                           onClick={downloadDesktopTool}
                           variant="outline" 
-                          className="border-primary/30 text-primary hover:bg-primary/10 rounded-none h-14 font-black uppercase tracking-[0.2em] text-[10px]"
+                          className="border-2 border-primary/30 text-primary hover:bg-primary/10 rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
                         >
-                          <Zap className="w-4 h-4 mr-2" />
+                          <Zap className="w-5 h-5 mr-3" />
                           Tactical Vault
                         </Button>
                       </div>
@@ -600,12 +605,12 @@ export default function Dashboard() {
                   )}
                 </CardContent>
 
-                <CardFooter className="bg-muted/50 border-t border-border py-6 px-10 flex justify-between items-center">
-                  <div className="flex items-center gap-2 text-[9px] text-muted-foreground uppercase font-black tracking-[0.2em]">
-                    <Shield className="w-3 h-3 text-primary" />
+                <CardFooter className="bg-muted/50 border-t-2 border-border py-8 px-12 flex justify-between items-center">
+                  <div className="flex items-center gap-3 text-[10px] text-muted-foreground uppercase font-black tracking-[0.3em]">
+                    <Shield className="w-4 h-4 text-primary" />
                     Secure Enclave Protocol v4.0.2
                   </div>
-                  <div className="text-[9px] font-mono text-muted-foreground/50">
+                  <div className="text-[10px] font-mono text-muted-foreground/50 font-bold">
                     NODE_ID: {selectedKey.id.slice(0, 12).toUpperCase()}
                   </div>
                 </CardFooter>

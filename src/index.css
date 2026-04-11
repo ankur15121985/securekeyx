@@ -31,51 +31,66 @@
 
 @layer base {
   :root {
-    --background: oklch(0.98 0.01 200);
-    --foreground: oklch(0.15 0.02 200);
-    --card: oklch(0.95 0.01 200);
-    --card-foreground: oklch(0.15 0.02 200);
-    --popover: oklch(0.98 0.01 200);
-    --popover-foreground: oklch(0.15 0.02 200);
-    --primary: oklch(0.55 0.15 200);
-    --primary-foreground: oklch(0.98 0.01 200);
-    --secondary: oklch(0.9 0.02 200);
-    --secondary-foreground: oklch(0.2 0.02 200);
-    --muted: oklch(0.9 0.02 200);
-    --muted-foreground: oklch(0.4 0.02 200);
-    --accent: oklch(0.55 0.15 200 / 0.1);
-    --accent-foreground: oklch(0.55 0.15 200);
-    --destructive: oklch(0.6 0.2 25);
-    --destructive-foreground: oklch(0.98 0.01 200);
-    --border: oklch(0.85 0.02 200);
-    --input: oklch(0.85 0.02 200);
-    --ring: oklch(0.55 0.15 200);
-    --radius: 0px; /* Brutalist sharp corners */
+    --background: 45 20% 95%; /* Light Khaki */
+    --foreground: 220 30% 10%;
+    --card: 45 20% 92%;
+    --card-foreground: 220 30% 10%;
+    --popover: 45 20% 95%;
+    --popover-foreground: 220 30% 10%;
+    --primary: 75 30% 35%; /* Military Olive */
+    --primary-foreground: 45 20% 98%;
+    --secondary: 145 50% 30%; /* Deep India Green */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 45 10% 85%;
+    --muted-foreground: 215 15% 35%;
+    --accent: 25 80% 50%; /* India Saffron */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 75 20% 80%;
+    --input: 75 20% 80%;
+    --ring: 75 30% 35%;
+    --radius: 0px;
     
-    --tactical-green: oklch(0.65 0.18 145);
-    --tactical-amber: oklch(0.75 0.15 85);
-    --tactical-blue: oklch(0.55 0.15 220);
+    --india-saffron: 25 80% 50%;
+    --india-white: 0 0% 100%;
+    --india-green: 145 50% 30%;
+    --india-blue: 220 60% 35%;
+
+    /* Indian Forces Colors */
+    --army-olive: 75 30% 35%;
+    --navy-blue: 220 60% 20%;
+    --airforce-blue: 200 60% 45%;
   }
 
   .dark {
-    --background: oklch(0.08 0.01 200);
-    --foreground: oklch(0.95 0.02 200);
-    --card: oklch(0.12 0.01 200);
-    --card-foreground: oklch(0.95 0.02 200);
-    --popover: oklch(0.08 0.01 200);
-    --popover-foreground: oklch(0.95 0.02 200);
-    --primary: oklch(0.7 0.2 145); /* Tactical Green */
-    --primary-foreground: oklch(0.1 0.01 200);
-    --secondary: oklch(0.15 0.02 200);
-    --secondary-foreground: oklch(0.95 0.02 200);
-    --muted: oklch(0.15 0.02 200);
-    --muted-foreground: oklch(0.6 0.02 200);
-    --accent: oklch(0.7 0.2 145 / 0.1);
-    --accent-foreground: oklch(0.7 0.2 145);
-    --border: oklch(0.25 0.02 200);
-    --input: oklch(0.25 0.02 200);
-    --ring: oklch(0.7 0.2 145);
-    --radius: 0px;
+    --background: 220 30% 8%; /* Deep Slate */
+    --foreground: 45 20% 90%;
+    --card: 220 30% 12%;
+    --card-foreground: 45 20% 90%;
+    --popover: 220 30% 8%;
+    --popover-foreground: 45 20% 90%;
+    --primary: 75 40% 45%; /* Tactical Olive */
+    --primary-foreground: 220 30% 5%;
+    --secondary: 145 60% 40%;
+    --secondary-foreground: 220 30% 5%;
+    --muted: 220 20% 18%;
+    --muted-foreground: 215 15% 75%;
+    --accent: 25 90% 60%;
+    --accent-foreground: 220 30% 5%;
+    --border: 75 30% 25%;
+    --input: 75 30% 25%;
+    --ring: 75 40% 45%;
+    
+    --india-saffron: 25 90% 60%;
+    --india-white: 0 0% 100%;
+    --india-green: 145 60% 40%;
+    --india-blue: 220 70% 55%;
+
+    /* Indian Forces Colors Dark */
+    --army-olive: 75 40% 45%;
+    --navy-blue: 220 70% 30%;
+    --airforce-blue: 200 70% 55%;
   }
 }
 
@@ -87,8 +102,69 @@
     @apply bg-background text-foreground transition-colors duration-300 antialiased;
     font-feature-settings: "cv02", "cv05", "cv08", "cv11", "ss01";
     overflow-x: hidden;
-    line-height: 1.6;
+    line-height: 1.8; /* Increased for readability */
+    font-size: 18px; /* Increased for older users */
+    background-image: 
+      linear-gradient(to bottom, 
+        hsla(var(--india-saffron), 0.05) 0%, 
+        hsla(var(--india-white), 0.05) 50%, 
+        hsla(var(--india-green), 0.05) 100%
+      ),
+      radial-gradient(circle at 10% 10%, hsla(var(--army-olive), 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 90% 10%, hsla(var(--navy-blue), 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 50% 90%, hsla(var(--airforce-blue), 0.08) 0%, transparent 40%);
+    background-attachment: fixed;
   }
+  @media (max-width: 768px) {
+    body {
+      font-size: 16px; /* Slightly smaller on mobile but still readable */
+    }
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* India Sci-Fi Patterns */
+.mandala-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 1000px;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z' fill='none' stroke='white' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: -1;
+  animation: rotate 120s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.ashoka-chakra {
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid hsl(var(--india-blue));
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 10s linear infinite;
+}
+
+.ashoka-chakra::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 1px;
+  background: hsl(var(--india-blue));
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 100vmax transparent;
 }
 
 /* Sci-Fi / Military Effects */
@@ -115,16 +191,16 @@
 
 .tactical-grid {
   background-image: 
-    linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    linear-gradient(hsl(var(--border)) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px);
   background-size: 40px 40px;
   background-position: center center;
 }
 
 .tactical-grid-fine {
   background-image: 
-    linear-gradient(var(--border) 0.5px, transparent 0.5px),
-    linear-gradient(90deg, var(--border) 0.5px, transparent 0.5px);
+    linear-gradient(hsl(var(--border)) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, hsl(var(--border)) 0.5px, transparent 0.5px);
   background-size: 10px 10px;
   opacity: 0.3;
 }
@@ -151,7 +227,7 @@
   position: absolute;
   width: 8px;
   height: 8px;
-  border-color: var(--primary);
+  border-color: hsl(var(--primary));
   border-style: solid;
   opacity: 0.5;
 }
@@ -160,15 +236,3 @@
 .corner-bracket-tr::before { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
 .corner-bracket-bl::after { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
 .corner-bracket-br::after { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-    }
-  body {
-    @apply bg-background text-foreground;
-    }
-  html {
-    @apply font-sans;
-    }
-}

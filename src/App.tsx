@@ -10,6 +10,8 @@ import KeyGeneration from './pages/KeyGeneration';
 import KeyProtection from './pages/KeyProtection';
 import { Toaster } from 'sonner';
 
+import { HelmetProvider } from 'react-helmet-async';
+
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = !!localStorage.getItem('token');
   return isAuthenticated ? <>{children}</> : <Navigate to="/auth" />;
@@ -17,42 +19,44 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 export default function App() {
   return (
-    <Router>
-      <Toaster position="top-center" theme="dark" richColors />
-      <ErrorBoundary>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/auth" element={<AuthPage />} />
-            
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/algorithms" element={
-              <ProtectedRoute>
-                <AlgorithmSelection />
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/generate" element={
-              <ProtectedRoute>
-                <KeyGeneration />
-              </ProtectedRoute>
-            } />
-            
-            <Route path="/protect" element={
-              <ProtectedRoute>
-                <KeyProtection />
-              </ProtectedRoute>
-            } />
-            
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </Layout>
-      </ErrorBoundary>
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <Toaster position="top-center" theme="dark" richColors />
+        <ErrorBoundary>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/auth" element={<AuthPage />} />
+              
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/algorithms" element={
+                <ProtectedRoute>
+                  <AlgorithmSelection />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/generate" element={
+                <ProtectedRoute>
+                  <KeyGeneration />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/protect" element={
+                <ProtectedRoute>
+                  <KeyProtection />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </Layout>
+        </ErrorBoundary>
+      </Router>
+    </HelmetProvider>
   );
 }

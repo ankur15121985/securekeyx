@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
+import { Helmet } from 'react-helmet-async';
 import { Shield, Smartphone, Lock, ArrowRight, Loader2, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
+
+import { BharatLogo } from '../components/BharatLogo';
 
 export default function AuthPage() {
   const [username, setUsername] = useState('');
@@ -56,74 +59,87 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center">
+    <div className="min-h-[80vh] flex items-center justify-center p-4">
+      <Helmet>
+        <title>Initialize Access | Bharat Tactical Encryption</title>
+        <meta name="description" content="Securely initialize your access to the Bharat Tactical Encryption node. Military-grade authentication tunnel active." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-md"
+        className="w-full max-w-xl"
       >
-        <Card className="bg-zinc-900 border-zinc-800 rounded-none">
-          <CardHeader className="space-y-1 text-center">
-            <div className="mx-auto w-14 h-14 bg-primary/10 border border-primary/20 rounded-none flex items-center justify-center mb-6 relative group">
-              <Shield className="w-7 h-7 text-primary group-hover:scale-110 transition-transform" />
-              <div className="absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 border-primary/50" />
-              <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 border-primary/50" />
+        <Card className="bg-card border-4 border-primary rounded-none shadow-2xl overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
+          <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white/20" />
+          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-white/20" />
+          
+          <CardHeader className="space-y-4 text-center pt-12 pb-8">
+            <div className="mx-auto mb-6">
+              <BharatLogo className="w-24 h-24" />
             </div>
-            <CardTitle className="text-3xl font-extrabold tracking-tight text-foreground uppercase leading-none">
-              Access Control
+            <CardTitle className="text-4xl md:text-5xl font-black tracking-tight text-foreground uppercase leading-none">
+              BHARAT TACTICAL
             </CardTitle>
-            <CardDescription className="text-muted-foreground text-xs font-medium pt-2">
-              Initialize secure handshake via administrative node.
+            <CardDescription className="text-muted-foreground text-sm font-black uppercase tracking-[0.4em] pt-2">
+              Secure Authorization Tunnel
             </CardDescription>
           </CardHeader>
-          <CardContent className="pt-6">
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div className="space-y-4">
-                <div className="relative">
-                  <Shield className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    placeholder="USERNAME"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="bg-background border-border pl-10 h-12 rounded-none focus-visible:ring-primary font-mono text-xs uppercase tracking-widest"
-                  />
+          <CardContent className="px-10 pb-12">
+            <form onSubmit={handleLogin} className="space-y-8">
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <label className="text-xs font-black text-muted-foreground uppercase tracking-[0.3em] ml-1">Node Identifier</label>
+                  <div className="relative">
+                    <Shield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
+                    <Input
+                      type="text"
+                      placeholder="ENTER USERNAME"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      className="bg-background border-2 border-border pl-14 h-16 rounded-none focus-visible:ring-primary font-black text-sm uppercase tracking-widest"
+                    />
+                  </div>
                 </div>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    type="password"
-                    placeholder="PASSWORD"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="bg-background border-border pl-10 h-12 rounded-none focus-visible:ring-primary font-mono text-xs uppercase tracking-widest"
-                  />
+                <div className="space-y-3">
+                  <label className="text-xs font-black text-muted-foreground uppercase tracking-[0.3em] ml-1">Authorization Key</label>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
+                    <Input
+                      type="password"
+                      placeholder="ENTER PASSWORD"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="bg-background border-2 border-border pl-14 h-16 rounded-none focus-visible:ring-primary font-black text-sm uppercase tracking-widest"
+                    />
+                  </div>
                 </div>
               </div>
               <Button 
                 type="submit" 
                 disabled={loading}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-12 rounded-none font-black uppercase tracking-[0.2em] text-[10px] shadow-[0_0_15px_rgba(var(--primary),0.2)]"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-20 rounded-none font-black uppercase tracking-[0.3em] text-sm shadow-[0_0_30px_rgba(var(--primary),0.3)]"
               >
                 {loading ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Loader2 className="w-8 h-8 animate-spin" />
                 ) : (
                   <>
-                    Request Handshake
-                    <ArrowRight className="ml-2 w-4 h-4" />
+                    Initialize Handshake
+                    <ArrowRight className="ml-3 w-6 h-6" />
                   </>
                 )}
               </Button>
             </form>
           </CardContent>
-          <CardFooter className="flex flex-col gap-6 border-t border-border pt-8 mt-4">
-            <div className="flex flex-col items-center gap-4">
-              <div className="flex items-center gap-2 text-[10px] font-medium text-muted-foreground text-center">
-                <ShieldCheck className="w-3 h-3 text-primary" />
+          <CardFooter className="flex flex-col gap-8 border-t-2 border-border py-10 bg-muted/30">
+            <div className="flex flex-col items-center gap-6">
+              <div className="flex items-center gap-3 text-xs font-black text-muted-foreground text-center uppercase tracking-widest">
+                <ShieldCheck className="w-5 h-5 text-primary" />
                 <span>End-to-End Encrypted Authentication Tunnel</span>
               </div>
-              <div className="px-3 py-1 bg-zinc-800/50 border border-zinc-700 text-[8px] font-mono text-zinc-500 uppercase tracking-widest">
-                Node: {window.location.hostname}
+              <div className="px-6 py-2 bg-background border-2 border-border text-[10px] font-black text-muted-foreground uppercase tracking-[0.4em]">
+                NODE_ID: {window.location.hostname.toUpperCase()}
               </div>
             </div>
           </CardFooter>

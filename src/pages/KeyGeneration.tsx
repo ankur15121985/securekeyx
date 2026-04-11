@@ -236,117 +236,117 @@ export default function KeyGeneration() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-10">
-      <header className="text-center space-y-4">
+      <header className="text-center space-y-6">
         <div className="flex justify-center">
-          <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 uppercase tracking-[0.3em] text-[10px] rounded-none px-4 py-1">
-            Protocol: {algo}
+          <Badge variant="outline" className="bg-primary/10 text-primary border-2 border-primary/30 uppercase tracking-[0.4em] text-xs rounded-none px-6 py-2">
+            Protocol: {algo} // IND-SEC-GEN
           </Badge>
         </div>
-        <h1 className="text-5xl font-extrabold tracking-tight text-foreground uppercase leading-none">Asset Generation</h1>
-        <div className="flex items-center justify-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-          <Terminal className="w-3 h-3" /> Node: Isolated Enclave
+        <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-foreground uppercase leading-none">Asset Generation</h1>
+        <div className="flex items-center justify-center gap-3 text-xs font-black text-muted-foreground uppercase tracking-[0.3em]">
+          <Terminal className="w-4 h-4" /> Node: Isolated Enclave // Secure Handshake Active
         </div>
       </header>
 
-      <Card className="bg-card border-border rounded-none overflow-hidden relative shadow-[0_0_30px_rgba(0,0,0,0.3)]">
-        <div className="absolute top-0 left-0 w-full h-1.5 bg-primary" />
-        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-white/20" />
-        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-white/20" />
+      <Card className="bg-card border-4 border-primary rounded-none overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.4)]">
+        <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
+        <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white/20" />
+        <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-white/20" />
 
-        <CardHeader className="pt-10 px-10">
-          <CardTitle className="text-2xl font-black text-foreground uppercase tracking-tighter flex items-center gap-3">
-            <div className="p-2 bg-primary/10 border border-primary/20">
-              <Key className="w-6 h-6 text-primary" />
+        <CardHeader className="pt-16 px-12">
+          <CardTitle className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tighter flex items-center gap-4">
+            <div className="p-4 bg-primary/10 border-2 border-primary/20">
+              <Key className="w-10 h-10 text-primary" />
             </div>
             Secure Output Enclave
           </CardTitle>
-          <CardDescription className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest pt-2">
+          <CardDescription className="text-xs font-black text-muted-foreground uppercase tracking-[0.3em] pt-4">
             Initialize high-entropy cryptographic asset generation for protocol {algo}.
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="px-10 pb-10 space-y-8">
+        <CardContent className="px-12 pb-16 space-y-12">
           {!key ? (
-            <div className="h-48 flex flex-col items-center justify-center border border-border bg-background/50 rounded-none relative group overflow-hidden">
+            <div className="h-64 flex flex-col items-center justify-center border-4 border-dashed border-border bg-background/50 rounded-none relative group overflow-hidden">
               <div className="absolute inset-0 tactical-grid opacity-10" />
               <Button 
                 onClick={generateKey} 
                 disabled={loading}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-16 px-12 font-black uppercase tracking-[0.2em] text-xs shadow-[0_0_20px_rgba(var(--primary),0.2)] relative z-10"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-20 px-16 font-black uppercase tracking-[0.3em] text-sm shadow-[0_0_30px_rgba(var(--primary),0.3)] relative z-10"
               >
-                {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : 'Initialize Generation'}
+                {loading ? <Loader2 className="w-10 h-10 animate-spin" /> : 'Initialize Generation'}
               </Button>
             </div>
           ) : (
-            <div className="space-y-8">
+            <div className="space-y-12">
               <div className="relative group">
-                <div className="absolute -inset-1 bg-primary/20 rounded-none blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-                <div className="relative bg-background border border-primary/30 p-10 font-mono text-sm break-all min-h-[140px] flex items-center justify-center text-center overflow-hidden">
+                <div className="absolute -inset-2 bg-primary/20 rounded-none blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                <div className="relative bg-background border-2 border-primary/30 p-12 font-mono text-lg break-all min-h-[180px] flex items-center justify-center text-center overflow-hidden">
                   <div className="absolute inset-0 tactical-grid opacity-10 pointer-events-none" />
                   
                   {showKey ? (
                     <motion.span 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="text-primary font-black tracking-wider relative z-10 text-lg"
+                      className="text-primary font-black tracking-wider relative z-10 text-2xl"
                     >
                       {key}
                     </motion.span>
                   ) : (
-                    <span className="text-muted-foreground/30 tracking-[1em] font-black relative z-10 text-lg">••••••••••••••••••••••••••••••••</span>
+                    <span className="text-muted-foreground/30 tracking-[1.2em] font-black relative z-10 text-2xl">••••••••••••••••••••••••••••••••</span>
                   )}
                 </div>
-                <div className="absolute right-4 top-4 flex gap-2">
+                <div className="absolute right-6 top-6 flex gap-3">
                   <Button 
                     variant="ghost" 
                     size="icon" 
                     onClick={() => setShowKey(!showKey)}
-                    className="h-10 w-10 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border border-border"
+                    className="h-12 w-12 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border-2 border-border"
                   >
-                    {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showKey ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
                   </Button>
                   <Button 
                     variant="ghost" 
                     size="icon" 
                     onClick={copyToClipboard}
-                    className="h-10 w-10 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border border-border"
+                    className="h-12 w-12 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border-2 border-border"
                   >
-                    {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
+                    {copied ? <Check className="w-6 h-6 text-primary" /> : <Copy className="w-6 h-6" />}
                   </Button>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Button 
                   onClick={downloadKey}
                   variant="outline" 
-                  className="border-border hover:bg-secondary text-foreground rounded-none h-14 font-black uppercase tracking-[0.2em] text-[10px]"
+                  className="border-2 border-border hover:bg-secondary text-foreground rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
                 >
-                  <Download className="w-4 h-4 mr-2" />
+                  <Download className="w-5 h-5 mr-3" />
                   Download Asset
                 </Button>
                 <Button 
                   onClick={downloadDesktopTool}
                   variant="outline" 
-                  className="border-primary/30 text-primary hover:bg-primary/10 rounded-none h-14 font-black uppercase tracking-[0.2em] text-[10px]"
+                  className="border-2 border-primary/30 text-primary hover:bg-primary/10 rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
                 >
-                  <Zap className="w-4 h-4 mr-2" />
+                  <Zap className="w-5 h-5 mr-3" />
                   Tactical Vault
                 </Button>
                 <Button 
                   onClick={() => navigate(`/protect?algo=${algo}&key=${key}`)}
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-14 font-black uppercase tracking-[0.2em] text-[10px] shadow-[0_0_15px_rgba(var(--primary),0.2)]"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs shadow-[0_0_20px_rgba(var(--primary),0.2)]"
                 >
-                  <Lock className="w-4 h-4 mr-2" />
+                  <Lock className="w-5 h-5 mr-3" />
                   Protect Asset
                 </Button>
               </div>
             </div>
           )}
         </CardContent>
-        <CardFooter className="bg-muted/50 border-t border-border py-6 px-10">
-          <div className="flex items-center gap-3 text-[10px] text-muted-foreground uppercase font-black tracking-[0.3em]">
-            <Shield className="w-4 h-4 text-primary" />
+        <CardFooter className="bg-muted/50 border-t-2 border-border py-8 px-12">
+          <div className="flex items-center gap-4 text-xs text-muted-foreground uppercase font-black tracking-[0.3em]">
+            <Shield className="w-5 h-5 text-primary" />
             Entropy Source: Hardware RNG // 256-bit Pool // NIST SP 800-90B
           </div>
         </CardFooter>

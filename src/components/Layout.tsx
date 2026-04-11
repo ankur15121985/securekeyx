@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Shield, Key, LayoutDashboard, LogOut, Lock, Terminal, Menu, X } from 'lucide-react';
+import { Shield, Key, LayoutDashboard, LogOut, Lock, Terminal, Menu, X, ShieldCheck, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from './ThemeToggle';
 import { motion, AnimatePresence } from 'motion/react';
+import { BharatLogo } from './BharatLogo';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -46,67 +47,67 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/30 relative overflow-hidden">
-      {/* Sci-Fi Background Elements */}
+      {/* India Sci-Fi Background Elements */}
       <div className="scanlines" />
+      <div className="mandala-overlay" />
       <div className="fixed inset-0 tactical-grid opacity-20 pointer-events-none" />
       <div className="fixed inset-0 tactical-grid-fine pointer-events-none" />
       
       {/* Navigation */}
-      <nav className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-50">
+      <nav className="border-b-4 border-primary bg-background/95 backdrop-blur-md sticky top-0 z-50 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 bg-primary rounded-none flex items-center justify-center group-hover:scale-110 transition-transform relative">
-                <Shield className="w-6 h-6 text-primary-foreground" />
-                <div className="absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 border-primary-foreground/50" />
-                <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 border-primary-foreground/50" />
-              </div>
+          <div className="flex justify-between h-20 items-center">
+            <Link to="/" className="flex items-center gap-4 group" aria-label="Bharat Tactical Encryption Home">
+              <BharatLogo className="w-12 h-12 transition-transform group-hover:scale-105" />
               <div className="flex flex-col">
-                <span className="text-xl font-black tracking-tighter uppercase leading-none">
-                  SECURE<span className="text-primary">KEY</span>X
+                <span className="text-2xl font-black tracking-tight uppercase leading-none text-foreground">
+                  BHARAT <span className="text-primary">TACTICAL</span>
                 </span>
-                <span className="text-[8px] font-bold tracking-[0.3em] text-muted-foreground uppercase">Tactical Node v4.0</span>
+                <span className="text-[10px] font-bold tracking-[0.4em] text-muted-foreground uppercase">Military Grade Encryption</span>
               </div>
             </Link>
 
-            <div className="hidden md:flex items-center gap-6">
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center gap-10">
               {isAuthenticated ? (
                 <>
                   <Link 
                     to="/dashboard" 
-                    className={`text-[10px] font-bold uppercase tracking-widest transition-all hover:text-primary flex items-center gap-2 px-3 py-2 border border-transparent hover:border-border ${location.pathname === '/dashboard' ? 'text-primary border-border bg-primary/5' : 'text-muted-foreground'}`}
+                    aria-label="Access Dashboard"
+                    className={`text-base font-black uppercase tracking-widest transition-all hover:text-primary flex items-center gap-3 px-4 py-2 border-b-4 ${location.pathname === '/dashboard' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'}`}
                   >
-                    <LayoutDashboard className="w-3 h-3" />
+                    <LayoutDashboard className="w-5 h-5" />
                     Dashboard
                   </Link>
                   <Link 
                     to="/algorithms" 
-                    className={`text-[10px] font-bold uppercase tracking-widest transition-all hover:text-primary flex items-center gap-2 px-3 py-2 border border-transparent hover:border-border ${location.pathname === '/algorithms' ? 'text-primary border-border bg-primary/5' : 'text-muted-foreground'}`}
+                    aria-label="Algorithm Selection"
+                    className={`text-base font-black uppercase tracking-widest transition-all hover:text-primary flex items-center gap-3 px-4 py-2 border-b-4 ${location.pathname === '/algorithms' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'}`}
                   >
-                    <Key className="w-3 h-3" />
+                    <Key className="w-5 h-5" />
                     Key Gen
                   </Link>
-                  <div className="h-4 w-[1px] bg-border mx-2" />
+                  <div className="h-8 w-[2px] bg-border mx-2" />
                   <ThemeToggle />
                   <Button 
-                    variant="ghost" 
-                    size="sm" 
+                    variant="destructive" 
+                    size="lg" 
                     onClick={handleLogout} 
-                    className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-none h-9"
+                    className="text-sm font-black uppercase tracking-widest rounded-none h-12 px-8"
                   >
-                    <LogOut className="w-3 h-3 mr-2" />
-                    Disconnect
+                    <LogOut className="w-5 h-5 mr-3" />
+                    Logout
                   </Button>
                 </>
               ) : (
-                <>
+                <div className="flex items-center gap-6">
                   <ThemeToggle />
                   <Link to="/auth">
-                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none px-6 h-9 font-bold uppercase tracking-widest text-[10px] border border-primary/50 shadow-[0_0_15px_rgba(var(--primary),0.2)]">
+                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none px-10 font-black uppercase tracking-widest h-14 text-sm">
                       Initialize Access
                     </Button>
                   </Link>
-                </>
+                </div>
               )}
             </div>
 
@@ -115,9 +116,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <ThemeToggle />
               <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 text-muted-foreground hover:text-primary transition-colors"
+                className="p-2 text-foreground hover:text-primary transition-colors"
               >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {isMobileMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
               </button>
             </div>
           </div>
@@ -130,39 +131,39 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-t border-border bg-background/95 backdrop-blur-lg overflow-hidden"
+              className="md:hidden border-t-4 border-primary bg-background/95 backdrop-blur-lg overflow-hidden"
             >
-              <div className="px-4 py-6 space-y-4">
+              <div className="px-4 py-8 space-y-6">
                 {isAuthenticated ? (
                   <>
                     <Link 
                       to="/dashboard" 
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest border border-border ${location.pathname === '/dashboard' ? 'text-primary bg-primary/5' : 'text-muted-foreground'}`}
+                      className={`flex items-center gap-4 px-6 py-4 text-lg font-black uppercase tracking-widest border-2 ${location.pathname === '/dashboard' ? 'text-primary border-primary bg-primary/5' : 'text-muted-foreground border-border'}`}
                     >
-                      <LayoutDashboard className="w-4 h-4" />
+                      <LayoutDashboard className="w-6 h-6" />
                       Dashboard
                     </Link>
                     <Link 
                       to="/algorithms" 
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 px-4 py-3 text-xs font-bold uppercase tracking-widest border border-border ${location.pathname === '/algorithms' ? 'text-primary bg-primary/5' : 'text-muted-foreground'}`}
+                      className={`flex items-center gap-4 px-6 py-4 text-lg font-black uppercase tracking-widest border-2 ${location.pathname === '/algorithms' ? 'text-primary border-primary bg-primary/5' : 'text-muted-foreground border-border'}`}
                     >
-                      <Key className="w-4 h-4" />
+                      <Key className="w-6 h-6" />
                       Key Gen
                     </Link>
                     <Button 
-                      variant="ghost" 
+                      variant="destructive" 
                       onClick={handleLogout} 
-                      className="w-full justify-start text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-none h-12 border border-border"
+                      className="w-full justify-center text-lg font-black uppercase tracking-widest rounded-none h-16"
                     >
-                      <LogOut className="w-4 h-4 mr-3" />
-                      Disconnect
+                      <LogOut className="w-6 h-6 mr-4" />
+                      Logout
                     </Button>
                   </>
                 ) : (
                   <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-12 font-bold uppercase tracking-widest text-xs border border-primary/50">
+                    <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-16 font-black uppercase tracking-widest text-lg">
                       Initialize Access
                     </Button>
                   </Link>
@@ -199,70 +200,88 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border py-16 mt-auto relative bg-background/50 backdrop-blur-sm">
+      <footer className="border-t-4 border-primary py-20 mt-auto relative bg-background/50 backdrop-blur-sm overflow-hidden">
+        <div className="absolute inset-0 tactical-grid opacity-5" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 border border-primary/20">
-                  <Shield className="w-5 h-5 text-primary" />
-                </div>
-                <span className="text-lg font-black tracking-tighter uppercase">SECUREKEYX</span>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-16">
+            <div className="space-y-8">
+              <div className="flex items-center gap-4">
+                <BharatLogo className="w-10 h-10" />
+                <span className="text-2xl font-black tracking-tight uppercase">BHARAT TACTICAL</span>
               </div>
-              <p className="text-xs text-muted-foreground leading-relaxed uppercase tracking-wider font-medium">
-                Military-grade cryptographic infrastructure for secure asset management and distributed node protection.
+              <p className="text-sm font-bold text-muted-foreground uppercase leading-relaxed tracking-wider">
+                Sovereign cryptographic infrastructure for the protection of national digital assets.
               </p>
-              <div className="flex items-center gap-2 text-[10px] font-bold text-primary uppercase tracking-widest">
-                <Terminal className="w-3 h-3" />
+              <div className="flex items-center gap-3 text-xs font-black text-primary uppercase tracking-[0.2em]">
+                <Terminal className="w-4 h-4" />
                 <span>System Status: Operational</span>
               </div>
             </div>
             <div>
-              <h4 className="text-[10px] font-black text-foreground mb-6 uppercase tracking-[0.3em]">Protocols</h4>
-              <ul className="space-y-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-2">
-                  <div className="w-1 h-1 bg-primary" /> AES-256-GCM
+              <h4 className="text-xs font-black text-foreground mb-8 uppercase tracking-[0.4em] border-b-2 border-primary w-fit pb-2">Protocols</h4>
+              <ul className="space-y-4 text-xs font-black text-muted-foreground uppercase tracking-widest">
+                <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-3">
+                  <ShieldCheck className="w-4 h-4 text-primary" /> AES-256-GCM
                 </li>
-                <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-2">
-                  <div className="w-1 h-1 bg-primary" /> RSA-4096-OAEP
+                <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-3">
+                  <ShieldCheck className="w-4 h-4 text-primary" /> RSA-4096-OAEP
                 </li>
-                <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-2">
-                  <div className="w-1 h-1 bg-primary" /> CHACHA20-POLY1305
+                <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-3">
+                  <ShieldCheck className="w-4 h-4 text-primary" /> CHACHA20
                 </li>
-                <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-2">
-                  <div className="w-1 h-1 bg-primary" /> KYBER-1024 (PQC)
+                <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-3">
+                  <ShieldCheck className="w-4 h-4 text-primary" /> KYBER (PQC)
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="text-[10px] font-black text-foreground mb-6 uppercase tracking-[0.3em]">Security</h4>
-              <ul className="space-y-3 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                <li className="hover:text-primary transition-colors cursor-pointer">Zero-Knowledge</li>
-                <li className="hover:text-primary transition-colors cursor-pointer">E2E Encryption</li>
-                <li className="hover:text-primary transition-colors cursor-pointer">Hardware Isolation</li>
-                <li className="hover:text-primary transition-colors cursor-pointer">Audit Logs</li>
+              <h4 className="text-xs font-black text-foreground mb-8 uppercase tracking-[0.4em] border-b-2 border-primary w-fit pb-2">Security</h4>
+              <ul className="space-y-4 text-xs font-black text-muted-foreground uppercase tracking-widest">
+                <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-3">
+                  <Lock className="w-4 h-4 text-primary" /> Zero-Knowledge
+                </li>
+                <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-3">
+                  <Lock className="w-4 h-4 text-primary" /> E2E Encryption
+                </li>
+                <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-3">
+                  <Lock className="w-4 h-4 text-primary" /> Hardware Isolation
+                </li>
+                <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-3">
+                  <Lock className="w-4 h-4 text-primary" /> Audit Logs
+                </li>
               </ul>
             </div>
-            <div className="relative p-6 border border-border bg-primary/5 overflow-hidden group">
-              <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-primary/30" />
-              <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-primary/30" />
-              <h4 className="text-[10px] font-black text-primary mb-4 uppercase tracking-[0.2em]">Network Node</h4>
-              <p className="text-[9px] text-muted-foreground leading-relaxed uppercase tracking-widest mb-4">
-                Connected to secure relay: <br/>
-                <span className="text-foreground">192.168.1.104:443</span>
-              </p>
-              <div className="w-full h-1 bg-border relative">
-                <div className="absolute inset-0 bg-primary/20 animate-pulse" />
+            <div className="relative p-8 border-2 border-primary/20 bg-primary/5 overflow-hidden group">
+              <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/40" />
+              <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/40" />
+              <h4 className="text-xs font-black text-primary mb-6 uppercase tracking-[0.3em]">Force Readiness</h4>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
+                  <span className="text-muted-foreground">Army Node</span>
+                  <span className="text-[hsl(var(--army-olive))]">Active</span>
+                </div>
+                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
+                  <span className="text-muted-foreground">Navy Node</span>
+                  <span className="text-[hsl(var(--navy-blue))]">Active</span>
+                </div>
+                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
+                  <span className="text-muted-foreground">Air Force Node</span>
+                  <span className="text-[hsl(var(--airforce-blue))]">Active</span>
+                </div>
+              </div>
+              <div className="w-full h-2 bg-border relative mt-6">
+                <div className="absolute inset-0 bg-primary/30 animate-pulse" />
               </div>
             </div>
           </div>
-          <div className="border-t border-border mt-16 pt-8 flex justify-between items-center">
-            <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
-              © 2026 SECUREKEYX // ENCRYPTION CORE // ALL RIGHTS RESERVED
+          <div className="border-t-2 border-border mt-20 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+              © 2026 BHARAT TACTICAL ENCRYPTION // MINISTRY OF SECURE DATA
             </p>
-            <div className="flex gap-6">
-              <Lock className="w-3 h-3 text-muted-foreground hover:text-primary transition-colors cursor-pointer" />
-              <Terminal className="w-3 h-3 text-muted-foreground hover:text-primary transition-colors cursor-pointer" />
+            <div className="flex gap-8">
+              <Globe className="w-5 h-5 text-muted-foreground hover:text-primary transition-colors cursor-pointer" />
+              <Terminal className="w-5 h-5 text-muted-foreground hover:text-primary transition-colors cursor-pointer" />
+              <Lock className="w-5 h-5 text-muted-foreground hover:text-primary transition-colors cursor-pointer" />
             </div>
           </div>
         </div>
