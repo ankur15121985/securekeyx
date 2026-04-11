@@ -2,6 +2,7 @@ import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -18,6 +19,8 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = 3000;
+
+console.log(`[SYSTEM] Starting server in ${process.env.NODE_ENV || 'development'} mode`);
 
 // Trust the first proxy (Cloud Run / Nginx)
 app.set('trust proxy', 1);
@@ -65,10 +68,12 @@ function useMemoryStore() {
 }
 
 app.use(express.json());
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  next();
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.use((req, res, next) => {
+    console.log(`[DEV] ${req.method} ${req.url}`);
+    next();
+  });
+}
 app.use(cors({
   origin: process.env.APP_URL || '*', // In production, this should be restricted
   credentials: true
@@ -239,9 +244,24 @@ async function startServer() {
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: 'spa',
+      appType: 'custom',
     });
     app.use(vite.middlewares);
+
+    app.get('*', async (req, res, next) => {
+      const url = req.originalUrl;
+      // Skip API routes
+      if (url.startsWith('/api/')) return next();
+
+      try {
+        let template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
+        template = await vite.transformIndexHtml(url, template);
+        res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
+      } catch (e) {
+        vite.ssrFixStacktrace(e as Error);
+        next(e);
+      }
+    });
   } else {
     app.use(express.static(path.join(__dirname, 'dist')));
     app.get('*', (req, res) => {

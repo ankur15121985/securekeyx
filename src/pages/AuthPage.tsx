@@ -34,7 +34,8 @@ export default function AuthPage() {
       }
     } catch (err) {
       console.error('Handshake request error:', err);
-      toast.error('Connection error');
+      const errorMessage = err instanceof Error ? err.message : 'Unknown connection error';
+      toast.error(`Connection error: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -62,7 +63,8 @@ export default function AuthPage() {
       }
     } catch (err) {
       console.error('OTP verify error:', err);
-      toast.error('Connection error');
+      const errorMessage = err instanceof Error ? err.message : 'Unknown connection error';
+      toast.error(`Connection error: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -138,9 +140,14 @@ export default function AuthPage() {
             </form>
           </CardContent>
           <CardFooter className="flex flex-col gap-6 border-t border-border pt-8 mt-4">
-            <div className="flex items-center gap-2 text-[10px] font-medium text-muted-foreground text-center">
-              <ShieldCheck className="w-3 h-3 text-primary" />
-              <span>End-to-End Encrypted Authentication Tunnel</span>
+            <div className="flex flex-col items-center gap-4">
+              <div className="flex items-center gap-2 text-[10px] font-medium text-muted-foreground text-center">
+                <ShieldCheck className="w-3 h-3 text-primary" />
+                <span>End-to-End Encrypted Authentication Tunnel</span>
+              </div>
+              <div className="px-3 py-1 bg-zinc-800/50 border border-zinc-700 text-[8px] font-mono text-zinc-500 uppercase tracking-widest">
+                Node: {window.location.hostname}
+              </div>
             </div>
             {step === 'otp' && (
               <button 
