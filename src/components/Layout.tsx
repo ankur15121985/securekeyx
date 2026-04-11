@@ -4,7 +4,7 @@ import { Shield, Key, LayoutDashboard, LogOut, Lock, Terminal, Menu, X, ShieldCh
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from './ThemeToggle';
 import { motion, AnimatePresence } from 'motion/react';
-import { BharatLogo } from './BharatLogo';
+import { ChakravyuhLogo } from './ChakravyuhLogo';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -52,21 +52,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="tactical-bg" />
         <div className="scanlines" />
         <div className="mandala-overlay" />
-        <div className="absolute inset-0 tactical-grid opacity-20" />
-        <div className="absolute inset-0 tactical-grid-fine opacity-30" />
       </div>
       
       {/* Navigation */}
       <nav className="border-b-4 border-primary bg-background/95 backdrop-blur-md sticky top-0 z-50 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
-            <Link to="/" className="flex items-center gap-4 group" aria-label="Bharat Tactical Encryption Home">
-              <BharatLogo className="w-12 h-12 transition-transform group-hover:scale-105" />
+            <Link to="/" className="flex items-center gap-4 group" aria-label="Chakravyuh Home">
+              <ChakravyuhLogo className="w-12 h-12 transition-transform group-hover:scale-105" />
               <div className="flex flex-col">
                 <span className="text-2xl font-black tracking-tight uppercase leading-none text-foreground">
-                  BHARAT <span className="text-primary">TACTICAL</span>
+                  CHAKRAVYUH
                 </span>
-                <span className="text-[10px] font-bold tracking-[0.4em] text-muted-foreground uppercase">Military Grade Encryption</span>
+                <span className="text-[10px] font-bold tracking-[0.4em] text-muted-foreground uppercase">Sovereign Encryption Node</span>
               </div>
             </Link>
 
@@ -204,13 +202,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Footer */}
       <footer className="border-t-4 border-primary py-20 mt-auto relative bg-background/50 backdrop-blur-sm overflow-hidden">
-        <div className="absolute inset-0 tactical-grid opacity-5" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-16">
             <div className="space-y-8">
               <div className="flex items-center gap-4">
-                <BharatLogo className="w-10 h-10" />
-                <span className="text-2xl font-black tracking-tight uppercase">BHARAT TACTICAL</span>
+                <ChakravyuhLogo className="w-10 h-10" />
+                <span className="text-2xl font-black tracking-tight uppercase">CHAKRAVYUH</span>
               </div>
               <p className="text-sm font-bold text-muted-foreground uppercase leading-relaxed tracking-wider">
                 Sovereign cryptographic infrastructure for the protection of national digital assets.
@@ -257,19 +254,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="relative p-8 border-2 border-primary/20 bg-primary/5 overflow-hidden group">
               <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/40" />
               <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/40" />
-              <h4 className="text-xs font-black text-primary mb-6 uppercase tracking-[0.3em]">Force Readiness</h4>
+              <h4 className="text-xs font-black text-primary mb-6 uppercase tracking-[0.3em]">System Integrity</h4>
               <div className="space-y-4">
                 <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
-                  <span className="text-muted-foreground">Army Node</span>
-                  <span className="text-[hsl(var(--army-olive))]">Active</span>
+                  <span className="text-muted-foreground">Core Node</span>
+                  <span className="text-primary">Active</span>
                 </div>
                 <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
-                  <span className="text-muted-foreground">Navy Node</span>
-                  <span className="text-[hsl(var(--navy-blue))]">Active</span>
+                  <span className="text-muted-foreground">Encryption Layer</span>
+                  <span className="text-primary">Active</span>
                 </div>
                 <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
-                  <span className="text-muted-foreground">Air Force Node</span>
-                  <span className="text-[hsl(var(--airforce-blue))]">Active</span>
+                  <span className="text-muted-foreground">Auth Gateway</span>
+                  <span className="text-primary">Active</span>
                 </div>
               </div>
               <div className="w-full h-2 bg-border relative mt-6">
@@ -279,7 +276,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="border-t-2 border-border mt-20 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
-              © 2026 BHARAT TACTICAL ENCRYPTION // MINISTRY OF SECURE DATA
+              © 2026 CHAKRAVYUH // MINISTRY OF SECURE DATA
             </p>
             <div className="flex gap-8">
               <Globe className="w-5 h-5 text-muted-foreground hover:text-primary transition-colors cursor-pointer" />

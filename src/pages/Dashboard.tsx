@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
-import { Key, Shield, Clock, Download, Plus, ChevronRight, Activity, Lock, Unlock, X, Eye, EyeOff, Copy, Check, Zap, Terminal, ShieldAlert, ShieldCheck } from 'lucide-react';
+import { Key, Shield, Clock, Download, Plus, ChevronRight, Activity, Lock, Unlock, X, Eye, EyeOff, Copy, Check, Zap, Terminal, ShieldAlert, ShieldCheck, Trash2, Edit3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -26,23 +26,28 @@ export default function Dashboard() {
   const [unlockedKey, setUnlockedKey] = useState<string | null>(null);
   const [showKey, setShowKey] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [isDecommissioning, setIsDecommissioning] = useState(false);
   
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
+  const fetchKeys = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch('/api/keys', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+      const data = await res.ok ? await res.json() : [];
+      setKeys(data);
+    } catch (err) {
+      toast.error('Failed to load keys');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchKeys = async () => {
-      try {
-        const res = await fetch('/api/keys', {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        });
-        const data = await res.ok ? await res.json() : [];
-        setKeys(data);
-      } catch (err) {
-        toast.error('Failed to load keys');
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchKeys();
   }, []);
 
@@ -69,6 +74,63 @@ export default function Dashboard() {
     setPassphrase('');
     setUnlockedKey(null);
     setShowKey(false);
+    setIsRenaming(false);
+    setNewName('');
+    setIsDecommissioning(false);
+  };
+
+  const handleRename = async () => {
+    if (!selectedKey || !newName.trim()) return;
+    
+    try {
+      const res = await fetch(`/api/keys/${selectedKey.id}`, {
+        method: 'PATCH',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}` 
+        },
+        body: JSON.stringify({ metadata: { ...selectedKey.metadata, label: newName.trim() } })
+      });
+
+      if (res.ok) {
+        toast.success('Asset renamed successfully');
+        setIsRenaming(false);
+        fetchKeys();
+        setSelectedKey(prev => prev ? { ...prev, metadata: { ...prev.metadata, label: newName.trim() } } : null);
+      } else {
+        toast.error('Failed to rename asset');
+      }
+    } catch (err) {
+      toast.error('Error updating asset');
+    }
+  };
+
+  const handleDecommission = async () => {
+    if (!selectedKey) return;
+    
+    if (!confirm('CRITICAL: Are you sure you want to decommission this asset? This action is irreversible and the key will be permanently purged from the node.')) {
+      return;
+    }
+
+    try {
+      setIsDecommissioning(true);
+      const res = await fetch(`/api/keys/${selectedKey.id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+
+      if (res.ok) {
+        toast.success('Asset decommissioned successfully');
+        closeUnlock();
+        fetchKeys();
+      } else {
+        toast.error('Failed to decommission asset');
+      }
+    } catch (err) {
+      toast.error('Error purging asset');
+    } finally {
+      setIsDecommissioning(false);
+    }
   };
 
   const copyToClipboard = () => {
@@ -381,7 +443,12 @@ export default function Dashboard() {
                         </div>
                         <div className="space-y-2">
                           <div className="flex items-center gap-4">
-                            <span className="text-2xl font-black text-foreground uppercase tracking-tight leading-none">{key.algorithm}</span>
+                            <span className="text-2xl font-black text-foreground uppercase tracking-tight leading-none">
+                              {key.metadata?.label || key.algorithm}
+                            </span>
+                            {key.metadata?.label && (
+                              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">({key.algorithm})</span>
+                            )}
                             <Badge variant="outline" className="text-[10px] font-black uppercase border-primary/30 text-primary bg-primary/5 rounded-none tracking-widest px-3 py-1">Verified</Badge>
                           </div>
                           <div className="flex items-center gap-3 text-xs text-muted-foreground font-bold uppercase tracking-widest">
@@ -505,14 +572,52 @@ export default function Dashboard() {
                       {unlockedKey ? <Unlock className="w-10 h-10 text-primary" /> : <Lock className="w-10 h-10 text-muted-foreground" />}
                     </div>
                     <div className="space-y-2">
-                      <CardTitle className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tighter leading-none">
+                      <CardTitle className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tighter leading-none flex items-center gap-4">
                         {unlockedKey ? 'Access Granted' : 'Secure Authorization'}
+                        {unlockedKey && (
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={() => {
+                              setIsRenaming(true);
+                              setNewName(selectedKey.metadata?.label || selectedKey.algorithm);
+                            }}
+                            className="h-8 w-8 text-muted-foreground hover:text-primary"
+                          >
+                            <Edit3 className="w-4 h-4" />
+                          </Button>
+                        )}
                       </CardTitle>
                       <div className="text-xs font-black text-primary uppercase tracking-[0.4em]">
-                        Protocol: {selectedKey.algorithm}
+                        Protocol: {selectedKey.algorithm} {selectedKey.metadata?.label && `// Alias: ${selectedKey.metadata.label}`}
                       </div>
                     </div>
                   </div>
+
+                  {isRenaming && (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="mb-8 p-6 border-2 border-primary/30 bg-primary/5 space-y-4"
+                    >
+                      <label className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Rename Tactical Asset</label>
+                      <div className="flex gap-4">
+                        <Input 
+                          value={newName}
+                          onChange={(e) => setNewName(e.target.value)}
+                          className="bg-background border-2 border-border rounded-none h-12 uppercase font-bold tracking-widest text-xs"
+                          placeholder="NEW ASSET NAME"
+                        />
+                        <Button onClick={handleRename} className="bg-primary hover:bg-primary/90 rounded-none h-12 px-6 font-black uppercase tracking-widest text-[10px]">
+                          Update
+                        </Button>
+                        <Button variant="ghost" onClick={() => setIsRenaming(false)} className="rounded-none h-12 px-6 font-black uppercase tracking-widest text-[10px]">
+                          Cancel
+                        </Button>
+                      </div>
+                    </motion.div>
+                  )}
+
                   <CardDescription className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
                     {unlockedKey 
                       ? `Target asset decrypted successfully. Retrieval protocols initialized.`
@@ -548,9 +653,6 @@ export default function Dashboard() {
                       <div className="relative group">
                         <div className="absolute -inset-2 bg-primary/20 rounded-none blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
                         <div className="relative bg-background border-2 border-primary/30 p-10 font-mono text-lg break-all min-h-[160px] flex items-center justify-center text-center overflow-hidden">
-                          {/* Background Grid for Key Display */}
-                          <div className="absolute inset-0 tactical-grid opacity-10 pointer-events-none" />
-                          
                           {showKey ? (
                             <motion.span 
                               initial={{ opacity: 0 }}
@@ -593,14 +695,23 @@ export default function Dashboard() {
                           Download Asset
                         </Button>
                         <Button 
-                          onClick={downloadDesktopTool}
-                          variant="outline" 
-                          className="border-2 border-primary/30 text-primary hover:bg-primary/10 rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
+                          onClick={handleDecommission}
+                          disabled={isDecommissioning}
+                          variant="destructive" 
+                          className="border-2 border-destructive/30 rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
                         >
-                          <Zap className="w-5 h-5 mr-3" />
-                          Tactical Vault
+                          <Trash2 className="w-5 h-5 mr-3" />
+                          Decommission
                         </Button>
                       </div>
+                      <Button 
+                        onClick={downloadDesktopTool}
+                        variant="outline" 
+                        className="w-full border-2 border-primary/30 text-primary hover:bg-primary/10 rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
+                      >
+                        <Zap className="w-5 h-5 mr-3" />
+                        Initialize Tactical Vault Utility
+                      </Button>
                     </div>
                   )}
                 </CardContent>

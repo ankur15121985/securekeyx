@@ -21,31 +21,97 @@ const PORT = 3000;
 // Trust the first proxy (Cloud Run / Nginx / Vercel)
 app.set('trust proxy', 1);
 
-// Redis setup with in-memory fallback
+// Redis setup with in-memory fallback and file persistence
 let redis: any;
+const DB_FILE = path.join(process.cwd(), 'tactical_db.json');
 
 function useMemoryStore() {
-  const store = new Map<string, any>();
+  let store = new Map<string, any>();
+  
+  // Load from file if exists
+  if (fs.existsSync(DB_FILE)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+      store = new Map(Object.entries(data));
+      console.log('[SYSTEM] Tactical DB loaded from file.');
+    } catch (err) {
+      console.error('[SYSTEM] Failed to load tactical DB:', err);
+    }
+  }
+
+  const saveToFile = () => {
+    try {
+      const data = Object.fromEntries(store);
+      fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+    } catch (err) {
+      console.error('[SYSTEM] Failed to save tactical DB:', err);
+    }
+  };
+
   redis = {
     set: async (key: string, val: any, mode?: string, duration?: number) => {
       store.set(key, val);
+      saveToFile();
       if (mode === 'EX' && duration) {
-        setTimeout(() => store.delete(key), duration * 1000);
+        setTimeout(() => {
+          store.delete(key);
+          saveToFile();
+        }, duration * 1000);
       }
       return 'OK';
     },
     get: async (key: string) => store.get(key) || null,
-    del: async (key: string) => store.delete(key),
+    del: async (key: string) => {
+      const res = store.delete(key);
+      saveToFile();
+      return res;
+    },
     lpush: async (key: string, val: any) => {
       const list = store.get(key) || [];
       list.unshift(val);
       store.set(key, list);
+      saveToFile();
       return list.length;
     },
     lrange: async (key: string, start: number, end: number) => {
       const list = store.get(key) || [];
       if (end === -1) return list.slice(start);
       return list.slice(start, end + 1);
+    },
+    // Custom methods for CRUD
+    lrem_by_id: async (key: string, id: string) => {
+      const list = store.get(key) || [];
+      const newList = list.filter((item: string) => {
+        try {
+          return JSON.parse(item).id !== id;
+        } catch {
+          return true;
+        }
+      });
+      store.set(key, newList);
+      saveToFile();
+      return list.length - newList.length;
+    },
+    lupdate_by_id: async (key: string, id: string, updates: any) => {
+      const list = store.get(key) || [];
+      let found = false;
+      const newList = list.map((item: string) => {
+        try {
+          const parsed = JSON.parse(item);
+          if (parsed.id === id) {
+            found = true;
+            return JSON.stringify({ ...parsed, ...updates });
+          }
+          return item;
+        } catch {
+          return item;
+        }
+      });
+      if (found) {
+        store.set(key, newList);
+        saveToFile();
+      }
+      return found;
     },
     on: () => {}
   };
@@ -174,6 +240,37 @@ app.get('/api/keys', authenticate, async (req: any, res) => {
   const userId = req.user.id;
   const keys = await redis.lrange(`user:${userId}:keys`, 0, -1);
   res.json(keys.map((k: string) => JSON.parse(k)));
+});
+
+// Update Key Metadata (PATCH)
+app.patch('/api/keys/:id', authenticate, async (req: any, res: any) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+  const { metadata } = req.body;
+
+  if (redis.lupdate_by_id) {
+    const success = await redis.lupdate_by_id(`user:${userId}:keys`, id, { metadata });
+    if (success) {
+      return res.json({ message: 'Key metadata updated successfully' });
+    }
+  }
+  
+  res.status(404).json({ error: 'Key not found' });
+});
+
+// Decommission Key (DELETE)
+app.delete('/api/keys/:id', authenticate, async (req: any, res: any) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+
+  if (redis.lrem_by_id) {
+    const removedCount = await redis.lrem_by_id(`user:${userId}:keys`, id);
+    if (removedCount > 0) {
+      return res.json({ message: 'Key decommissioned successfully' });
+    }
+  }
+
+  res.status(404).json({ error: 'Key not found or already decommissioned' });
 });
 
 // API Error Handler for non-existent routes

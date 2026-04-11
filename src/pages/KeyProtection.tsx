@@ -92,7 +92,6 @@ export default function KeyProtection() {
           animate={{ scale: 1, opacity: 1 }}
           className="w-32 h-32 bg-primary/10 border-4 border-primary/30 flex items-center justify-center mx-auto relative overflow-hidden"
         >
-          <div className="absolute inset-0 tactical-grid opacity-20" />
           <ShieldCheck className="w-16 h-16 text-primary relative z-10" />
         </motion.div>
         <div className="space-y-6">
@@ -181,7 +180,6 @@ export default function KeyProtection() {
             </div>
 
             <div className="p-8 bg-muted/50 border-2 border-border rounded-none flex gap-6 relative overflow-hidden">
-              <div className="absolute inset-0 tactical-grid opacity-10" />
               <Key className="w-8 h-8 text-muted-foreground flex-none relative z-10" />
               <div className="text-xs text-muted-foreground uppercase font-black tracking-[0.3em] leading-relaxed relative z-10">
                 Protocol: {algo} <br />

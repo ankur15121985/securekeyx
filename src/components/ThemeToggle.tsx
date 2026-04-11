@@ -28,9 +28,6 @@ export function ThemeToggle() {
         className="relative h-10 w-20 border-2 border-border bg-muted/30 rounded-none p-1 transition-colors hover:border-primary/50 group"
         aria-label="Toggle Theme"
       >
-        {/* Tactical Background Pattern */}
-        <div className="absolute inset-0 tactical-grid-fine opacity-10 pointer-events-none" />
-        
         {/* Sliding Switch */}
         <motion.div
           animate={{ x: theme === 'light' ? 0 : 40 }}

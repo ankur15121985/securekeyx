@@ -9,8 +9,8 @@ export default function LandingPage() {
   return (
     <div className="space-y-32 pb-32">
       <Helmet>
-        <title>Bharat Tactical Encryption | Military-Grade Asset Protection</title>
-        <meta name="description" content="Deploy high-entropy cryptographic assets across distributed networks with Bharat Tactical Encryption. Zero-knowledge architecture for mission-critical data protection." />
+        <title>Chakravyuh | Sovereign Cryptographic Node</title>
+        <meta name="description" content="Deploy high-entropy cryptographic assets across distributed networks with Chakravyuh. Sovereign architecture for mission-critical data protection." />
         <link rel="canonical" href="https://ais-dev-uxw6iknxmq2grdo4ugt4l7-356645113135.asia-east1.run.app/" />
       </Helmet>
       {/* Hero Section */}
@@ -29,12 +29,11 @@ export default function LandingPage() {
             className="space-y-6"
           >
             <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.3em] mb-4 corner-bracket corner-bracket-tl corner-bracket-br">
-              <div className="ashoka-chakra" /> System Status: Secure // IND-NODE
+              System Status: Secure // IND-NODE
             </div>
-            <h1 className="text-8xl md:text-[12rem] font-black tracking-tighter text-foreground leading-[0.85] uppercase">
-              BHARAT<br />
-              <span className="text-primary">TACTICAL</span><br />
-              ENCRYPTION
+            <h1 className="text-6xl sm:text-8xl md:text-[12rem] font-black tracking-tighter text-foreground leading-[0.85] uppercase">
+              CHAKRA<br />
+              <span className="text-primary">VYUH</span>
             </h1>
           </motion.div>
 
@@ -212,11 +211,11 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* Indian Forces Section */}
+      {/* Network Integrity Section */}
       <section className="space-y-12">
         <div className="flex items-center gap-4">
           <div className="h-[1px] flex-grow bg-border" />
-          <h2 className="text-xs font-black uppercase tracking-[0.5em] text-primary">Integrated Defense Protocols</h2>
+          <h2 className="text-xs font-black uppercase tracking-[0.5em] text-primary">Network Integrity Protocols</h2>
           <div className="h-[1px] flex-grow bg-border" />
         </div>
 
@@ -224,21 +223,21 @@ export default function LandingPage() {
           {[
             {
               icon: <Shield className="w-8 h-8" />,
-              title: "Indian Army",
-              desc: "Land-based tactical encryption for frontline communications and strategic asset protection.",
-              color: "var(--army-olive)"
+              title: "Core Enclave",
+              desc: "Isolated cryptographic environment for high-security key management and asset protection.",
+              color: "var(--india-saffron)"
             },
             {
               icon: <Globe className="w-8 h-8" />,
-              title: "Indian Navy",
-              desc: "Maritime secure data tunnels for naval fleet coordination and deep-sea asset security.",
-              color: "var(--navy-blue)"
+              title: "Global Mesh",
+              desc: "Distributed node network ensuring high availability and decentralized security across borders.",
+              color: "var(--india-blue)"
             },
             {
               icon: <Zap className="w-8 h-8" />,
-              title: "Indian Air Force",
-              desc: "High-altitude cryptographic infrastructure for aerospace defense and rapid response nodes.",
-              color: "var(--airforce-blue)"
+              title: "Rapid Response",
+              desc: "Low-latency cryptographic operations for real-time data protection and secure tunneling.",
+              color: "var(--india-green)"
             }
           ].map((force, i) => (
             <motion.div

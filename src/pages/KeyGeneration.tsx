@@ -268,7 +268,6 @@ export default function KeyGeneration() {
         <CardContent className="px-12 pb-16 space-y-12">
           {!key ? (
             <div className="h-64 flex flex-col items-center justify-center border-4 border-dashed border-border bg-background/50 rounded-none relative group overflow-hidden">
-              <div className="absolute inset-0 tactical-grid opacity-10" />
               <Button 
                 onClick={generateKey} 
                 disabled={loading}
@@ -282,8 +281,6 @@ export default function KeyGeneration() {
               <div className="relative group">
                 <div className="absolute -inset-2 bg-primary/20 rounded-none blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
                 <div className="relative bg-background border-2 border-primary/30 p-12 font-mono text-lg break-all min-h-[180px] flex items-center justify-center text-center overflow-hidden">
-                  <div className="absolute inset-0 tactical-grid opacity-10 pointer-events-none" />
-                  
                   {showKey ? (
                     <motion.span 
                       initial={{ opacity: 0 }}

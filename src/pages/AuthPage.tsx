@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
 
-import { BharatLogo } from '../components/BharatLogo';
+import { ChakravyuhLogo } from '../components/ChakravyuhLogo';
 
 export default function AuthPage() {
   const [username, setUsername] = useState('');
@@ -61,8 +61,8 @@ export default function AuthPage() {
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
       <Helmet>
-        <title>Initialize Access | Bharat Tactical Encryption</title>
-        <meta name="description" content="Securely initialize your access to the Bharat Tactical Encryption node. Military-grade authentication tunnel active." />
+        <title>Initialize Access | Chakravyuh</title>
+        <meta name="description" content="Securely initialize your access to the Chakravyuh node. Sovereign authentication tunnel active." />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <motion.div
@@ -77,10 +77,10 @@ export default function AuthPage() {
           
           <CardHeader className="space-y-4 text-center pt-12 pb-8">
             <div className="mx-auto mb-6">
-              <BharatLogo className="w-24 h-24" />
+              <ChakravyuhLogo className="w-24 h-24" />
             </div>
             <CardTitle className="text-4xl md:text-5xl font-black tracking-tight text-foreground uppercase leading-none">
-              BHARAT TACTICAL
+              CHAKRAVYUH
             </CardTitle>
             <CardDescription className="text-muted-foreground text-sm font-black uppercase tracking-[0.4em] pt-2">
               Secure Authorization Tunnel

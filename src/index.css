@@ -56,11 +56,6 @@
     --india-white: 0 0% 100%;
     --india-green: 145 50% 30%;
     --india-blue: 220 60% 35%;
-
-    /* Indian Forces Colors */
-    --army-olive: 75 30% 35%;
-    --navy-blue: 220 60% 20%;
-    --airforce-blue: 200 60% 45%;
   }
 
   .dark {
@@ -70,27 +65,22 @@
     --card-foreground: 45 20% 90%;
     --popover: 220 30% 8%;
     --popover-foreground: 45 20% 90%;
-    --primary: 75 40% 45%; /* Tactical Olive */
+    --primary: 25 80% 50%; /* Saffron as primary */
     --primary-foreground: 220 30% 5%;
     --secondary: 145 60% 40%;
     --secondary-foreground: 220 30% 5%;
     --muted: 220 20% 18%;
     --muted-foreground: 215 15% 75%;
-    --accent: 25 90% 60%;
+    --accent: 220 60% 35%;
     --accent-foreground: 220 30% 5%;
-    --border: 75 30% 25%;
-    --input: 75 30% 25%;
-    --ring: 75 40% 45%;
+    --border: 220 30% 20%;
+    --input: 220 30% 20%;
+    --ring: 25 80% 50%;
     
     --india-saffron: 25 90% 60%;
     --india-white: 0 0% 100%;
     --india-green: 145 60% 40%;
     --india-blue: 220 70% 55%;
-
-    /* Indian Forces Colors Dark */
-    --army-olive: 75 40% 45%;
-    --navy-blue: 220 70% 30%;
-    --airforce-blue: 200 70% 55%;
   }
 }
 
@@ -111,13 +101,12 @@
     inset: 0;
     background-image: 
       linear-gradient(to bottom, 
-        hsl(var(--india-saffron) / 0.25) 0%, 
-        hsl(var(--india-white) / 0.1) 50%, 
-        hsl(var(--india-green) / 0.25) 100%
+        hsl(var(--india-saffron) / 0.15) 0%, 
+        hsl(var(--india-white) / 0.05) 50%, 
+        hsl(var(--india-green) / 0.15) 100%
       ),
-      radial-gradient(circle at 15% 15%, hsl(var(--army-olive) / 0.3) 0%, transparent 60%),
-      radial-gradient(circle at 85% 15%, hsl(var(--navy-blue) / 0.3) 0%, transparent 60%),
-      radial-gradient(circle at 50% 85%, hsl(var(--airforce-blue) / 0.3) 0%, transparent 60%);
+      radial-gradient(circle at 15% 15%, hsl(var(--india-saffron) / 0.1) 0%, transparent 60%),
+      radial-gradient(circle at 85% 85%, hsl(var(--india-green) / 0.1) 0%, transparent 60%);
     background-attachment: fixed;
     animation: pulse-bg 20s ease-in-out infinite alternate;
   }
@@ -151,32 +140,6 @@
   animation: rotate 120s linear infinite;
 }
 
-@keyframes rotate {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-.ashoka-chakra {
-  width: 24px;
-  height: 24px;
-  border: 1.5px solid hsl(var(--india-blue));
-  border-radius: 50%;
-  position: relative;
-  animation: rotate 10s linear infinite;
-}
-
-.ashoka-chakra::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 1px;
-  background: hsl(var(--india-blue));
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 100vmax transparent;
-}
-
 /* Sci-Fi / Military Effects */
 .scanlines {
   position: absolute;
@@ -195,22 +158,6 @@
   );
   background-size: 100% 2px, 3px 100%;
   pointer-events: none;
-  opacity: 0.3;
-}
-
-.tactical-grid {
-  background-image: 
-    linear-gradient(hsl(var(--border)) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px);
-  background-size: 40px 40px;
-  background-position: center center;
-}
-
-.tactical-grid-fine {
-  background-image: 
-    linear-gradient(hsl(var(--border)) 0.5px, transparent 0.5px),
-    linear-gradient(90deg, hsl(var(--border)) 0.5px, transparent 0.5px);
-  background-size: 10px 10px;
   opacity: 0.3;
 }
 
