@@ -8,21 +8,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { toast } from 'sonner';
 
 export default function AuthPage() {
-  const [step, setStep] = useState<'mobile' | 'otp' | 'admin'>('mobile');
-  const [mobile, setMobile] = useState('');
-  const [otp, setOtp] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleAdminLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username || !password) return toast.error('Please enter credentials');
 
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/admin-login', {
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -39,77 +36,14 @@ export default function AuthPage() {
       if (res.ok) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        toast.success('Admin access granted');
+        toast.success('Access granted');
         navigate('/dashboard');
       } else {
-        toast.error(data.error || 'Admin login failed');
+        toast.error(data.error || 'Login failed');
       }
     } catch (err) {
-      console.error('[AUTH] Admin login error:', err);
+      console.error('[AUTH] Login error:', err);
       toast.error(`Connection error: ${err instanceof Error ? err.message : 'Unknown'}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRequestOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!mobile) return toast.error('Please enter mobile number');
-    
-    setLoading(true);
-    try {
-      const res = await fetch('/api/auth/otp-request', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile }),
-      });
-      
-      const contentType = res.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        const text = await res.text();
-        console.error('[AUTH] Non-JSON response:', text);
-        throw new Error(`Server returned non-JSON response (${res.status}).`);
-      }
-
-      const data = await res.json();
-      if (res.ok) {
-        toast.success(data.message);
-        setStep('otp');
-      } else {
-        toast.error(data.error || 'Request failed');
-      }
-    } catch (err) {
-      console.error('[AUTH] Handshake error:', err);
-      toast.error(`Connection error: ${err instanceof Error ? err.message : 'Unknown'}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerifyOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!otp) return toast.error('Please enter OTP');
-
-    setLoading(true);
-    try {
-      const res = await fetch('/api/auth/otp-verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mobile, otp }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        toast.success('Login successful');
-        navigate('/dashboard');
-      } else {
-        toast.error(data.error || 'Verification failed');
-      }
-    } catch (err) {
-      console.error('OTP verify error:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Unknown connection error';
-      toast.error(`Connection error: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -130,69 +64,36 @@ export default function AuthPage() {
               <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 border-primary/50" />
             </div>
             <CardTitle className="text-3xl font-extrabold tracking-tight text-foreground uppercase leading-none">
-              {step === 'mobile' ? 'Access Control' : step === 'otp' ? 'Identity Verification' : 'Admin Access'}
+              Access Control
             </CardTitle>
             <CardDescription className="text-muted-foreground text-xs font-medium pt-2">
-              {step === 'mobile' 
-                ? 'Initialize secure handshake via mobile node.' 
-                : step === 'otp'
-                ? `Enter 6-digit decryption code sent to node: ${mobile}`
-                : 'Enter administrative credentials for node override.'}
+              Initialize secure handshake via administrative node.
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
-            <form onSubmit={step === 'mobile' ? handleRequestOtp : step === 'otp' ? handleVerifyOtp : handleAdminLogin} className="space-y-6">
-              {step === 'mobile' ? (
-                <div className="space-y-2">
-                  <div className="relative">
-                    <Smartphone className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      type="tel"
-                      placeholder="+1 (555) 000-0000"
-                      value={mobile}
-                      onChange={(e) => setMobile(e.target.value)}
-                      className="bg-background border-border pl-10 h-12 rounded-none focus-visible:ring-primary font-medium text-sm"
-                    />
-                  </div>
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div className="space-y-4">
+                <div className="relative">
+                  <Shield className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    placeholder="USERNAME"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="bg-background border-border pl-10 h-12 rounded-none focus-visible:ring-primary font-mono text-xs uppercase tracking-widest"
+                  />
                 </div>
-              ) : step === 'otp' ? (
-                <div className="space-y-2">
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      type="text"
-                      placeholder="000000"
-                      maxLength={6}
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                      className="bg-background border-border pl-10 h-12 rounded-none tracking-[0.8em] font-mono text-center focus-visible:ring-primary text-lg font-black"
-                    />
-                  </div>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    type="password"
+                    placeholder="PASSWORD"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="bg-background border-border pl-10 h-12 rounded-none focus-visible:ring-primary font-mono text-xs uppercase tracking-widest"
+                  />
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="relative">
-                    <Shield className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      type="text"
-                      placeholder="ADMIN USERNAME"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      className="bg-background border-border pl-10 h-12 rounded-none focus-visible:ring-primary font-mono text-xs uppercase tracking-widest"
-                    />
-                  </div>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3.5 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      type="password"
-                      placeholder="ADMIN PASSWORD"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="bg-background border-border pl-10 h-12 rounded-none focus-visible:ring-primary font-mono text-xs uppercase tracking-widest"
-                    />
-                  </div>
-                </div>
-              )}
+              </div>
               <Button 
                 type="submit" 
                 disabled={loading}
@@ -202,7 +103,7 @@ export default function AuthPage() {
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
                   <>
-                    {step === 'mobile' ? 'Request Handshake' : step === 'otp' ? 'Authorize Access' : 'Bypass Protocol'}
+                    Request Handshake
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </>
                 )}
@@ -218,31 +119,6 @@ export default function AuthPage() {
               <div className="px-3 py-1 bg-zinc-800/50 border border-zinc-700 text-[8px] font-mono text-zinc-500 uppercase tracking-widest">
                 Node: {window.location.hostname}
               </div>
-            </div>
-            <div className="flex flex-col gap-3 items-center">
-              {step === 'otp' && (
-                <button 
-                  onClick={() => setStep('mobile')}
-                  className="text-[10px] font-black text-primary hover:underline uppercase tracking-widest"
-                >
-                  Re-initialize Node Connection
-                </button>
-              )}
-              {step !== 'admin' ? (
-                <button 
-                  onClick={() => setStep('admin')}
-                  className="text-[10px] font-black text-zinc-500 hover:text-primary hover:underline uppercase tracking-widest"
-                >
-                  Admin Override Access
-                </button>
-              ) : (
-                <button 
-                  onClick={() => setStep('mobile')}
-                  className="text-[10px] font-black text-zinc-500 hover:text-primary hover:underline uppercase tracking-widest"
-                >
-                  Return to Handshake Protocol
-                </button>
-              )}
             </div>
           </CardFooter>
         </Card>

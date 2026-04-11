@@ -278,7 +278,7 @@ export default function Dashboard() {
           </div>
           <h1 className="text-4xl font-extrabold tracking-tight text-foreground uppercase leading-none">Command Center</h1>
           <p className="text-sm text-muted-foreground font-medium">
-            Authenticated as: <span className="text-primary font-mono font-bold">{user.username || user.mobile}</span>
+            Authenticated as: <span className="text-primary font-mono font-bold">{user.username || user.mobile || 'Unknown User'}</span>
           </p>
         </div>
         <Link to="/algorithms">

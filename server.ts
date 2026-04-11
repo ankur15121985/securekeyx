@@ -1,15 +1,10 @@
 import express from 'express';
-import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import cors from 'cors';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
-import Redis from 'ioredis';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { body, validationResult } from 'express-validator';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -25,18 +20,6 @@ app.set('trust proxy', 1);
 
 // Redis setup with in-memory fallback
 let redis: any;
-
-if (process.env.REDIS_URL) {
-  redis = new Redis(process.env.REDIS_URL);
-  redis.on('error', (err: any) => {
-    console.error('[REDIS] Client Error', err);
-    console.warn('[REDIS] Falling back to in-memory store');
-    useMemoryStore();
-  });
-} else {
-  console.warn('[SYSTEM] No REDIS_URL provided. Using in-memory store.');
-  useMemoryStore();
-}
 
 function useMemoryStore() {
   const store = new Map<string, any>();
@@ -65,6 +48,24 @@ function useMemoryStore() {
   };
 }
 
+if (process.env.REDIS_URL) {
+  try {
+    const { default: Redis } = await import('ioredis');
+    redis = new Redis(process.env.REDIS_URL);
+    redis.on('error', (err: any) => {
+      console.error('[REDIS] Client Error', err);
+      console.warn('[REDIS] Falling back to in-memory store');
+      useMemoryStore();
+    });
+  } catch (err) {
+    console.error('[REDIS] Failed to load ioredis:', err);
+    useMemoryStore();
+  }
+} else {
+  console.warn('[SYSTEM] No REDIS_URL provided. Using in-memory store.');
+  useMemoryStore();
+}
+
 app.use(express.json());
 
 // Tactical Logger
@@ -76,11 +77,10 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: true, // Allow all origins in development
+  origin: true,
   credentials: true
 }));
 
-// Disable X-Powered-By header
 app.disable('x-powered-by');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-key';
@@ -101,47 +101,17 @@ const authenticate = (req: any, res: any, next: any) => {
 
 // --- API Routes ---
 
-// Admin Login
-app.post('/api/auth/admin-login', async (req: any, res: any) => {
+// Login
+app.post('/api/auth/login', async (req: any, res: any) => {
   const { username, password } = req.body;
-  console.log('[API] Admin Login attempt for:', username);
+  console.log('[API] Login attempt for:', username);
   
   if (username === 'ankur15121985' && password === 'M@thur24') {
     const user = { username, id: 'admin-id', role: 'admin' };
     const token = jwt.sign({ username, id: user.id, role: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
     res.json({ token, user });
   } else {
-    res.status(401).json({ error: 'Invalid admin credentials' });
-  }
-});
-
-// OTP Request
-app.post('/api/auth/otp-request', async (req: any, res: any) => {
-  const { mobile } = req.body;
-  console.log('[API] OTP Request for:', mobile);
-  if (!mobile) return res.status(400).json({ error: 'Mobile number required' });
-
-  const otp = '123456'; 
-  await redis.set(`otp:${mobile}`, otp, 'EX', 300);
-  res.json({ message: 'OTP sent successfully (Use 123456)' });
-});
-
-// OTP Verify
-app.post('/api/auth/otp-verify', async (req: any, res: any) => {
-  const { mobile, otp } = req.body;
-  console.log('[API] OTP Verify for:', mobile);
-  if (!mobile || !otp) return res.status(400).json({ error: 'Mobile and OTP required' });
-
-  const storedOtp = await redis.get(`otp:${mobile}`);
-  
-  if (storedOtp === otp || otp === '123456') {
-    await redis.del(`otp:${mobile}`);
-    const user = { mobile, id: crypto.randomUUID() };
-    await redis.set(`user:${mobile}`, JSON.stringify(user));
-    const token = jwt.sign({ mobile, id: user.id }, JWT_SECRET, { expiresIn: '24h' });
-    res.json({ token, user });
-  } else {
-    res.status(401).json({ error: 'Invalid or expired OTP' });
+    res.status(401).json({ error: 'Invalid credentials' });
   }
 });
 
@@ -172,7 +142,7 @@ app.post('/api/keys/store', authenticate, async (req: any, res: any) => {
 app.get('/api/keys', authenticate, async (req: any, res) => {
   const userId = req.user.id;
   const keys = await redis.lrange(`user:${userId}:keys`, 0, -1);
-  res.json(keys.map(k => JSON.parse(k)));
+  res.json(keys.map((k: string) => JSON.parse(k)));
 });
 
 // API Error Handler for non-existent routes
@@ -181,25 +151,31 @@ app.all('/api/*', (req, res) => {
 });
 
 // --- Vite Middleware & Static Serving ---
-async function setupFrontend() {
-  if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
+  try {
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
     });
     app.use(vite.middlewares);
+  } catch (err) {
+    console.error('[VITE] Failed to initialize Vite:', err);
+  }
+} else {
+  const distPath = path.join(__dirname, 'dist');
+  if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
   } else {
-    const distPath = path.join(__dirname, 'dist');
-    if (fs.existsSync(distPath)) {
-      app.use(express.static(distPath));
-      app.get('*', (req, res) => {
-        res.sendFile(path.join(distPath, 'index.html'));
-      });
-    }
+    console.warn('[SYSTEM] dist directory not found. Static serving might fail.');
+    app.get('*', (req, res) => {
+      res.status(404).send('Frontend assets not found. Ensure build completed successfully.');
+    });
   }
 }
-
-setupFrontend();
 
 // Global Error Handler
 app.use((err: any, req: any, res: any, next: any) => {
