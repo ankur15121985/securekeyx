@@ -163,16 +163,36 @@ if (process.env.NODE_ENV !== 'production') {
     console.error('[VITE] Failed to initialize Vite:', err);
   }
 } else {
-  const distPath = path.join(__dirname, 'dist');
-  if (fs.existsSync(distPath)) {
+  // Production: Serve static files from dist
+  const possiblePaths = [
+    path.join(process.cwd(), 'dist'),
+    path.join(__dirname, 'dist'),
+    path.join(__dirname, '..', 'dist')
+  ];
+  
+  let distPath = '';
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      distPath = p;
+      break;
+    }
+  }
+
+  if (distPath) {
+    console.log(`[SYSTEM] Serving static assets from: ${distPath}`);
     app.use(express.static(distPath));
     app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+      const indexPath = path.join(distPath, 'index.html');
+      if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+      } else {
+        res.status(404).send('Index file not found in dist.');
+      }
     });
   } else {
-    console.warn('[SYSTEM] dist directory not found. Static serving might fail.');
+    console.warn('[SYSTEM] dist directory not found in any expected location.');
     app.get('*', (req, res) => {
-      res.status(404).send('Frontend assets not found. Ensure build completed successfully.');
+      res.status(404).send(`Frontend assets not found. Paths checked: ${possiblePaths.join(', ')}`);
     });
   }
 }

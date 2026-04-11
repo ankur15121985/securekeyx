@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react';
+import React, { Component, ReactNode, ErrorInfo } from 'react';
 import { AlertTriangle, RefreshCcw, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -24,12 +24,15 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Uncaught error:', error, errorInfo);
   }
 
   render() {
-    if (this.state.hasError) {
+    const { hasError, error } = this.state;
+    const { children } = this.props;
+
+    if (hasError) {
       return (
         <div className="min-h-[60vh] flex flex-col items-center justify-center p-6 text-center space-y-8">
           <div className="w-20 h-20 bg-destructive/10 border border-destructive/30 flex items-center justify-center relative">
@@ -65,13 +68,13 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
           {process.env.NODE_ENV === 'development' && (
             <pre className="mt-8 p-4 bg-secondary border border-border text-left text-[10px] font-mono overflow-auto max-w-full text-muted-foreground">
-              {this.state.error?.toString()}
+              {error?.toString()}
             </pre>
           )}
         </div>
       );
     }
 
-    return this.props.children;
+    return children;
   }
 }
