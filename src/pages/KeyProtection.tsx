@@ -86,7 +86,7 @@ export default function KeyProtection() {
 
   if (completed) {
     return (
-      <div className="max-w-3xl mx-auto py-32 text-center space-y-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 text-center space-y-12">
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -111,7 +111,7 @@ export default function KeyProtection() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
       <header className="text-center space-y-6">
         <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-foreground uppercase leading-none">Personal Protection</h1>
         <p className="text-xl text-muted-foreground font-bold max-w-2xl mx-auto leading-relaxed uppercase tracking-widest">

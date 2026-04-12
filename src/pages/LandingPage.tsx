@@ -4,6 +4,7 @@ import { Shield, Key, Lock, Download, Zap, ShieldCheck, Terminal, Crosshair, Cpu
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
+import { CyberGlobe } from '../components/CyberGlobe';
 
 export default function LandingPage() {
   return (
@@ -15,53 +16,85 @@ export default function LandingPage() {
       </Helmet>
       {/* Hero Section */}
       <section className="relative pt-20 pb-12">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-primary/5 blur-[120px] rounded-full -z-10" />
-        
-        <div className="text-center space-y-10 relative">
-          {/* Corner Accents for Hero */}
-          <div className="absolute -top-10 -left-10 w-20 h-20 border-t-2 border-l-2 border-primary/20 hidden lg:block" />
-          <div className="absolute -top-10 -right-10 w-20 h-20 border-t-2 border-r-2 border-primary/20 hidden lg:block" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-primary/5 blur-[120px] rounded-full -z-10" />
+          
+          <div className="text-center space-y-10 relative">
+            {/* Corner Accents for Hero */}
+            <div className="absolute -top-10 -left-10 w-20 h-20 border-t-2 border-l-2 border-primary/20 hidden lg:block" />
+            <div className="absolute -top-10 -right-10 w-20 h-20 border-t-2 border-r-2 border-primary/20 hidden lg:block" />
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="space-y-6"
-          >
-            <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.3em] mb-4 corner-bracket corner-bracket-tl corner-bracket-br">
-              System Status: Secure // IND-NODE
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="space-y-6"
+            >
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.3em] mb-4 corner-bracket corner-bracket-tl corner-bracket-br">
+                System Status: Secure // IND-NODE
+              </div>
+              <h1 className="text-6xl sm:text-8xl md:text-[12rem] font-black tracking-tighter text-foreground leading-[0.85] uppercase">
+                CHAKRA<br />
+                <span className="text-primary">VYUH</span>
+              </h1>
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="text-2xl md:text-3xl text-muted-foreground max-w-3xl mx-auto font-bold leading-relaxed uppercase tracking-tight"
+            >
+              Sovereign cryptographic infrastructure for the protection of national digital assets. 
+              Zero-knowledge architecture for mission-critical data protection.
+            </motion.p>
+
+              <div className="flex flex-wrap justify-center gap-8 pt-12">
+                <Link to="/auth">
+                  <Button size="lg" aria-label="Initialize Protocol" className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 h-20 text-sm font-black uppercase tracking-[0.3em] rounded-none border-2 border-primary shadow-[0_0_30px_rgba(var(--primary),0.3)] group relative overflow-hidden">
+                    <span className="relative z-10 flex items-center gap-3">
+                      Initialize Protocol <Crosshair className="w-6 h-6" />
+                    </span>
+                    <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
+                  </Button>
+                </Link>
+              </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Live Threat Monitor Section */}
+      <section className="relative w-full overflow-hidden bg-black border-y-4 border-primary/20">
+        <div className="absolute inset-0 bg-black -z-20" />
+        <div className="w-full py-0">
+          <div className="flex flex-col items-center">
+            <div className="text-center space-y-4 py-12 px-4">
+              <Badge variant="outline" className="text-primary border-primary/30 uppercase tracking-[0.3em] text-[10px] rounded-none px-4 py-1">
+                Live Intelligence Feed
+              </Badge>
+              <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">
+                GLOBAL <span className="text-primary">THREAT</span> LANDSCAPE
+              </h2>
+              <p className="text-xs text-muted-foreground uppercase tracking-[0.2em] max-w-2xl mx-auto">
+                Real-time visualization of intercepted cryptographic attacks and unauthorized access attempts across the Chakravyuh mesh network.
+              </p>
             </div>
-            <h1 className="text-6xl sm:text-8xl md:text-[12rem] font-black tracking-tighter text-foreground leading-[0.85] uppercase">
-              CHAKRA<br />
-              <span className="text-primary">VYUH</span>
-            </h1>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-2xl md:text-3xl text-muted-foreground max-w-3xl mx-auto font-bold leading-relaxed uppercase tracking-tight"
-          >
-            Sovereign cryptographic infrastructure for the protection of national digital assets. 
-            Zero-knowledge architecture for mission-critical data protection.
-          </motion.p>
-
-            <div className="flex flex-wrap justify-center gap-8 pt-12">
-              <Link to="/auth">
-                <Button size="lg" aria-label="Initialize Protocol" className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 h-20 text-sm font-black uppercase tracking-[0.3em] rounded-none border-2 border-primary shadow-[0_0_30px_rgba(var(--primary),0.3)] group relative overflow-hidden">
-                  <span className="relative z-10 flex items-center gap-3">
-                    Initialize Protocol <Crosshair className="w-6 h-6" />
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
-                </Button>
-              </Link>
-            </div>
+            
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="w-full relative"
+            >
+              <CyberGlobe />
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Stats/Status Bar */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
           { label: "Active Nodes", value: "1,204", icon: <Globe className="w-4 h-4" /> },
           { label: "Uptime", value: "99.99%", icon: <Zap className="w-4 h-4" /> },
@@ -82,10 +115,11 @@ export default function LandingPage() {
             <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{stat.label}</div>
           </motion.div>
         ))}
+        </div>
       </section>
 
       {/* Workflow Section */}
-      <section className="space-y-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="flex items-center gap-4">
           <div className="h-[1px] flex-grow bg-border" />
           <h2 className="text-xs font-black uppercase tracking-[0.5em] text-primary">Operational Workflow</h2>
@@ -134,7 +168,7 @@ export default function LandingPage() {
       </section>
 
       {/* Visual Workflow / Security Section */}
-      <section className="relative group">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative group">
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -212,7 +246,7 @@ export default function LandingPage() {
       </section>
 
       {/* Network Integrity Section */}
-      <section className="space-y-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="flex items-center gap-4">
           <div className="h-[1px] flex-grow bg-border" />
           <h2 className="text-xs font-black uppercase tracking-[0.5em] text-primary">Network Integrity Protocols</h2>

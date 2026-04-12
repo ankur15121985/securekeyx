@@ -59,7 +59,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center p-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 min-h-[80vh] flex items-center justify-center p-4">
       <Helmet>
         <title>Initialize Access | Chakravyuh</title>
         <meta name="description" content="Securely initialize your access to the Chakravyuh node. Sovereign authentication tunnel active." />

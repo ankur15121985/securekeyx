@@ -235,7 +235,7 @@ export default function KeyGeneration() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
       <header className="text-center space-y-6">
         <div className="flex justify-center">
           <Badge variant="outline" className="bg-primary/10 text-primary border-2 border-primary/30 uppercase tracking-[0.4em] text-xs rounded-none px-6 py-2">

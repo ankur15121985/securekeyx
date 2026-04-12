@@ -5,13 +5,24 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from './ThemeToggle';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChakravyuhLogo } from './ChakravyuhLogo';
+import { ScrollButtons } from './ScrollButtons';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isAuthenticated, setIsAuthenticated] = React.useState(!!localStorage.getItem('token'));
+  const [scrolled, setScrolled] = React.useState(false);
 
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   React.useEffect(() => {
     const verifyToken = async () => {
@@ -55,7 +66,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
       
       {/* Navigation */}
-      <nav className="border-b-4 border-primary bg-background/95 backdrop-blur-md sticky top-0 z-50 shadow-lg">
+      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b-4 ${scrolled ? 'border-primary bg-background/95 backdrop-blur-md shadow-lg' : 'border-transparent bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
             <Link to="/" className="flex items-center gap-4 group" aria-label="Chakravyuh Home">
@@ -186,7 +197,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+      <main className="w-full pt-32 relative z-10">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -286,6 +297,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </footer>
+      <ScrollButtons />
     </div>
   );
 }
