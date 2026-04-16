@@ -29,6 +29,7 @@ export default function Dashboard() {
   const [isRenaming, setIsRenaming] = useState(false);
   const [newName, setNewName] = useState('');
   const [isDecommissioning, setIsDecommissioning] = useState(false);
+  const [showDecommissionConfirm, setShowDecommissionConfirm] = useState(false);
   
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
@@ -108,10 +109,6 @@ export default function Dashboard() {
   const handleDecommission = async () => {
     if (!selectedKey) return;
     
-    if (!confirm('CRITICAL: Are you sure you want to decommission this asset? This action is irreversible and the key will be permanently purged from the node.')) {
-      return;
-    }
-
     try {
       setIsDecommissioning(true);
       const res = await fetch(`/api/keys/${selectedKey.id}`, {
@@ -343,8 +340,8 @@ export default function Dashboard() {
           <div className="flex items-center gap-3 text-xs font-black text-primary uppercase tracking-[0.4em]">
             <Terminal className="w-4 h-4" /> Node Connection: Active // IND-NODE-01
           </div>
-          <h1 className="text-5xl md:text-6xl font-black tracking-tighter text-foreground uppercase leading-none">Command Center</h1>
-          <p className="text-lg text-muted-foreground font-bold uppercase tracking-widest">
+          <h1 className="text-5xl md:text-6xl font-black tracking-tighter uppercase leading-none">Command Center</h1>
+          <p className="text-lg font-bold uppercase tracking-widest">
             Authenticated as: <span className="text-primary font-black">{user.username || user.mobile || 'Unknown User'}</span>
           </p>
         </div>
@@ -370,10 +367,10 @@ export default function Dashboard() {
             <div className="absolute top-0 left-0 w-2 h-full bg-primary/20 group-hover:bg-primary transition-colors" />
             <CardContent className="pt-10 pb-8 px-8">
               <div className="flex justify-between items-center mb-6">
-                <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.3em]">{stat.label}</span>
+                <span className="text-xs font-black uppercase tracking-[0.3em]">{stat.label}</span>
                 <div className={stat.color}>{stat.icon}</div>
               </div>
-              <div className="text-6xl font-black text-foreground tracking-tighter uppercase leading-none">{stat.value}</div>
+              <div className="text-6xl font-black tracking-tighter uppercase leading-none">{stat.value}</div>
               
               {/* Decorative line */}
               <div className="mt-8 h-1 w-full bg-border relative">
@@ -390,7 +387,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="w-3 h-3 bg-primary animate-pulse" />
-              <h2 className="text-lg font-black text-foreground uppercase tracking-[0.3em]">Cryptographic Assets</h2>
+              <h2 className="text-lg font-black uppercase tracking-[0.3em]">Cryptographic Assets</h2>
             </div>
             <Button variant="link" className="text-xs font-black text-primary uppercase tracking-widest p-0 h-auto hover:no-underline hover:opacity-80">
               Full Audit Trail
@@ -399,23 +396,23 @@ export default function Dashboard() {
 
           <div className="space-y-6">
             {loading ? (
-              <div className="text-center py-32 text-xs font-black text-muted-foreground uppercase tracking-[0.5em] animate-pulse">
+              <div className="text-center py-32 text-xs font-black uppercase tracking-[0.5em] animate-pulse">
                 Scanning Secure Enclave...
               </div>
             ) : keys.length === 0 ? (
               <Card className="bg-card/30 border-4 border-dashed border-border rounded-none py-32">
                 <CardContent className="text-center space-y-8">
                   <div className="mx-auto w-24 h-24 bg-muted border-2 border-border rounded-none flex items-center justify-center relative">
-                    <Key className="w-12 h-12 text-muted-foreground" />
+                    <Key className="w-12 h-12" />
                     <div className="absolute -top-2 -left-2 w-4 h-4 border-t-4 border-l-4 border-border" />
                     <div className="absolute -bottom-2 -right-2 w-4 h-4 border-b-4 border-r-4 border-border" />
                   </div>
                   <div className="space-y-4">
-                    <p className="text-xl font-black text-muted-foreground uppercase tracking-widest">No assets found in current node.</p>
-                    <p className="text-xs text-muted-foreground/60 uppercase tracking-widest">Initialize your first encryption protocol to begin.</p>
+                    <p className="text-xl font-black uppercase tracking-widest">No assets found in current node.</p>
+                    <p className="text-xs uppercase tracking-widest">Initialize your first encryption protocol to begin.</p>
                   </div>
                   <Link to="/algorithms">
-                    <Button variant="outline" className="border-2 border-border text-foreground rounded-none uppercase text-xs font-black tracking-widest h-16 px-12">
+                    <Button variant="outline" className="border-2 border-border rounded-none uppercase text-xs font-black tracking-widest h-16 px-12">
                       Get Started
                     </Button>
                   </Link>
@@ -443,15 +440,15 @@ export default function Dashboard() {
                         </div>
                         <div className="space-y-2">
                           <div className="flex items-center gap-4">
-                            <span className="text-2xl font-black text-foreground uppercase tracking-tight leading-none">
+                            <span className="text-2xl font-black uppercase tracking-tight leading-none">
                               {key.metadata?.label || key.algorithm}
                             </span>
                             {key.metadata?.label && (
-                              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">({key.algorithm})</span>
+                              <span className="text-[10px] font-bold uppercase tracking-widest">({key.algorithm})</span>
                             )}
                             <Badge variant="outline" className="text-[10px] font-black uppercase border-primary/30 text-primary bg-primary/5 rounded-none tracking-widest px-3 py-1">Verified</Badge>
                           </div>
-                          <div className="flex items-center gap-3 text-xs text-muted-foreground font-bold uppercase tracking-widest">
+                          <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest">
                             <Clock className="w-4 h-4" />
                             {new Date(key.createdAt).toLocaleString()}
                           </div>
@@ -459,11 +456,11 @@ export default function Dashboard() {
                       </div>
                       <div className="flex items-center gap-12">
                         <div className="hidden md:block text-right space-y-2">
-                          <div className="text-[10px] text-muted-foreground uppercase font-black tracking-[0.3em]">Asset Identifier</div>
-                          <div className="text-xs font-mono text-foreground font-black">{key.id.toUpperCase()}</div>
+                          <div className="text-[10px] uppercase font-black tracking-[0.3em]">Asset Identifier</div>
+                          <div className="text-xs font-mono font-black">{key.id.toUpperCase()}</div>
                         </div>
                         <div className="p-4 border-2 border-border group-hover:border-primary group-hover:bg-primary/5 transition-all">
-                          <ChevronRight className="w-8 h-8 text-muted-foreground group-hover:text-primary transition-colors" />
+                          <ChevronRight className="w-8 h-8 group-hover:text-primary transition-colors" />
                         </div>
                       </div>
                     </CardContent>
@@ -478,7 +475,7 @@ export default function Dashboard() {
         <aside className="space-y-10">
           <div className="flex items-center gap-4">
             <div className="w-3 h-3 bg-primary animate-pulse" />
-            <h2 className="text-lg font-black text-foreground uppercase tracking-[0.3em]">Security Monitor</h2>
+            <h2 className="text-lg font-black uppercase tracking-[0.3em]">Security Monitor</h2>
           </div>
           
           <Card className="bg-card border-2 border-border rounded-none relative overflow-hidden">
@@ -486,22 +483,22 @@ export default function Dashboard() {
             <CardContent className="p-8 space-y-8">
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">Firewall Status</span>
+                  <span className="text-xs font-black uppercase tracking-widest">Firewall Status</span>
                   <Badge className="bg-emerald-500/10 text-emerald-500 border-2 border-emerald-500/20 text-[10px] font-black rounded-none px-3 py-1">ACTIVE</Badge>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">Intrusion Detection</span>
+                  <span className="text-xs font-black uppercase tracking-widest">Intrusion Detection</span>
                   <Badge className="bg-emerald-500/10 text-emerald-500 border-2 border-emerald-500/20 text-[10px] font-black rounded-none px-3 py-1">NOMINAL</Badge>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-black text-muted-foreground uppercase tracking-widest">E2E Tunnel</span>
+                  <span className="text-xs font-black uppercase tracking-widest">E2E Tunnel</span>
                   <Badge className="bg-primary/10 text-primary border-2 border-primary/20 text-[10px] font-black rounded-none px-3 py-1">SECURE</Badge>
                 </div>
               </div>
 
               <div className="pt-6 border-t-2 border-border space-y-6">
                 <h4 className="text-xs font-black text-primary uppercase tracking-[0.4em]">Live Security Feed</h4>
-                <div className="space-y-4 font-mono text-[10px] text-muted-foreground uppercase font-bold">
+                <div className="space-y-4 font-mono text-[10px] uppercase font-bold">
                   <div className="flex gap-3">
                     <span className="text-primary">[OK]</span>
                     <span>Handshake verified: Node 104</span>
@@ -534,7 +531,7 @@ export default function Dashboard() {
               <ShieldCheck className="w-6 h-6" />
               <span className="text-xs font-black uppercase tracking-[0.3em]">Unhackable Core</span>
             </div>
-            <p className="text-[11px] text-muted-foreground leading-relaxed uppercase tracking-widest font-bold">
+            <p className="text-[11px] leading-relaxed uppercase tracking-widest font-bold">
               Your assets are protected by a multi-layer zero-knowledge architecture. No private keys ever leave your local node.
             </p>
           </Card>
@@ -554,8 +551,8 @@ export default function Dashboard() {
               <Card className="bg-card border-border rounded-none relative overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]">
                 {/* Tactical Accents */}
                 <div className="absolute top-0 left-0 w-full h-1.5 bg-primary" />
-                <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-white/20" />
-                <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-white/20" />
+                <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-foreground/20" />
+                <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-foreground/20" />
                 
                 <Button 
                   variant="ghost" 
@@ -572,7 +569,7 @@ export default function Dashboard() {
                       {unlockedKey ? <Unlock className="w-10 h-10 text-primary" /> : <Lock className="w-10 h-10 text-muted-foreground" />}
                     </div>
                     <div className="space-y-2">
-                      <CardTitle className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tighter leading-none flex items-center gap-4">
+                      <CardTitle className="text-3xl md:text-4xl font-black uppercase tracking-tighter leading-none flex items-center gap-4">
                         {unlockedKey ? 'Access Granted' : 'Secure Authorization'}
                         {unlockedKey && (
                           <Button 
@@ -618,7 +615,7 @@ export default function Dashboard() {
                     </motion.div>
                   )}
 
-                  <CardDescription className="text-xs font-bold text-muted-foreground uppercase tracking-widest leading-relaxed">
+                  <CardDescription className="text-xs font-bold uppercase tracking-widest leading-relaxed">
                     {unlockedKey 
                       ? `Target asset decrypted successfully. Retrieval protocols initialized.`
                       : `Multi-factor authorization required. Provide personal decryption passphrase to unlock asset enclave.`}
@@ -629,7 +626,7 @@ export default function Dashboard() {
                   {!unlockedKey ? (
                     <div className="space-y-8">
                       <div className="space-y-4">
-                        <label className="text-xs font-black text-muted-foreground uppercase tracking-[0.4em] flex items-center gap-3">
+                        <label className="text-xs font-black uppercase tracking-[0.4em] flex items-center gap-3">
                           <Terminal className="w-4 h-4" /> Authorization Passphrase
                         </label>
                         <Input
@@ -637,7 +634,7 @@ export default function Dashboard() {
                           placeholder="ENTER SECRET PASSPHRASE"
                           value={passphrase}
                           onChange={(e) => setPassphrase(e.target.value)}
-                          className="bg-background border-2 border-border rounded-none text-foreground h-16 font-black tracking-[0.2em] focus-visible:ring-primary uppercase text-sm px-6"
+                          className="bg-background border-2 border-border rounded-none h-16 font-black tracking-[0.2em] focus-visible:ring-primary uppercase text-sm px-6"
                           onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
                         />
                       </div>
@@ -695,7 +692,7 @@ export default function Dashboard() {
                           Download Asset
                         </Button>
                         <Button 
-                          onClick={handleDecommission}
+                          onClick={() => setShowDecommissionConfirm(true)}
                           disabled={isDecommissioning}
                           variant="destructive" 
                           className="border-2 border-destructive/30 rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
@@ -716,15 +713,62 @@ export default function Dashboard() {
                   )}
                 </CardContent>
 
-                <CardFooter className="bg-muted/50 border-t-2 border-border py-8 px-12 flex justify-between items-center">
-                  <div className="flex items-center gap-3 text-[10px] text-muted-foreground uppercase font-black tracking-[0.3em]">
-                    <Shield className="w-4 h-4 text-primary" />
-                    Secure Enclave Protocol v4.0.2
+                  <CardFooter className="bg-muted/50 border-t-2 border-border py-8 px-12 flex justify-between items-center">
+                    <div className="flex items-center gap-3 text-[10px] uppercase font-black tracking-[0.3em]">
+                      <Shield className="w-4 h-4 text-primary" />
+                      Secure Enclave Protocol v4.0.2
+                    </div>
+                    <div className="text-[10px] font-mono font-bold opacity-50">
+                      NODE_ID: {selectedKey.id.slice(0, 12).toUpperCase()}
+                    </div>
+                  </CardFooter>
+              </Card>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Decommission Confirmation Modal */}
+      <AnimatePresence>
+        {showDecommissionConfirm && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-background/95 backdrop-blur-xl">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="w-full max-w-md"
+            >
+              <Card className="bg-card border-4 border-destructive rounded-none overflow-hidden relative shadow-[0_0_100px_rgba(239,68,68,0.2)]">
+                <div className="absolute top-0 left-0 w-full h-2 bg-destructive" />
+                <CardHeader className="pt-12 px-10 text-center space-y-4">
+                  <div className="mx-auto w-20 h-20 bg-destructive/10 border-2 border-destructive/30 flex items-center justify-center mb-4">
+                    <ShieldAlert className="w-10 h-10 text-destructive animate-pulse" />
                   </div>
-                  <div className="text-[10px] font-mono text-muted-foreground/50 font-bold">
-                    NODE_ID: {selectedKey.id.slice(0, 12).toUpperCase()}
-                  </div>
-                </CardFooter>
+                  <CardTitle className="text-3xl font-black uppercase tracking-tighter text-destructive">
+                    Critical Purge
+                  </CardTitle>
+                  <CardDescription className="text-xs font-black uppercase tracking-[0.2em] leading-relaxed">
+                    Are you sure you want to decommission this asset? This action is <span className="text-destructive underline">irreversible</span> and the key will be permanently purged from the node.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="px-10 pb-10 space-y-4">
+                  <Button 
+                    onClick={() => {
+                      setShowDecommissionConfirm(false);
+                      handleDecommission();
+                    }}
+                    className="w-full bg-destructive hover:bg-destructive/90 text-white h-16 rounded-none font-black uppercase tracking-[0.3em] text-xs"
+                  >
+                    Confirm Purge
+                  </Button>
+                  <Button 
+                    variant="ghost"
+                    onClick={() => setShowDecommissionConfirm(false)}
+                    className="w-full border-2 border-border h-16 rounded-none font-black uppercase tracking-[0.3em] text-xs"
+                  >
+                    Abort Mission
+                  </Button>
+                </CardContent>
               </Card>
             </motion.div>
           </div>

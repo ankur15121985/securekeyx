@@ -4,25 +4,25 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
   
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) * 0.8);
@@ -31,24 +31,24 @@
 
 @layer base {
   :root {
-    --background: 45 20% 95%; /* Light Khaki */
-    --foreground: 220 30% 10%;
-    --card: 45 20% 92%;
-    --card-foreground: 220 30% 10%;
-    --popover: 45 20% 95%;
-    --popover-foreground: 220 30% 10%;
+    --background: 0 0% 100%; /* Pure White for Light Ops */
+    --foreground: 0 0% 0%; /* Pure Black for Light Ops */
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 0%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
     --primary: 75 30% 35%; /* Military Olive */
-    --primary-foreground: 45 20% 98%;
+    --primary-foreground: 0 0% 100%;
     --secondary: 145 50% 30%; /* Deep India Green */
     --secondary-foreground: 0 0% 100%;
-    --muted: 45 10% 85%;
-    --muted-foreground: 215 15% 35%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 20%;
     --accent: 25 80% 50%; /* India Saffron */
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 45%;
     --destructive-foreground: 0 0% 100%;
-    --border: 75 20% 80%;
-    --input: 75 20% 80%;
+    --border: 0 0% 80%;
+    --input: 0 0% 80%;
     --ring: 75 30% 35%;
     --radius: 0px;
     
@@ -59,28 +59,28 @@
   }
 
   .dark {
-    --background: 220 30% 8%; /* Deep Slate */
-    --foreground: 45 20% 90%;
-    --card: 220 30% 12%;
-    --card-foreground: 45 20% 90%;
-    --popover: 220 30% 8%;
-    --popover-foreground: 45 20% 90%;
-    --primary: 25 80% 50%; /* Saffron as primary */
-    --primary-foreground: 220 30% 5%;
-    --secondary: 145 60% 40%;
-    --secondary-foreground: 220 30% 5%;
-    --muted: 220 20% 18%;
-    --muted-foreground: 215 15% 75%;
-    --accent: 220 60% 35%;
-    --accent-foreground: 220 30% 5%;
-    --border: 220 30% 20%;
-    --input: 220 30% 20%;
-    --ring: 25 80% 50%;
+    --background: 220 45% 2%; /* Deep Tactical Navy/Black */
+    --foreground: 0 0% 100%; /* Sharp White Text */
+    --card: 220 40% 4%;
+    --card-foreground: 0 0% 100%;
+    --popover: 220 45% 2%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 25 90% 55%; /* Vibrant Saffron */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 145 60% 45%; /* Vibrant Green */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 30% 12%;
+    --muted-foreground: 0 0% 100%; /* Sharp White Muted Text */
+    --accent: 210 70% 55%; /* Brighter Tactical Blue */
+    --accent-foreground: 0 0% 100%;
+    --border: 220 30% 18%;
+    --input: 220 30% 18%;
+    --ring: 25 90% 55%;
     
     --india-saffron: 25 90% 60%;
     --india-white: 0 0% 100%;
-    --india-green: 145 60% 40%;
-    --india-blue: 220 70% 55%;
+    --india-green: 145 60% 45%;
+    --india-blue: 210 70% 65%;
   }
 }
 
@@ -89,26 +89,25 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground transition-colors duration-300 antialiased;
+    @apply bg-background text-foreground transition-colors duration-300 antialiased font-bold;
     font-feature-settings: "cv02", "cv05", "cv08", "cv11", "ss01";
     overflow-x: hidden;
-    line-height: 1.8; /* Increased for readability */
-    font-size: 18px; /* Increased for older users */
+    line-height: 1.7; 
+    font-size: 18px;
+    letter-spacing: -0.01em;
   }
 
   .tactical-bg {
     position: absolute;
     inset: 0;
-    background-image: 
-      linear-gradient(to bottom, 
-        hsl(var(--india-saffron) / 0.15) 0%, 
-        hsl(var(--india-white) / 0.05) 50%, 
-        hsl(var(--india-green) / 0.15) 100%
-      ),
-      radial-gradient(circle at 15% 15%, hsl(var(--india-saffron) / 0.1) 0%, transparent 60%),
-      radial-gradient(circle at 85% 85%, hsl(var(--india-green) / 0.1) 0%, transparent 60%);
+    background: 
+      radial-gradient(circle at 50% 50%, transparent 0%, hsl(var(--background)) 100%),
+      radial-gradient(circle at 50% -20%, hsl(var(--primary) / 0.15), transparent 70%),
+      radial-gradient(circle at 0% 100%, hsl(var(--india-green) / 0.1), transparent 50%),
+      radial-gradient(circle at 100% 100%, hsl(var(--india-blue) / 0.1), transparent 50%),
+      hsl(var(--background));
     background-attachment: fixed;
-    animation: pulse-bg 20s ease-in-out infinite alternate;
+    z-index: -1;
   }
 
   @keyframes pulse-bg {
@@ -133,7 +132,7 @@
   transform: translate(-50%, -50%);
   width: 1000px;
   height: 1000px;
-  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z' fill='none' stroke='white' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z' fill='none' stroke='%23888888' stroke-width='0.5' opacity='0.2'/%3E%3C/svg%3E");
   background-size: 200px 200px;
   opacity: 0.05;
   pointer-events: none;

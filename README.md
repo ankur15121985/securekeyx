@@ -1,20 +1,48 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Chakravyuh Tactical Encryption Node - Deployment Guide
 
-# Run and deploy your AI Studio app
+This application is a full-stack React + Express application designed for sovereign cryptographic asset protection. It can be deployed to any server supporting Node.js and MySQL.
 
-This contains everything you need to run your app locally.
+## Prerequisites
+- Node.js (v18+)
+- MySQL Database
+- NPM or Yarn
 
-View your app in AI Studio: https://ai.studio/apps/791563d1-374a-4529-9a56-c0b153c07fd3
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
+## Local Setup & Development
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+   ```bash
+   npm install
+   ```
+2. Configure environment variables:
+   - Copy `.env.example` to `.env`
+   - Update `DB_HOST`, `DB_USER`, `DB_PASSWORD`, and `DB_NAME` with your MySQL credentials.
+3. Initialize Database:
+   - Run the SQL commands in `schema.sql` on your MySQL server.
+4. Start development server:
+   ```bash
+   npm run dev
+   ```
+
+## Production Deployment
+1. Build the frontend:
+   ```bash
+   npm run build
+   ```
+2. Start the production server:
+   ```bash
+   npm run start
+   ```
+   The server will serve the static files from the `dist` directory and handle API requests.
+
+## Database Schema
+The database schema is provided in `schema.sql`. It includes tables for:
+- `users`: Authentication and roles.
+- `crypto_keys`: Secure storage for encrypted keys and metadata.
+
+## Exporting as ZIP
+To download this project as a ZIP file:
+1. Open the **Settings** menu in the AI Studio Build interface.
+2. Select **Export to ZIP**.
+3. This will package the entire source code, including the MySQL integration and deployment scripts.
+
+## Vercel Deployment (Optional)
+The project includes a `vercel.json` for easy deployment to Vercel. Ensure you configure the Environment Variables in the Vercel Dashboard.

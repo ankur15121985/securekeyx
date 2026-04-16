@@ -242,25 +242,25 @@ export default function KeyGeneration() {
             Protocol: {algo} // IND-SEC-GEN
           </Badge>
         </div>
-        <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-foreground uppercase leading-none">Asset Generation</h1>
-        <div className="flex items-center justify-center gap-3 text-xs font-black text-muted-foreground uppercase tracking-[0.3em]">
+        <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase leading-none">Asset Generation</h1>
+        <div className="flex items-center justify-center gap-3 text-xs font-black uppercase tracking-[0.3em]">
           <Terminal className="w-4 h-4" /> Node: Isolated Enclave // Secure Handshake Active
         </div>
       </header>
 
       <Card className="bg-card border-4 border-primary rounded-none overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.4)]">
         <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
-        <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white/20" />
-        <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-white/20" />
+        <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-foreground/20" />
+        <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-foreground/20" />
 
         <CardHeader className="pt-16 px-12">
-          <CardTitle className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tighter flex items-center gap-4">
+          <CardTitle className="text-3xl md:text-4xl font-black uppercase tracking-tighter flex items-center gap-4">
             <div className="p-4 bg-primary/10 border-2 border-primary/20">
               <Key className="w-10 h-10 text-primary" />
             </div>
             Secure Output Enclave
           </CardTitle>
-          <CardDescription className="text-xs font-black text-muted-foreground uppercase tracking-[0.3em] pt-4">
+          <CardDescription className="text-xs font-black uppercase tracking-[0.3em] pt-4">
             Initialize high-entropy cryptographic asset generation for protocol {algo}.
           </CardDescription>
         </CardHeader>
@@ -290,7 +290,7 @@ export default function KeyGeneration() {
                       {key}
                     </motion.span>
                   ) : (
-                    <span className="text-muted-foreground/30 tracking-[1.2em] font-black relative z-10 text-2xl">••••••••••••••••••••••••••••••••</span>
+                    <span className="text-foreground/30 tracking-[1.2em] font-black relative z-10 text-2xl">••••••••••••••••••••••••••••••••</span>
                   )}
                 </div>
                 <div className="absolute right-6 top-6 flex gap-3">
@@ -298,7 +298,7 @@ export default function KeyGeneration() {
                     variant="ghost" 
                     size="icon" 
                     onClick={() => setShowKey(!showKey)}
-                    className="h-12 w-12 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border-2 border-border"
+                    className="h-12 w-12 hover:text-primary hover:bg-primary/10 rounded-none border-2 border-border"
                   >
                     {showKey ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
                   </Button>
@@ -306,7 +306,7 @@ export default function KeyGeneration() {
                     variant="ghost" 
                     size="icon" 
                     onClick={copyToClipboard}
-                    className="h-12 w-12 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border-2 border-border"
+                    className="h-12 w-12 hover:text-primary hover:bg-primary/10 rounded-none border-2 border-border"
                   >
                     {copied ? <Check className="w-6 h-6 text-primary" /> : <Copy className="w-6 h-6" />}
                   </Button>
@@ -317,7 +317,7 @@ export default function KeyGeneration() {
                 <Button 
                   onClick={downloadKey}
                   variant="outline" 
-                  className="border-2 border-border hover:bg-secondary text-foreground rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
+                  className="border-2 border-border hover:bg-secondary rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
                 >
                   <Download className="w-5 h-5 mr-3" />
                   Download Asset
@@ -342,7 +342,7 @@ export default function KeyGeneration() {
           )}
         </CardContent>
         <CardFooter className="bg-muted/50 border-t-2 border-border py-8 px-12">
-          <div className="flex items-center gap-4 text-xs text-muted-foreground uppercase font-black tracking-[0.3em]">
+          <div className="flex items-center gap-4 text-xs uppercase font-black tracking-[0.3em]">
             <Shield className="w-5 h-5 text-primary" />
             Entropy Source: Hardware RNG // 256-bit Pool // NIST SP 800-90B
           </div>
@@ -361,7 +361,7 @@ export default function KeyGeneration() {
               <Zap className="w-6 h-6 text-primary flex-none" />
               <div className="space-y-2">
                 <h4 className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Tactical Vault Utility</h4>
-                <p className="text-[10px] text-muted-foreground leading-relaxed uppercase tracking-widest font-medium">
+                <p className="text-[10px] leading-relaxed uppercase tracking-widest font-bold">
                   The "Tactical Vault" is a standalone, offline HTML application. Deploy it to your local node to encrypt/decrypt assets without network connectivity.
                 </p>
               </div>
@@ -379,7 +379,7 @@ export default function KeyGeneration() {
               <Shield className="w-6 h-6 text-destructive flex-none" />
               <div className="space-y-2">
                 <h4 className="text-[10px] font-black text-destructive uppercase tracking-[0.2em]">Security Warning</h4>
-                <p className="text-[10px] text-muted-foreground leading-relaxed uppercase tracking-widest font-medium">
+                <p className="text-[10px] leading-relaxed uppercase tracking-widest font-bold">
                   This asset is displayed once. Ensure immediate download or protection. Raw keys are never persisted in the central node database.
                 </p>
               </div>

@@ -35,19 +35,29 @@ const keySizes = [128, 192, 256, 512, 1024, 2048, 4096];
 
 export const ALGORITHMS: Algorithm[] = [];
 
-// Helper to estimate crack time in hours based on key size and type
+// Helper to estimate crack time in years and days based on key size and type
 const getCrackTime = (size: number, category: string): string => {
-  if (category === 'Quantum') return '1.5e50+'; // Effectively infinite for current tech
-  if (size >= 4096) return '8.4e70';
-  if (size >= 2048) return '5.2e45';
-  if (size >= 1024) return '2.1e25';
-  if (size >= 512) return '1.2e18';
-  if (size >= 256) return '3.4e12'; // Trillions of hours
-  if (size >= 192) return '1.8e8';
-  return '4.5e4'; // ~5 years for 128-bit if brute-forced by supercomputer
+  let hours: number;
+  if (category === 'Quantum') hours = 1.5e60;
+  else if (size >= 4096) hours = 8.4e70;
+  else if (size >= 2048) hours = 5.2e45;
+  else if (size >= 1024) hours = 2.1e25;
+  else if (size >= 512) hours = 1.2e18;
+  else if (size >= 256) hours = 3.4e12;
+  else if (size >= 192) hours = 1.8e8;
+  else hours = 4.5e4;
+
+  const years = Math.floor(hours / 8766);
+  const remainingHours = hours % 8766;
+  const days = Math.floor(remainingHours / 24);
+
+  if (years > 1e9) {
+    return `${years.toExponential(2)} Years`;
+  }
+  return `${years.toLocaleString()} Years, ${days} Days`;
 };
 
-// Generate 100 algorithms
+// Generate 400 algorithms
 let count = 0;
 
 // 1. Add some primary ones manually
@@ -61,7 +71,7 @@ ALGORITHMS.push(
     color: 'text-blue-500',
     bg: 'bg-blue-500/10',
     category: 'Symmetric',
-    crackTime: '3.4e12'
+    crackTime: getCrackTime(256, 'Symmetric')
   },
   {
     id: 'ChaCha20-Poly1305',
@@ -72,7 +82,7 @@ ALGORITHMS.push(
     color: 'text-green-500',
     bg: 'bg-green-500/10',
     category: 'Stream',
-    crackTime: '3.4e12'
+    crackTime: getCrackTime(256, 'Stream')
   },
   {
     id: 'RSA-4096',
@@ -83,17 +93,17 @@ ALGORITHMS.push(
     color: 'text-purple-500',
     bg: 'bg-purple-500/10',
     category: 'Asymmetric',
-    crackTime: '8.4e70'
+    crackTime: getCrackTime(4096, 'Asymmetric')
   }
 );
 
 count = ALGORITHMS.length;
 
-// 2. Programmatically generate the rest to reach 100
+// 2. Programmatically generate the rest to reach 400
 baseAlgos.forEach(base => {
   modes.forEach(mode => {
     keySizes.forEach(size => {
-      if (count < 100) {
+      if (count < 400) {
         const id = `${base.name}-${size}-${mode}`;
         // Avoid duplicates
         if (!ALGORITHMS.find(a => a.id === id)) {
@@ -115,9 +125,10 @@ baseAlgos.forEach(base => {
   });
 });
 
-// Fill up to 100 if needed with more variants
-if (count < 100) {
-  for (let i = count; i < 100; i++) {
+// Fill up to 400 if needed with more variants
+if (count < 400) {
+  for (let i = count; i < 400; i++) {
+    const size = keySizes[i % keySizes.length];
     ALGORITHMS.push({
       id: `SKX-CUSTOM-${i}`,
       name: `SKX-V${i}-PRO`,
@@ -127,7 +138,7 @@ if (count < 100) {
       color: 'text-orange-500',
       bg: 'bg-orange-500/10',
       category: 'Symmetric',
-      crackTime: '5.6e15'
+      crackTime: getCrackTime(size, 'Symmetric')
     });
   }
 }

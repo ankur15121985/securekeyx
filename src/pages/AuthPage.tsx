@@ -72,17 +72,17 @@ export default function AuthPage() {
       >
         <Card className="bg-card border-4 border-primary rounded-none shadow-2xl overflow-hidden relative">
           <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
-          <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white/20" />
-          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-white/20" />
+          <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-foreground/20" />
+          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-foreground/20" />
           
           <CardHeader className="space-y-4 text-center pt-12 pb-8">
             <div className="mx-auto mb-6">
               <ChakravyuhLogo className="w-24 h-24" />
             </div>
-            <CardTitle className="text-4xl md:text-5xl font-black tracking-tight text-foreground uppercase leading-none">
+            <CardTitle className="text-4xl md:text-5xl font-black tracking-tight uppercase leading-none">
               CHAKRAVYUH
             </CardTitle>
-            <CardDescription className="text-muted-foreground text-sm font-black uppercase tracking-[0.4em] pt-2">
+            <CardDescription className="text-sm font-black uppercase tracking-[0.4em] pt-2">
               Secure Authorization Tunnel
             </CardDescription>
           </CardHeader>
@@ -90,7 +90,7 @@ export default function AuthPage() {
             <form onSubmit={handleLogin} className="space-y-8">
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <label className="text-xs font-black text-muted-foreground uppercase tracking-[0.3em] ml-1">Node Identifier</label>
+                  <label className="text-xs font-black uppercase tracking-[0.3em] ml-1">Node Identifier</label>
                   <div className="relative">
                     <Shield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
                     <Input
@@ -103,7 +103,7 @@ export default function AuthPage() {
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <label className="text-xs font-black text-muted-foreground uppercase tracking-[0.3em] ml-1">Authorization Key</label>
+                  <label className="text-xs font-black uppercase tracking-[0.3em] ml-1">Authorization Key</label>
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
                     <Input
@@ -134,11 +134,11 @@ export default function AuthPage() {
           </CardContent>
           <CardFooter className="flex flex-col gap-8 border-t-2 border-border py-10 bg-muted/30">
             <div className="flex flex-col items-center gap-6">
-              <div className="flex items-center gap-3 text-xs font-black text-muted-foreground text-center uppercase tracking-widest">
+              <div className="flex items-center gap-3 text-xs font-black text-center uppercase tracking-widest">
                 <ShieldCheck className="w-5 h-5 text-primary" />
                 <span>End-to-End Encrypted Authentication Tunnel</span>
               </div>
-              <div className="px-6 py-2 bg-background border-2 border-border text-[10px] font-black text-muted-foreground uppercase tracking-[0.4em]">
+              <div className="px-6 py-2 bg-background border-2 border-border text-[10px] font-black uppercase tracking-[0.4em]">
                 NODE_ID: {window.location.hostname.toUpperCase()}
               </div>
             </div>

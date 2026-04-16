@@ -72,10 +72,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Link to="/" className="flex items-center gap-4 group" aria-label="Chakravyuh Home">
               <ChakravyuhLogo className="w-12 h-12 transition-transform group-hover:scale-105" />
               <div className="flex flex-col">
-                <span className="text-2xl font-black tracking-tight uppercase leading-none text-foreground">
+                <span className="text-2xl font-black tracking-tight uppercase leading-none">
                   CHAKRAVYUH
                 </span>
-                <span className="text-[10px] font-bold tracking-[0.4em] text-muted-foreground uppercase">Sovereign Encryption Node</span>
+                <span className="text-[10px] font-bold tracking-[0.4em] uppercase">Sovereign Encryption Node</span>
               </div>
             </Link>
 
@@ -86,7 +86,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Link 
                     to="/dashboard" 
                     aria-label="Access Dashboard"
-                    className={`text-base font-black uppercase tracking-widest transition-all hover:text-primary flex items-center gap-3 px-4 py-2 border-b-4 ${location.pathname === '/dashboard' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'}`}
+                    className={`text-base font-black uppercase tracking-widest transition-all hover:text-primary flex items-center gap-3 px-4 py-2 border-b-4 ${location.pathname === '/dashboard' ? 'border-primary text-primary' : 'border-transparent'}`}
                   >
                     <LayoutDashboard className="w-5 h-5" />
                     Dashboard
@@ -94,7 +94,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Link 
                     to="/algorithms" 
                     aria-label="Algorithm Selection"
-                    className={`text-base font-black uppercase tracking-widest transition-all hover:text-primary flex items-center gap-3 px-4 py-2 border-b-4 ${location.pathname === '/algorithms' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'}`}
+                    className={`text-base font-black uppercase tracking-widest transition-all hover:text-primary flex items-center gap-3 px-4 py-2 border-b-4 ${location.pathname === '/algorithms' ? 'border-primary text-primary' : 'border-transparent'}`}
                   >
                     <Key className="w-5 h-5" />
                     Key Gen
@@ -151,7 +151,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <Link 
                       to="/dashboard" 
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center gap-4 px-6 py-4 text-lg font-black uppercase tracking-widest border-2 ${location.pathname === '/dashboard' ? 'text-primary border-primary bg-primary/5' : 'text-muted-foreground border-border'}`}
+                      className={`flex items-center gap-4 px-6 py-4 text-lg font-black uppercase tracking-widest border-2 ${location.pathname === '/dashboard' ? 'text-primary border-primary bg-primary/5' : 'border-border'}`}
                     >
                       <LayoutDashboard className="w-6 h-6" />
                       Dashboard
@@ -159,7 +159,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <Link 
                       to="/algorithms" 
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center gap-4 px-6 py-4 text-lg font-black uppercase tracking-widest border-2 ${location.pathname === '/algorithms' ? 'text-primary border-primary bg-primary/5' : 'text-muted-foreground border-border'}`}
+                      className={`flex items-center gap-4 px-6 py-4 text-lg font-black uppercase tracking-widest border-2 ${location.pathname === '/algorithms' ? 'text-primary border-primary bg-primary/5' : 'border-border'}`}
                     >
                       <Key className="w-6 h-6" />
                       Key Gen
@@ -220,7 +220,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <ChakravyuhLogo className="w-10 h-10" />
                 <span className="text-2xl font-black tracking-tight uppercase">CHAKRAVYUH</span>
               </div>
-              <p className="text-sm font-bold text-muted-foreground uppercase leading-relaxed tracking-wider">
+              <p className="text-sm font-bold uppercase leading-relaxed tracking-wider">
                 Sovereign cryptographic infrastructure for the protection of national digital assets.
               </p>
               <div className="flex items-center gap-3 text-xs font-black text-primary uppercase tracking-[0.2em]">
@@ -229,8 +229,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
             <div>
-              <h4 className="text-xs font-black text-foreground mb-8 uppercase tracking-[0.4em] border-b-2 border-primary w-fit pb-2">Protocols</h4>
-              <ul className="space-y-4 text-xs font-black text-muted-foreground uppercase tracking-widest">
+              <h4 className="text-xs font-black mb-8 uppercase tracking-[0.4em] border-b-2 border-primary w-fit pb-2">Protocols</h4>
+              <ul className="space-y-4 text-xs font-black uppercase tracking-widest">
                 <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-3">
                   <ShieldCheck className="w-4 h-4 text-primary" /> AES-256-GCM
                 </li>
@@ -246,8 +246,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </ul>
             </div>
             <div>
-              <h4 className="text-xs font-black text-foreground mb-8 uppercase tracking-[0.4em] border-b-2 border-primary w-fit pb-2">Security</h4>
-              <ul className="space-y-4 text-xs font-black text-muted-foreground uppercase tracking-widest">
+              <h4 className="text-xs font-black mb-8 uppercase tracking-[0.4em] border-b-2 border-primary w-fit pb-2">Security</h4>
+              <ul className="space-y-4 text-xs font-black uppercase tracking-widest">
                 <li className="hover:text-primary transition-colors cursor-pointer flex items-center gap-3">
                   <Lock className="w-4 h-4 text-primary" /> Zero-Knowledge
                 </li>
@@ -268,15 +268,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <h4 className="text-xs font-black text-primary mb-6 uppercase tracking-[0.3em]">System Integrity</h4>
               <div className="space-y-4">
                 <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
-                  <span className="text-muted-foreground">Core Node</span>
+                  <span>Core Node</span>
                   <span className="text-primary">Active</span>
                 </div>
                 <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
-                  <span className="text-muted-foreground">Encryption Layer</span>
+                  <span>Encryption Layer</span>
                   <span className="text-primary">Active</span>
                 </div>
                 <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
-                  <span className="text-muted-foreground">Auth Gateway</span>
+                  <span>Auth Gateway</span>
                   <span className="text-primary">Active</span>
                 </div>
               </div>
@@ -286,13 +286,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <div className="border-t-2 border-border mt-20 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">
+            <p className="text-[10px] font-black uppercase tracking-[0.3em]">
               © 2026 CHAKRAVYUH // MINISTRY OF SECURE DATA
             </p>
             <div className="flex gap-8">
-              <Globe className="w-5 h-5 text-muted-foreground hover:text-primary transition-colors cursor-pointer" />
-              <Terminal className="w-5 h-5 text-muted-foreground hover:text-primary transition-colors cursor-pointer" />
-              <Lock className="w-5 h-5 text-muted-foreground hover:text-primary transition-colors cursor-pointer" />
+              <Globe className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
+              <Terminal className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
+              <Lock className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
             </div>
           </div>
         </div>

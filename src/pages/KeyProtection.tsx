@@ -95,8 +95,8 @@ export default function KeyProtection() {
           <ShieldCheck className="w-16 h-16 text-primary relative z-10" />
         </motion.div>
         <div className="space-y-6">
-          <h1 className="text-6xl md:text-8xl font-black text-foreground uppercase tracking-tighter leading-none">Mission Accomplished</h1>
-          <p className="text-xl text-muted-foreground font-bold max-w-xl mx-auto leading-relaxed uppercase tracking-widest">
+          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">Mission Accomplished</h1>
+          <p className="text-xl font-bold max-w-xl mx-auto leading-relaxed uppercase tracking-widest">
             Cryptographic asset has been encapsulated with personal passphrase and committed to the secure vault enclave.
           </p>
         </div>
@@ -113,25 +113,25 @@ export default function KeyProtection() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
       <header className="text-center space-y-6">
-        <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-foreground uppercase leading-none">Personal Protection</h1>
-        <p className="text-xl text-muted-foreground font-bold max-w-2xl mx-auto leading-relaxed uppercase tracking-widest">
+        <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase leading-none">Personal Protection</h1>
+        <p className="text-xl font-bold max-w-2xl mx-auto leading-relaxed uppercase tracking-widest">
           Initialize personal encryption layer. Passphrase is never transmitted to the central node. Zero-knowledge protocol active.
         </p>
       </header>
 
       <Card className="bg-card border-4 border-primary rounded-none overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.4)]">
         <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
-        <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white/20" />
-        <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-white/20" />
+        <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-foreground/20" />
+        <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-foreground/20" />
 
         <CardHeader className="pt-16 px-12">
-          <CardTitle className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tighter flex items-center gap-4">
+          <CardTitle className="text-3xl md:text-4xl font-black uppercase tracking-tighter flex items-center gap-4">
             <div className="p-4 bg-primary/10 border-2 border-primary/20">
               <Lock className="w-10 h-10 text-primary" />
             </div>
             Passphrase Setup
           </CardTitle>
-          <CardDescription className="text-xs font-black text-muted-foreground uppercase tracking-[0.3em] pt-4">
+          <CardDescription className="text-xs font-black uppercase tracking-[0.3em] pt-4">
             Asset will be encapsulated using AES-256-CBC before commit.
           </CardDescription>
         </CardHeader>
@@ -139,7 +139,7 @@ export default function KeyProtection() {
         <CardContent className="px-12 pb-16">
           <form onSubmit={handleProtect} className="space-y-10">
             <div className="space-y-4">
-              <Label className="text-xs font-black text-muted-foreground uppercase tracking-[0.4em]">Personal Passphrase</Label>
+              <Label className="text-xs font-black uppercase tracking-[0.4em]">Personal Passphrase</Label>
               <Input
                 type="password"
                 placeholder="••••••••••••"
@@ -150,7 +150,7 @@ export default function KeyProtection() {
               {passphrase && (
                 <div className="space-y-3 pt-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">Strength Analysis</span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em]">Strength Analysis</span>
                     <span className={`text-[10px] font-black uppercase tracking-[0.3em] ${strength.color.replace('bg-', 'text-')}`}>
                       {strength.label}
                     </span>
@@ -169,7 +169,7 @@ export default function KeyProtection() {
               )}
             </div>
             <div className="space-y-4">
-              <Label className="text-xs font-black text-muted-foreground uppercase tracking-[0.4em]">Confirm Passphrase</Label>
+              <Label className="text-xs font-black uppercase tracking-[0.4em]">Confirm Passphrase</Label>
               <Input
                 type="password"
                 placeholder="••••••••••••"
@@ -180,8 +180,8 @@ export default function KeyProtection() {
             </div>
 
             <div className="p-8 bg-muted/50 border-2 border-border rounded-none flex gap-6 relative overflow-hidden">
-              <Key className="w-8 h-8 text-muted-foreground flex-none relative z-10" />
-              <div className="text-xs text-muted-foreground uppercase font-black tracking-[0.3em] leading-relaxed relative z-10">
+              <Key className="w-8 h-8 flex-none relative z-10" />
+              <div className="text-xs uppercase font-black tracking-[0.3em] leading-relaxed relative z-10">
                 Protocol: {algo} <br />
                 Protection: Client-Side AES-256-CBC // IND-SEC-LAYER
               </div>
@@ -202,7 +202,7 @@ export default function KeyProtection() {
           </form>
         </CardContent>
         <CardFooter className="bg-muted/50 border-t-2 border-border py-8 px-12">
-          <div className="flex items-center gap-4 text-xs text-muted-foreground uppercase font-black tracking-[0.3em]">
+          <div className="flex items-center gap-4 text-xs uppercase font-black tracking-[0.3em]">
             <Shield className="w-5 h-5 text-primary" />
             Zero-Knowledge Protocol // End-to-End Encapsulation // IND-SEC-V4
           </div>

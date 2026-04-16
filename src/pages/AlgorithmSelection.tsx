@@ -34,8 +34,8 @@ export default function AlgorithmSelection() {
         <Badge variant="outline" className="bg-primary/10 text-primary border-2 border-primary/30 uppercase tracking-[0.4em] text-xs rounded-none px-6 py-2">
           Cryptographic Library v4.0.2 // IND-SEC-LIB
         </Badge>
-        <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-foreground uppercase leading-none">Protocol Library</h1>
-        <p className="text-xl text-muted-foreground font-bold uppercase tracking-widest leading-relaxed">
+        <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase leading-none">Protocol Library</h1>
+        <p className="text-xl font-bold uppercase tracking-widest leading-relaxed">
           Explore our tactical repository of <span className="text-primary font-black">100+</span> high-speed encryption protocols. 
           From military-grade AES to post-quantum neural candidates.
         </p>
@@ -51,7 +51,7 @@ export default function AlgorithmSelection() {
               placeholder="SEARCH PROTOCOL REPOSITORY..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-16 bg-background border-2 border-border rounded-none h-20 text-foreground focus:ring-primary uppercase font-black tracking-[0.2em] text-sm"
+              className="pl-16 bg-background border-2 border-border rounded-none h-20 focus:ring-primary uppercase font-black tracking-[0.2em] text-sm"
             />
           </div>
           <div className="flex gap-3 overflow-x-auto pb-4 lg:pb-0 no-scrollbar">
@@ -61,7 +61,7 @@ export default function AlgorithmSelection() {
                 variant={activeCategory === cat ? 'default' : 'outline'}
                 onClick={() => setActiveCategory(cat)}
                 className={`rounded-none h-20 uppercase font-black text-xs tracking-[0.3em] px-10 transition-all border-2 ${
-                  activeCategory === cat ? 'bg-primary text-primary-foreground border-primary shadow-[0_0_20px_rgba(var(--primary),0.4)]' : 'border-border text-muted-foreground hover:text-primary hover:border-primary'
+                  activeCategory === cat ? 'bg-primary text-primary-foreground border-primary shadow-[0_0_20px_rgba(var(--primary),0.4)]' : 'border-border hover:text-primary hover:border-primary'
                 }`}
               >
                 {cat}
@@ -69,7 +69,7 @@ export default function AlgorithmSelection() {
             ))}
           </div>
         </div>
-        <div className="flex justify-between items-center text-xs font-black uppercase tracking-[0.4em] text-muted-foreground pt-2 border-t-2 border-border">
+        <div className="flex justify-between items-center text-xs font-black uppercase tracking-[0.4em] pt-2 border-t-2 border-border">
           <div className="flex items-center gap-3">
             <Terminal className="w-4 h-4 text-primary" />
             <span>Active Protocols: {filteredAlgos.length}</span>
@@ -101,14 +101,14 @@ export default function AlgorithmSelection() {
                     <div className={`p-4 border-2 border-border group-hover:border-primary transition-all ${algo.bg} bg-opacity-5`}>
                       <Shield className={`w-8 h-8 ${algo.color}`} />
                     </div>
-                    <Badge variant="outline" className="uppercase text-[10px] font-black border-2 border-border text-muted-foreground tracking-[0.3em] rounded-none px-3 py-1">
+                    <Badge variant="outline" className="uppercase text-[10px] font-black border-2 border-border tracking-[0.3em] rounded-none px-3 py-1">
                       {algo.level}
                     </Badge>
                   </div>
-                  <CardTitle className="text-3xl font-black text-foreground uppercase tracking-tight group-hover:text-primary transition-colors leading-none">
+                  <CardTitle className="text-3xl font-black uppercase tracking-tight group-hover:text-primary transition-colors leading-none">
                     {algo.name}
                   </CardTitle>
-                  <CardDescription className="text-xs text-muted-foreground uppercase tracking-widest font-bold leading-relaxed line-clamp-3 pt-4">
+                  <CardDescription className="text-xs uppercase tracking-widest font-bold leading-relaxed line-clamp-3 pt-4">
                     {algo.desc}
                   </CardDescription>
                 </CardHeader>
@@ -117,11 +117,11 @@ export default function AlgorithmSelection() {
                   <div className="space-y-6">
                     <div className="flex items-start gap-4">
                       <div className="p-2 bg-muted border-2 border-border">
-                        <Info className="w-4 h-4 text-muted-foreground" />
+                        <Info className="w-4 h-4 text-foreground" />
                       </div>
                       <div className="space-y-1">
-                        <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em] block">Category</span>
-                        <span className="text-xs text-foreground font-black uppercase tracking-widest">{algo.category}</span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] block">Category</span>
+                        <span className="text-xs font-black uppercase tracking-widest">{algo.category}</span>
                       </div>
                     </div>
                     <div className="flex items-start gap-4">
@@ -130,7 +130,7 @@ export default function AlgorithmSelection() {
                       </div>
                       <div className="space-y-1">
                         <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] block">Brute-Force Estimate</span>
-                        <span className="text-xs text-foreground font-mono font-black">{algo.crackTime} Hours</span>
+                        <span className="text-xs font-mono font-black">{algo.crackTime}</span>
                       </div>
                     </div>
                   </div>
@@ -139,7 +139,7 @@ export default function AlgorithmSelection() {
                 <CardFooter className="border-t-2 border-border p-8 bg-muted/30">
                   <Button 
                     onClick={() => handleSelect(algo.id)}
-                    className="w-full bg-background border-2 border-border hover:bg-primary hover:border-primary hover:text-primary-foreground text-foreground rounded-none h-16 text-xs font-black uppercase tracking-[0.4em] transition-all relative overflow-hidden group/btn"
+                    className="w-full bg-background border-2 border-border hover:bg-primary hover:border-primary hover:text-primary-foreground rounded-none h-16 text-xs font-black uppercase tracking-[0.4em] transition-all relative overflow-hidden group/btn"
                   >
                     <span className="relative z-10 flex items-center">
                       Initialize Protocol
@@ -155,9 +155,9 @@ export default function AlgorithmSelection() {
 
       {filteredAlgos.length === 0 && (
         <div className="text-center py-32 border border-dashed border-border bg-card/30">
-          <ShieldAlert className="w-16 h-16 text-muted-foreground/20 mx-auto mb-6" />
-          <h3 className="text-xl font-black text-muted-foreground uppercase tracking-[0.3em]">No Protocols Found</h3>
-          <p className="text-[10px] text-muted-foreground/60 uppercase tracking-widest font-bold">Adjust search parameters or category filters.</p>
+          <ShieldAlert className="w-16 h-16 opacity-20 mx-auto mb-6" />
+          <h3 className="text-xl font-black uppercase tracking-[0.3em]">No Protocols Found</h3>
+          <p className="text-[10px] opacity-60 uppercase tracking-widest font-bold">Adjust search parameters or category filters.</p>
         </div>
       )}
 
@@ -166,9 +166,9 @@ export default function AlgorithmSelection() {
         <ShieldAlert className="w-8 h-8 text-primary flex-none" />
         <div className="space-y-2 relative z-10">
           <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em]">Security Advisory</h4>
-          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] leading-relaxed font-bold">
+          <p className="text-[10px] uppercase tracking-[0.2em] leading-relaxed font-bold">
             This repository contains 100+ cryptographic configurations. While all are mathematically sound, 
-            <span className="text-foreground font-black ml-1">AES-256-GCM</span> remains the recommended standard for mission-critical asset protection.
+            <span className="font-black ml-1">AES-256-GCM</span> remains the recommended standard for mission-critical asset protection.
           </p>
         </div>
       </div>

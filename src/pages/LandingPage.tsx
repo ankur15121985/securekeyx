@@ -33,9 +33,9 @@ export default function LandingPage() {
               <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.3em] mb-4 corner-bracket corner-bracket-tl corner-bracket-br">
                 System Status: Secure // IND-NODE
               </div>
-              <h1 className="text-6xl sm:text-8xl md:text-[12rem] font-black tracking-tighter text-foreground leading-[0.85] uppercase">
+              <h1 className="text-6xl sm:text-8xl md:text-[12rem] font-black tracking-tighter leading-[0.85] uppercase">
                 CHAKRA<br />
-                <span className="text-primary">VYUH</span>
+                <span>VYUH</span>
               </h1>
             </motion.div>
 
@@ -43,7 +43,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-2xl md:text-3xl text-muted-foreground max-w-3xl mx-auto font-bold leading-relaxed uppercase tracking-tight"
+              className="text-2xl md:text-3xl max-w-3xl mx-auto font-bold leading-relaxed uppercase tracking-tight"
             >
               Sovereign cryptographic infrastructure for the protection of national digital assets. 
               Zero-knowledge architecture for mission-critical data protection.
@@ -64,18 +64,18 @@ export default function LandingPage() {
       </section>
 
       {/* Live Threat Monitor Section */}
-      <section className="relative w-full overflow-hidden bg-black border-y-4 border-primary/20">
-        <div className="absolute inset-0 bg-black -z-20" />
+      <section className="relative w-full overflow-hidden bg-background border-y-4 border-primary/20">
+        <div className="absolute inset-0 bg-background -z-20" />
         <div className="w-full py-0">
           <div className="flex flex-col items-center">
-            <div className="text-center space-y-4 py-12 px-4">
-              <Badge variant="outline" className="text-primary border-primary/30 uppercase tracking-[0.3em] text-[10px] rounded-none px-4 py-1">
+            <div className="text-center space-y-6 py-16 px-4">
+              <Badge variant="outline" className="text-primary border-primary/30 uppercase tracking-[0.3em] text-sm rounded-none px-6 py-2">
                 Live Intelligence Feed
               </Badge>
-              <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">
-                GLOBAL <span className="text-primary">THREAT</span> LANDSCAPE
+              <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter">
+                GLOBAL <span>THREAT</span> LANDSCAPE
               </h2>
-              <p className="text-xs text-muted-foreground uppercase tracking-[0.2em] max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl uppercase tracking-[0.2em] max-w-3xl mx-auto font-bold">
                 Real-time visualization of intercepted cryptographic attacks and unauthorized access attempts across the Chakravyuh mesh network.
               </p>
             </div>
@@ -112,7 +112,7 @@ export default function LandingPage() {
             <div className="absolute top-0 left-0 w-1 h-full bg-primary/20 group-hover:bg-primary transition-colors" />
             <div className="text-primary mb-1">{stat.icon}</div>
             <div className="text-2xl font-bold tracking-tight">{stat.value}</div>
-            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{stat.label}</div>
+            <div className="text-[10px] font-semibold uppercase tracking-wider">{stat.label}</div>
           </motion.div>
         ))}
         </div>
@@ -155,8 +155,8 @@ export default function LandingPage() {
               <div className="mb-8 p-4 w-fit bg-primary/5 border border-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
                 {step.icon}
               </div>
-              <h3 className="text-xl font-black text-foreground mb-4 uppercase tracking-tight">{step.title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed uppercase tracking-widest font-medium">{step.desc}</p>
+              <h3 className="text-xl font-black mb-4 uppercase tracking-tight">{step.title}</h3>
+              <p className="text-xs leading-relaxed uppercase tracking-widest font-bold">{step.desc}</p>
               
               {/* Index Number */}
               <div className="absolute top-4 right-4 text-[40px] font-black text-primary/5 select-none">
@@ -185,8 +185,8 @@ export default function LandingPage() {
               <Badge variant="outline" className="text-primary border-primary/30 uppercase tracking-[0.2em] text-[10px] rounded-none">
                 Security Level: Maximum
               </Badge>
-              <h2 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-tighter leading-none">
-                Hardened <span className="text-primary">Infrastructure</span>
+              <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none">
+                Hardened <span>Infrastructure</span>
               </h2>
             </div>
 
@@ -195,8 +195,8 @@ export default function LandingPage() {
                 <div className="flex gap-6">
                   <div className="flex-none w-1 h-auto bg-primary shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
                   <div className="space-y-2">
-                    <h4 className="text-foreground font-black uppercase text-xs tracking-widest">Zero-Knowledge Core</h4>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-widest leading-relaxed font-medium">
+                    <h4 className="font-black uppercase text-xs tracking-widest">Zero-Knowledge Core</h4>
+                    <p className="text-[10px] uppercase tracking-widest leading-relaxed font-bold">
                       Raw keys never touch our persistent storage. Decryption occurs exclusively in isolated client environments.
                     </p>
                   </div>
@@ -204,8 +204,8 @@ export default function LandingPage() {
                 <div className="flex gap-6">
                   <div className="flex-none w-1 h-auto bg-border" />
                   <div className="space-y-2">
-                    <h4 className="text-foreground font-black uppercase text-xs tracking-widest">Quantum Resistance</h4>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-widest leading-relaxed font-medium">
+                    <h4 className="font-black uppercase text-xs tracking-widest">Quantum Resistance</h4>
+                    <p className="text-[10px] uppercase tracking-widest leading-relaxed font-bold">
                       Deploying NIST-approved post-quantum algorithms to protect against future cryptographic threats.
                     </p>
                   </div>
@@ -216,8 +216,8 @@ export default function LandingPage() {
                 <div className="flex gap-6">
                   <div className="flex-none w-1 h-auto bg-border" />
                   <div className="space-y-2">
-                    <h4 className="text-foreground font-black uppercase text-xs tracking-widest">Distributed Entropy</h4>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-widest leading-relaxed font-medium">
+                    <h4 className="font-black uppercase text-xs tracking-widest">Distributed Entropy</h4>
+                    <p className="text-[10px] uppercase tracking-widest leading-relaxed font-bold">
                       Multi-source randomness pooling ensures maximum key strength and resistance to predictive analysis.
                     </p>
                   </div>
@@ -225,8 +225,8 @@ export default function LandingPage() {
                 <div className="flex gap-6">
                   <div className="flex-none w-1 h-auto bg-border" />
                   <div className="space-y-2">
-                    <h4 className="text-foreground font-black uppercase text-xs tracking-widest">Real-time Auditing</h4>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-widest leading-relaxed font-medium">
+                    <h4 className="font-black uppercase text-xs tracking-widest">Real-time Auditing</h4>
+                    <p className="text-[10px] uppercase tracking-widest leading-relaxed font-bold">
                       Continuous monitoring of cryptographic operations with immutable tamper-proof logging.
                     </p>
                   </div>
@@ -287,8 +287,8 @@ export default function LandingPage() {
               <div className="mb-8 p-4 w-fit bg-primary/5 border border-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
                 {force.icon}
               </div>
-              <h3 className="text-xl font-black text-foreground mb-4 uppercase tracking-tight">{force.title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed uppercase tracking-widest font-medium">{force.desc}</p>
+              <h3 className="text-xl font-black mb-4 uppercase tracking-tight">{force.title}</h3>
+              <p className="text-xs leading-relaxed uppercase tracking-widest font-bold">{force.desc}</p>
             </motion.div>
           ))}
         </div>

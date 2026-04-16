@@ -87,52 +87,52 @@ export const CyberGlobe = () => {
   }, [dimensions]);
 
   return (
-    <div className="relative w-full bg-black overflow-hidden border-y-4 border-primary/20" style={{ height: dimensions.height }}>
+    <div className="relative w-full bg-background overflow-hidden border-y-4 border-primary/20" style={{ height: dimensions.height }}>
       {/* Tactical Overlay */}
       <div className="absolute inset-0 z-10 pointer-events-none p-4 md:p-10">
         {/* Top Left: Monitor */}
-        <div className="absolute top-4 left-4 md:top-10 md:left-10 p-4 md:p-6 border-l-2 border-t-2 border-primary/40 bg-black/60 backdrop-blur-md max-w-[200px] md:max-w-none">
-          <h3 className="text-primary font-black uppercase tracking-[0.2em] text-[10px] md:text-sm mb-2">Global Threat Monitor</h3>
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 md:gap-3 text-[8px] md:text-[10px] font-bold text-muted-foreground uppercase">
-              <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-red-500 animate-pulse" />
+        <div className="absolute top-4 left-4 md:top-10 md:left-10 p-6 md:p-8 border-l-4 border-t-4 border-foreground/60 bg-background/80 backdrop-blur-xl max-w-[250px] md:max-w-none shadow-[0_0_50px_rgba(0,0,0,0.2)]">
+          <h3 className="text-foreground font-black uppercase tracking-[0.2em] text-sm md:text-2xl mb-4">Global Threat Monitor</h3>
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 md:gap-4 text-sm md:text-lg font-black text-foreground uppercase tracking-wider">
+              <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-red-500 animate-pulse shadow-[0_0_15px_red]" />
               Active Breaches: {Math.floor(Math.random() * 500) + 1200}
             </div>
-            <div className="flex items-center gap-2 md:gap-3 text-[8px] md:text-[10px] font-bold text-muted-foreground uppercase">
-              <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-orange-500 animate-pulse" />
+            <div className="flex items-center gap-3 md:gap-4 text-sm md:text-lg font-black text-foreground uppercase tracking-wider">
+              <span className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-orange-500 animate-pulse shadow-[0_0_15px_orange]" />
               Intercepted: {Math.floor(Math.random() * 1000) + 5000}
             </div>
           </div>
         </div>
 
         {/* Top Right: Live Log */}
-        <div className="absolute top-4 right-4 md:top-10 md:right-10 w-40 md:w-64 p-4 border-r-2 border-t-2 border-primary/40 bg-black/60 backdrop-blur-md hidden sm:block">
-          <h4 className="text-primary font-black uppercase tracking-[0.2em] text-[8px] md:text-[10px] mb-3 border-b border-primary/20 pb-2">Live Attack Log</h4>
-          <div className="space-y-2 max-h-[200px] overflow-hidden">
+        <div className="absolute top-4 right-4 md:top-10 md:right-10 w-48 md:w-96 p-6 border-r-4 border-t-4 border-foreground/60 bg-background/80 backdrop-blur-xl hidden sm:block shadow-[0_0_50px_rgba(0,0,0,0.2)]">
+          <h4 className="text-foreground font-black uppercase tracking-[0.2em] text-sm md:text-lg mb-4 border-b-2 border-foreground/40 pb-3">Live Attack Log</h4>
+          <div className="space-y-4 max-h-[400px] overflow-hidden">
             {attacks.slice(0, 6).map((attack) => (
               <motion.div 
                 key={attack.id}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="flex flex-col gap-0.5"
+                className="flex flex-col gap-2"
               >
                 <div className="flex justify-between items-center">
-                  <span className="text-[8px] font-black uppercase tracking-tighter" style={{ color: attack.color }}>{attack.type}</span>
-                  <span className="text-[6px] text-muted-foreground font-mono">{attack.timestamp}</span>
+                  <span className="text-sm font-black uppercase tracking-tighter" style={{ color: attack.color }}>{attack.type}</span>
+                  <span className="text-xs text-foreground/80 font-mono font-bold">{attack.timestamp}</span>
                 </div>
-                <div className="w-full h-[1px] bg-primary/10" />
+                <div className="w-full h-[1px] bg-foreground/20" />
               </motion.div>
             ))}
           </div>
         </div>
 
         {/* Bottom Left: Mobile Log (Ticker) */}
-        <div className="absolute bottom-4 left-4 right-4 p-3 border-2 border-primary/20 bg-black/80 backdrop-blur-md sm:hidden">
-          <div className="flex items-center gap-3 overflow-hidden whitespace-nowrap">
-            <span className="text-primary font-black text-[8px] uppercase tracking-widest flex-none">Live Feed:</span>
-            <div className="flex gap-6 animate-marquee">
+        <div className="absolute bottom-4 left-4 right-4 p-4 border-2 border-foreground/40 bg-background/90 backdrop-blur-xl sm:hidden">
+          <div className="flex items-center gap-4 overflow-hidden whitespace-nowrap">
+            <span className="text-foreground font-black text-xs uppercase tracking-widest flex-none">Live Feed:</span>
+            <div className="flex gap-8 animate-marquee">
               {attacks.slice(0, 5).map(a => (
-                <span key={a.id} className="text-[8px] font-bold uppercase tracking-tight" style={{ color: a.color }}>
+                <span key={a.id} className="text-xs font-black uppercase tracking-tight" style={{ color: a.color }}>
                   [{a.timestamp}] {a.type}
                 </span>
               ))}
@@ -141,18 +141,17 @@ export const CyberGlobe = () => {
         </div>
 
         {/* Bottom Right: Node Info (Desktop) */}
-        <div className="absolute bottom-10 right-10 p-6 border-r-2 border-b-2 border-primary/40 bg-black/60 backdrop-blur-md text-right hidden md:block">
-          <div className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">Node: CHAKRA_SEC_01</div>
-          <div className="text-[10px] font-bold text-muted-foreground uppercase">Encryption Layer: ACTIVE</div>
-          <div className="text-[8px] text-primary/60 font-mono mt-2">LAT: 28.6139 | LNG: 77.2090</div>
+        <div className="absolute bottom-10 right-10 p-8 border-r-4 border-b-4 border-foreground/60 bg-background/80 backdrop-blur-xl text-right hidden md:block shadow-[0_0_50px_rgba(0,0,0,0.2)]">
+          <div className="text-sm font-black text-foreground uppercase tracking-widest mb-2">Node: CHAKRA_SEC_01</div>
+          <div className="text-sm font-black text-foreground/80 uppercase">Encryption Layer: ACTIVE</div>
+          <div className="text-xs text-foreground/60 font-mono font-bold mt-3">LAT: 28.6139 | LNG: 77.2090</div>
         </div>
       </div>
 
       <Globe
         ref={globeRef}
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-dark.jpg"
+        globeImageUrl="//unpkg.com/three-globe/example/img/earth-day.jpg"
         bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
-        backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
         arcsData={attacks}
         arcColor={'color'}
         arcDashLength={0.4}
