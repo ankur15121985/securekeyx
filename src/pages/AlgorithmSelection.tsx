@@ -13,7 +13,7 @@ export default function AlgorithmSelection() {
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('All');
 
-  const categories = ['All', 'Symmetric', 'Asymmetric', 'Stream', 'Quantum', 'Legacy'];
+  const categories = ['All', 'Symmetric', 'Asymmetric', 'Stream', 'Quantum', 'Legacy', 'Layered', 'Multi-Layer'];
 
   const filteredAlgos = useMemo(() => {
     return ALGORITHMS.filter(algo => {
@@ -36,7 +36,7 @@ export default function AlgorithmSelection() {
         </Badge>
         <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase leading-none">Protocol Library</h1>
         <p className="text-xl font-bold uppercase tracking-widest leading-relaxed">
-          Explore our tactical repository of <span className="text-primary font-black">100+</span> high-speed encryption protocols. 
+          Explore our tactical repository of <span className="text-primary font-black">500+</span> high-speed encryption protocols. 
           From military-grade AES to post-quantum neural candidates.
         </p>
       </header>
@@ -167,7 +167,7 @@ export default function AlgorithmSelection() {
         <div className="space-y-2 relative z-10">
           <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em]">Security Advisory</h4>
           <p className="text-[10px] uppercase tracking-[0.2em] leading-relaxed font-bold">
-            This repository contains 100+ cryptographic configurations. While all are mathematically sound, 
+            This repository contains 500+ cryptographic configurations. While all are mathematically sound, 
             <span className="font-black ml-1">AES-256-GCM</span> remains the recommended standard for mission-critical asset protection.
           </p>
         </div>

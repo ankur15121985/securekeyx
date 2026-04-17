@@ -6,11 +6,11 @@ export interface Algorithm {
   useCase: string;
   color: string;
   bg: string;
-  category: 'Symmetric' | 'Asymmetric' | 'Stream' | 'Quantum' | 'Legacy';
+  category: 'Symmetric' | 'Asymmetric' | 'Stream' | 'Quantum' | 'Legacy' | 'Layered' | 'Multi-Layer';
   crackTime: string; // Estimated time to decode in hours (scientific notation for large values)
 }
 
-const categories = ['Symmetric', 'Asymmetric', 'Stream', 'Quantum', 'Legacy'] as const;
+const categories = ['Symmetric', 'Asymmetric', 'Stream', 'Quantum', 'Legacy', 'Layered', 'Multi-Layer'] as const;
 
 const baseAlgos = [
   { name: 'AES', desc: 'Advanced Encryption Standard', category: 'Symmetric' },
@@ -45,7 +45,8 @@ const getCrackTime = (size: number, category: string): string => {
   else if (size >= 512) hours = 1.2e18;
   else if (size >= 256) hours = 3.4e12;
   else if (size >= 192) hours = 1.8e8;
-  else hours = 4.5e4;
+  else if (size >= 128) hours = 4.5e4;
+  else hours = 288; // 288 hours = 12 days exactly
 
   const years = Math.floor(hours / 8766);
   const remainingHours = hours % 8766;
@@ -141,4 +142,45 @@ if (count < 400) {
       crackTime: getCrackTime(size, 'Symmetric')
     });
   }
+}
+
+// 3. Generate 50 Layered algorithms with 64-bit keys
+for (let i = 0; i < 50; i++) {
+  const algo1 = baseAlgos[i % baseAlgos.length];
+  const algo2 = baseAlgos[(i + 1) % baseAlgos.length];
+  const mode = modes[i % modes.length];
+  
+  const id = `LAYERED-${algo1.name}-${algo2.name}-${mode}-64-${i}`;
+  ALGORITHMS.push({
+    id,
+    name: `${algo1.name}+${algo2.name} (64-bit)`,
+    level: 'Experimental',
+    desc: `Sequential layering of ${algo1.name} and ${algo2.name} in ${mode} mode. Highly specialized.`,
+    useCase: 'Deep-tunneling protocol simulation and legacy systems.',
+    color: 'text-rose-400',
+    bg: 'bg-rose-500/10',
+    category: 'Layered',
+    crackTime: '0 Years, 12 Days' // Pre-calculated for 64-bit based on getCrackTime improvements
+  });
+}
+
+// 4. Generate 50 Multi-Layer algorithms with 256-bit keys
+for (let i = 0; i < 50; i++) {
+  const algo1 = baseAlgos[i % baseAlgos.length];
+  const algo2 = baseAlgos[(i + 1) % baseAlgos.length];
+  const algo3 = baseAlgos[(i + 2) % baseAlgos.length];
+  const mode = modes[i % modes.length];
+  
+  const id = `MULTI-LAYER-${algo1.name}-${algo2.name}-${algo3.name}-${mode}-256-${i}`;
+  ALGORITHMS.push({
+    id,
+    name: `${algo1.name}+${algo2.name}+${algo3.name} (256-bit)`,
+    level: 'Sovereign Grade',
+    desc: `Triple-layer cryptographic encapsulation using ${algo1.name}, ${algo2.name}, and ${algo3.name} in ${mode} mode. Engineered for absolute asset shielding.`,
+    useCase: 'Mission-critical asset protection and sovereign data vaults.',
+    color: 'text-emerald-400',
+    bg: 'bg-emerald-500/10',
+    category: 'Multi-Layer',
+    crackTime: getCrackTime(256, 'Symmetric')
+  });
 }

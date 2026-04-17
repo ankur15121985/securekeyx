@@ -22,12 +22,28 @@ export const ScrollButtons = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollToNext = () => {
+    const sections = Array.from(document.querySelectorAll('section'));
+    const currentScroll = window.scrollY + 100; // Offset for header
+    const nextSection = sections.find(section => section.offsetTop > currentScroll);
+    
+    if (nextSection) {
+      window.scrollTo({ top: nextSection.offsetTop - 80, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+    }
   };
 
-  const scrollToBottom = () => {
-    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+  const scrollToPrev = () => {
+    const sections = Array.from(document.querySelectorAll('section')).reverse();
+    const currentScroll = window.scrollY - 100; // Offset for header
+    const prevSection = sections.find(section => section.offsetTop < currentScroll);
+    
+    if (prevSection) {
+      window.scrollTo({ top: prevSection.offsetTop - 80, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -42,9 +58,9 @@ export const ScrollButtons = () => {
             <Button
               variant="outline"
               size="icon"
-              onClick={scrollToTop}
+              onClick={scrollToPrev}
               className="w-12 h-12 rounded-none border-2 border-primary bg-background/80 backdrop-blur-md text-primary hover:bg-primary hover:text-primary-foreground shadow-[0_0_20px_rgba(var(--primary),0.2)] transition-all group relative overflow-hidden"
-              aria-label="Scroll to top"
+              aria-label="Scroll to previous section"
             >
               <ChevronUp className="w-6 h-6 relative z-10 transition-transform group-hover:-translate-y-1" />
               <div className="absolute inset-0 bg-primary/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
@@ -63,9 +79,9 @@ export const ScrollButtons = () => {
             <Button
               variant="outline"
               size="icon"
-              onClick={scrollToBottom}
+              onClick={scrollToNext}
               className="w-12 h-12 rounded-none border-2 border-primary bg-background/80 backdrop-blur-md text-primary hover:bg-primary hover:text-primary-foreground shadow-[0_0_20px_rgba(var(--primary),0.2)] transition-all group relative overflow-hidden"
-              aria-label="Scroll to bottom"
+              aria-label="Scroll to next section"
             >
               <ChevronDown className="w-6 h-6 relative z-10 transition-transform group-hover:translate-y-1" />
               <div className="absolute inset-0 bg-primary/10 -translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
