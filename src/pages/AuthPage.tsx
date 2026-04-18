@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
-import { Shield, Smartphone, Lock, ArrowRight, Loader2, ShieldCheck } from 'lucide-react';
+import { Shield, Smartphone, Lock, ArrowRight, Loader2, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +13,7 @@ import { ChakravyuhLogo } from '../components/ChakravyuhLogo';
 export default function AuthPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -107,12 +108,21 @@ export default function AuthPage() {
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
                     <Input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="ENTER PASSWORD"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="bg-background border-2 border-border pl-14 h-16 rounded-none focus-visible:ring-primary font-black text-sm uppercase tracking-widest"
+                      className="bg-background border-2 border-border pl-14 pr-14 h-16 rounded-none focus-visible:ring-primary font-black text-sm uppercase tracking-widest"
                     />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 h-12 w-12 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-none"
+                    >
+                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </Button>
                   </div>
                 </div>
               </div>

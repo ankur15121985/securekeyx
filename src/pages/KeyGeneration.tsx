@@ -325,11 +325,11 @@ export default function KeyGeneration() {
                 <Button 
                   onClick={downloadDesktopTool}
                   variant="outline" 
-                  className="border-2 border-primary/30 text-primary hover:bg-primary/10 rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
-                >
-                  <Zap className="w-5 h-5 mr-3" />
-                  Tactical Vault
-                </Button>
+                   className="border-2 border-primary/30 text-primary hover:bg-primary/10 rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
+                 >
+                   <Zap className="w-5 h-5 mr-3" />
+                   Offline Vault Utility
+                 </Button>
                 <Button 
                   onClick={() => navigate(`/protect?algo=${algo}&key=${key}`)}
                   className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs shadow-[0_0_20px_rgba(var(--primary),0.2)]"

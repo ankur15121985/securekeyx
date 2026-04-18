@@ -385,12 +385,17 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <section className="lg:col-span-2 space-y-10">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-3 h-3 bg-primary animate-pulse" />
-              <h2 className="text-lg font-black uppercase tracking-[0.3em]">Cryptographic Assets</h2>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-4">
+                <div className="w-3 h-3 bg-primary animate-pulse" />
+                <h2 className="text-xl font-black uppercase tracking-[0.3em]">Asset Management Enclave</h2>
+              </div>
+              <p className="text-[10px] uppercase tracking-widest font-bold opacity-60 ml-7">
+                Secure oversight of decentralized cryptographic identities and mission-critical protocols.
+              </p>
             </div>
             <Button variant="link" className="text-xs font-black text-primary uppercase tracking-widest p-0 h-auto hover:no-underline hover:opacity-80">
-              Full Audit Trail
+              Audit Logs
             </Button>
           </div>
 
@@ -591,6 +596,22 @@ export default function Dashboard() {
                     </div>
                   </div>
 
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    {[
+                      { label: "Asset ID", value: selectedKey.id.slice(0, 8).toUpperCase(), icon: <Shield className="w-4 h-4" /> },
+                      { label: "Established", value: new Date(selectedKey.createdAt).toLocaleDateString(), icon: <Clock className="w-4 h-4" /> },
+                      { label: "Status", value: "ENCRYPTED", icon: <Lock className="w-4 h-4" /> },
+                      { label: "Security Tier", value: "OMEGA", icon: <ShieldCheck className="w-4 h-4" /> },
+                    ].map((item, idx) => (
+                      <div key={idx} className="bg-muted/30 border-2 border-border p-4 space-y-2">
+                        <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest opacity-50">
+                          {item.icon} {item.label}
+                        </div>
+                        <div className="text-[10px] font-black uppercase tracking-widest truncate">{item.value}</div>
+                      </div>
+                    ))}
+                  </div>
+
                   {isRenaming && (
                     <motion.div 
                       initial={{ opacity: 0, height: 0 }}
@@ -623,94 +644,119 @@ export default function Dashboard() {
                 </CardHeader>
 
                 <CardContent className="px-12 pb-12 space-y-10">
-                  {!unlockedKey ? (
-                    <div className="space-y-8">
-                      <div className="space-y-4">
-                        <label className="text-xs font-black uppercase tracking-[0.4em] flex items-center gap-3">
-                          <Terminal className="w-4 h-4" /> Authorization Passphrase
-                        </label>
-                        <Input
-                          type="password"
-                          placeholder="ENTER SECRET PASSPHRASE"
-                          value={passphrase}
-                          onChange={(e) => setPassphrase(e.target.value)}
-                          className="bg-background border-2 border-border rounded-none h-16 font-black tracking-[0.2em] focus-visible:ring-primary uppercase text-sm px-6"
-                          onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
-                        />
-                      </div>
+                  <div className="space-y-6">
+                    <h3 className="text-xs font-black uppercase tracking-[0.3em] flex items-center gap-2">
+                       <Shield className="w-4 h-4 text-primary" /> Administrative Actions
+                    </h3>
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                       <Button 
-                        onClick={handleUnlock}
-                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-20 font-black uppercase tracking-[0.3em] text-sm shadow-[0_0_30px_rgba(var(--primary),0.3)]"
+                        onClick={() => {
+                          setIsRenaming(!isRenaming);
+                          if (!isRenaming) setNewName(selectedKey.metadata?.label || selectedKey.algorithm);
+                        }}
+                        variant="outline" 
+                        className={`border-2 rounded-none h-14 font-black uppercase tracking-[0.2em] text-[10px] ${isRenaming ? 'border-primary bg-primary/5 text-primary' : 'border-border'}`}
                       >
-                        Authorize Decryption
+                        <Edit3 className="w-4 h-4 mr-3" />
+                        Rename
                       </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-10">
-                      <div className="relative group">
-                        <div className="absolute -inset-2 bg-primary/20 rounded-none blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-                        <div className="relative bg-background border-2 border-primary/30 p-10 font-mono text-lg break-all min-h-[160px] flex items-center justify-center text-center overflow-hidden">
-                          {showKey ? (
-                            <motion.span 
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              className="text-primary font-black tracking-wider relative z-10"
-                            >
-                              {unlockedKey}
-                            </motion.span>
-                          ) : (
-                            <span className="text-muted-foreground/30 tracking-[0.8em] font-black relative z-10">••••••••••••••••••••••••••••••••</span>
-                          )}
-                        </div>
-                        <div className="absolute right-6 top-6 flex gap-3">
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            onClick={() => setShowKey(!showKey)}
-                            className="h-12 w-12 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border-2 border-border"
-                          >
-                            {showKey ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            onClick={copyToClipboard}
-                            className="h-12 w-12 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border-2 border-border"
-                          >
-                            {copied ? <Check className="w-6 h-6 text-primary" /> : <Copy className="w-6 h-6" />}
-                          </Button>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-6">
-                        <Button 
-                          onClick={downloadKeyFile}
-                          variant="outline" 
-                          className="border-2 border-border hover:bg-secondary text-foreground rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
-                        >
-                          <Download className="w-5 h-5 mr-3" />
-                          Download Asset
-                        </Button>
-                        <Button 
-                          onClick={() => setShowDecommissionConfirm(true)}
-                          disabled={isDecommissioning}
-                          variant="destructive" 
-                          className="border-2 border-destructive/30 rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
-                        >
-                          <Trash2 className="w-5 h-5 mr-3" />
-                          Decommission
-                        </Button>
-                      </div>
+                      <Button 
+                        onClick={() => setShowDecommissionConfirm(true)}
+                        disabled={isDecommissioning}
+                        variant="outline" 
+                        className="border-2 border-destructive/30 text-destructive hover:bg-destructive/10 rounded-none h-14 font-black uppercase tracking-[0.2em] text-[10px]"
+                      >
+                        <Trash2 className="w-4 h-4 mr-3" />
+                        Decommission
+                      </Button>
+                      <Button 
+                        onClick={downloadKeyFile}
+                        disabled={!unlockedKey}
+                        variant="outline" 
+                        className="border-2 border-border hover:bg-muted disabled:opacity-30 rounded-none h-14 font-black uppercase tracking-[0.2em] text-[10px]"
+                      >
+                        <Download className="w-4 h-4 mr-3" />
+                        Key File
+                      </Button>
                       <Button 
                         onClick={downloadDesktopTool}
+                        disabled={!unlockedKey}
                         variant="outline" 
-                        className="w-full border-2 border-primary/30 text-primary hover:bg-primary/10 rounded-none h-16 font-black uppercase tracking-[0.3em] text-xs"
+                        className="border-2 border-border hover:bg-muted disabled:opacity-30 rounded-none h-14 font-black uppercase tracking-[0.2em] text-[10px]"
                       >
-                        <Zap className="w-5 h-5 mr-3" />
-                        Initialize Tactical Vault Utility
+                        <Zap className="w-4 h-4 mr-3" />
+                        Offline Vault
                       </Button>
                     </div>
-                  )}
+                  </div>
+
+                  <div className="h-px bg-border" />
+
+                  <div className="space-y-6">
+                    <h3 className="text-xs font-black uppercase tracking-[0.3em] flex items-center gap-2">
+                       <Lock className="w-4 h-4 text-primary" /> Encrypted Enclave
+                    </h3>
+                    {!unlockedKey ? (
+                      <div className="space-y-8">
+                        <div className="space-y-4">
+                          <label className="text-[10px] font-black uppercase tracking-[0.4em] flex items-center gap-3 opacity-60">
+                            Authorization Passphrase Required
+                          </label>
+                          <Input
+                            type="password"
+                            placeholder="ENTER SECRET PASSPHRASE"
+                            value={passphrase}
+                            onChange={(e) => setPassphrase(e.target.value)}
+                            className="bg-background border-2 border-border h-16 font-black tracking-[0.2em] focus-visible:ring-primary uppercase text-sm px-6 rounded-none"
+                            onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
+                          />
+                        </div>
+                        <Button 
+                          onClick={handleUnlock}
+                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-none h-20 font-black uppercase tracking-[0.3em] text-sm shadow-[0_0_30px_rgba(var(--primary),0.3)]"
+                        >
+                          Authorize Decryption
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="space-y-10">
+                        <div className="relative group">
+                          <div className="absolute -inset-2 bg-primary/20 rounded-none blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
+                          <div className="relative bg-background border-2 border-primary/30 p-10 font-mono text-lg break-all min-h-[160px] flex items-center justify-center text-center overflow-hidden">
+                            {showKey ? (
+                              <motion.span 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="text-primary font-black tracking-wider relative z-10"
+                              >
+                                {unlockedKey}
+                              </motion.span>
+                            ) : (
+                              <span className="text-muted-foreground/30 tracking-[0.8em] font-black relative z-10">••••••••••••••••••••••••••••••••</span>
+                            )}
+                          </div>
+                          <div className="absolute right-6 top-6 flex gap-3">
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={() => setShowKey(!showKey)}
+                              className="h-12 w-12 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border-2 border-border"
+                            >
+                              {showKey ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={copyToClipboard}
+                              className="h-12 w-12 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-none border-2 border-border"
+                            >
+                              {copied ? <Check className="w-6 h-6 text-primary" /> : <Copy className="w-6 h-6" />}
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </CardContent>
 
                   <CardFooter className="bg-muted/50 border-t-2 border-border py-8 px-12 flex justify-between items-center">
