@@ -286,8 +286,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <div className="border-t-2 border-border mt-20 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em]">
-              © 2026 CHAKRAVYUH // MINISTRY OF SECURE DATA
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">
+              © 2026 CHAKRAVYUH // SOVEREIGN ENCRYPTION NODE
             </p>
             <div className="flex gap-8">
               <Globe className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />

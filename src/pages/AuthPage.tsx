@@ -38,8 +38,8 @@ export default function AuthPage() {
       const contentType = res.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
         const text = await res.text();
-        console.error('[AUTH] Non-JSON response:', text);
-        throw new Error(`Server returned non-JSON response (${res.status}).`);
+        console.error('[AUTH] Non-JSON response received. This usually happens if the API route falls through to the SPA entry point.', text);
+        throw new Error(`Protocol mismatch (Status: ${res.status}). Server returned HTML instead of data.`);
       }
 
       const data = await res.json();
@@ -96,10 +96,10 @@ export default function AuthPage() {
                     <Shield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
                     <Input
                       type="text"
-                      placeholder="ENTER USERNAME"
+                      placeholder="Enter Username"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      className="bg-background border-2 border-border pl-14 h-16 rounded-none focus-visible:ring-primary font-black text-sm uppercase tracking-widest"
+                      className="bg-background border-2 border-border pl-14 h-16 rounded-none focus-visible:ring-primary font-mono text-base font-medium tracking-normal"
                     />
                   </div>
                 </div>
@@ -109,10 +109,10 @@ export default function AuthPage() {
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="ENTER PASSWORD"
+                      placeholder="Enter Password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="bg-background border-2 border-border pl-14 pr-14 h-16 rounded-none focus-visible:ring-primary font-black text-sm uppercase tracking-widest"
+                      className="bg-background border-2 border-border pl-14 pr-14 h-16 rounded-none focus-visible:ring-primary font-mono text-base font-medium tracking-normal"
                     />
                     <Button
                       type="button"

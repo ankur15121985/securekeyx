@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS crypto_keys (
     algorithm VARCHAR(100) NOT NULL,
     encrypted_key TEXT NOT NULL,
     metadata JSON,
+    serial_number INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

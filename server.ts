@@ -122,6 +122,41 @@ if (process.env.REDIS_URL) {
   try {
     const { default: Redis } = await import('ioredis');
     redis = new Redis(process.env.REDIS_URL);
+    
+    // Polyfill custom helpers for real Redis instance
+    redis.lrem_by_id = async (key: string, id: string) => {
+      const list = await redis.lrange(key, 0, -1);
+      const itemToRemove = list.find((item: string) => {
+        try { return JSON.parse(item).id === id; } catch { return false; }
+      });
+      if (itemToRemove) return await redis.lrem(key, 0, itemToRemove);
+      return 0;
+    };
+
+    redis.lupdate_by_id = async (key: string, id: string, updates: any) => {
+      const list = await redis.lrange(key, 0, -1);
+      let foundItem: string | null = null;
+      let updatedItem: string | null = null;
+      for (const item of list) {
+        try {
+          const parsed = JSON.parse(item);
+          if (parsed.id === id) {
+            foundItem = item;
+            updatedItem = JSON.stringify({ ...parsed, ...updates });
+            break;
+          }
+        } catch { continue; }
+      }
+      if (foundItem && updatedItem) {
+        const multi = redis.multi();
+        multi.lrem(key, 0, foundItem);
+        multi.lpush(key, updatedItem);
+        await multi.exec();
+        return true;
+      }
+      return false;
+    };
+
     redis.on('error', (err: any) => {
       console.error('[REDIS] Client Error', err);
       console.warn('[REDIS] Falling back to in-memory store');
@@ -145,10 +180,10 @@ app.use(helmet({
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  max: 500, // Increased limit to accommodate NAT/mobile gateways
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: 'Too many requests from this IP, please try again after 15 minutes' }
+  message: { error: 'Node busy. Retrying in 15 minutes.' }
 });
 
 app.use('/api/', limiter);
@@ -186,6 +221,19 @@ if (process.env.DB_HOST) {
       queueLimit: 0
     });
     console.log('[SYSTEM] MySQL Connection Pool initialized.');
+
+    // Internal Schema Sync
+    (async () => {
+      try {
+        if (pool) {
+          await pool.execute('ALTER TABLE crypto_keys ADD COLUMN IF NOT EXISTS serial_number INT AFTER metadata');
+          console.log('[SYSTEM] MySQL Schema synchronized.');
+        }
+      } catch (err) {
+        // Table might not exist yet if they haven't run schema.sql
+        console.log('[SYSTEM] MySQL Schema check deferred: table might not exist.');
+      }
+    })();
   } catch (err) {
     console.error('[SYSTEM] Failed to initialize MySQL Pool:', err);
   }
@@ -220,15 +268,14 @@ app.post('/api/auth/login',
     }
 
     const { username, password } = req.body;
-    console.log('[API] Login attempt for:', username);
-    
-    const ADMIN_USER = process.env.ADMIN_USERNAME || 'ankur15121985';
+    const targetUsername = username.toLowerCase();
+    const ADMIN_USER = (process.env.ADMIN_USERNAME || 'ankur15121985').toLowerCase();
     const ADMIN_PASS = process.env.ADMIN_PASSWORD || 'M@thur24';
 
     // Try MySQL first if available
     if (pool) {
       try {
-        const [rows]: any = await pool.execute('SELECT * FROM users WHERE username = ?', [username]);
+        const [rows]: any = await pool.execute('SELECT * FROM users WHERE LOWER(username) = ?', [targetUsername]);
         if (rows.length > 0) {
           const user = rows[0];
           // In a real app, use bcrypt.compare
@@ -242,7 +289,7 @@ app.post('/api/auth/login',
       }
     }
 
-    if (username === ADMIN_USER && password === ADMIN_PASS) {
+    if (targetUsername === ADMIN_USER && password === ADMIN_PASS) {
       const user = { username, id: 'admin-id', role: 'admin' };
       const token = jwt.sign({ username, id: user.id, role: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
       res.json({ token, user });
@@ -269,22 +316,40 @@ app.post('/api/keys/store', authenticate, async (req: any, res: any) => {
   const { encryptedKey, algorithm, metadata } = req.body;
   const userId = req.user.id;
   const keyId = crypto.randomUUID();
-  const keyData = { id: keyId, userId, encryptedKey, algorithm, metadata, createdAt: new Date().toISOString() };
+  
+  // Calculate Tactical Serial Number
+  let serialNumber = 101;
+  const currentKeysRaw = await redis.lrange(`user:${userId}:keys`, 0, -1);
+  if (currentKeysRaw && currentKeysRaw.length > 0) {
+    const serials = currentKeysRaw.map((k: string) => {
+      try {
+        return JSON.parse(k).serialNumber || 100;
+      } catch {
+        return 100;
+      }
+    });
+    serialNumber = Math.max(...serials, 100) + 1;
+  }
+
+  const enrichedMetadata = { ...metadata, serialNumber };
+  const keyData = { id: keyId, userId, encryptedKey, algorithm, metadata: enrichedMetadata, serialNumber, createdAt: new Date().toISOString() };
   
   if (pool) {
     try {
+      // For MySQL, we could use an auto-increment or similar logic, but for consistency we'll use the calculated serial
       await pool.execute(
-        'INSERT INTO crypto_keys (id, user_id, algorithm, encrypted_key, metadata) VALUES (?, ?, ?, ?, ?)',
-        [keyId, userId, algorithm, encryptedKey, JSON.stringify(metadata)]
+        'INSERT INTO crypto_keys (id, user_id, algorithm, encrypted_key, metadata, serial_number) VALUES (?, ?, ?, ?, ?, ?)',
+        [keyId, userId, algorithm, encryptedKey, JSON.stringify(enrichedMetadata), serialNumber]
       );
-      return res.json({ message: 'Key stored securely in MySQL', keyId });
+      return res.json({ message: 'Key stored securely in MySQL', keyId, serialNumber });
     } catch (err) {
       console.error('[MYSQL] Store key error:', err);
+      // Fallback to redis if MySQL fails
     }
   }
 
   await redis.lpush(`user:${userId}:keys`, JSON.stringify(keyData));
-  res.json({ message: 'Key stored securely', keyId });
+  res.json({ message: 'Key stored securely', keyId, serialNumber });
 });
 
 // Get User Keys
@@ -299,6 +364,7 @@ app.get('/api/keys', authenticate, async (req: any, res) => {
         algorithm: row.algorithm,
         encryptedKey: row.encrypted_key,
         metadata: typeof row.metadata === 'string' ? JSON.parse(row.metadata) : row.metadata,
+        serialNumber: row.serial_number || (typeof row.metadata === 'string' ? JSON.parse(row.metadata).serialNumber : row.metadata?.serialNumber),
         createdAt: row.created_at
       })));
     } catch (err) {
@@ -315,6 +381,7 @@ app.patch('/api/keys/:id', authenticate, async (req: any, res: any) => {
   const { id } = req.params;
   const userId = req.user.id;
   const { metadata } = req.body;
+  console.log(`[UPDATE] Metadata modification for Asset ID: ${id} by User: ${userId}`);
 
   if (pool) {
     try {
@@ -323,6 +390,7 @@ app.patch('/api/keys/:id', authenticate, async (req: any, res: any) => {
         [JSON.stringify(metadata), id, userId]
       );
       if (result.affectedRows > 0) {
+        console.log(`[UPDATE] Asset ${id} metadata updated via MySQL.`);
         return res.json({ message: 'Key metadata updated in MySQL' });
       }
     } catch (err) {
@@ -331,12 +399,18 @@ app.patch('/api/keys/:id', authenticate, async (req: any, res: any) => {
   }
 
   if (redis.lupdate_by_id) {
-    const success = await redis.lupdate_by_id(`user:${userId}:keys`, id, { metadata });
-    if (success) {
-      return res.json({ message: 'Key metadata updated successfully' });
+    try {
+      const success = await redis.lupdate_by_id(`user:${userId}:keys`, id, { metadata });
+      if (success) {
+        console.log(`[UPDATE] Asset ${id} metadata updated via Redis/Memory Store.`);
+        return res.json({ message: 'Key metadata updated successfully' });
+      }
+    } catch (err) {
+      console.error('[REDIS] Update key error:', err);
     }
   }
   
+  console.warn(`[UPDATE] Modification failed: Asset ${id} not found.`);
   res.status(404).json({ error: 'Key not found' });
 });
 
@@ -344,6 +418,7 @@ app.patch('/api/keys/:id', authenticate, async (req: any, res: any) => {
 app.delete('/api/keys/:id', authenticate, async (req: any, res: any) => {
   const { id } = req.params;
   const userId = req.user.id;
+  console.log(`[DECOMMISSION] Purge initiated for Asset ID: ${id} by User: ${userId}`);
 
   if (pool) {
     try {
@@ -352,6 +427,7 @@ app.delete('/api/keys/:id', authenticate, async (req: any, res: any) => {
         [id, userId]
       );
       if (result.affectedRows > 0) {
+        console.log(`[DECOMMISSION] Asset ${id} purged from MySQL.`);
         return res.json({ message: 'Key decommissioned from MySQL' });
       }
     } catch (err) {
@@ -360,12 +436,18 @@ app.delete('/api/keys/:id', authenticate, async (req: any, res: any) => {
   }
 
   if (redis.lrem_by_id) {
-    const removedCount = await redis.lrem_by_id(`user:${userId}:keys`, id);
-    if (removedCount > 0) {
-      return res.json({ message: 'Key decommissioned successfully' });
+    try {
+      const removedCount = await redis.lrem_by_id(`user:${userId}:keys`, id);
+      if (removedCount > 0) {
+        console.log(`[DECOMMISSION] Asset ${id} purged from Redis/Memory Store.`);
+        return res.json({ message: 'Key decommissioned successfully' });
+      }
+    } catch (err) {
+      console.error('[REDIS] Delete key error:', err);
     }
   }
 
+  console.warn(`[DECOMMISSION] Purge failed: Asset ${id} not found in any tactical storage sector.`);
   res.status(404).json({ error: 'Key not found or already decommissioned' });
 });
 

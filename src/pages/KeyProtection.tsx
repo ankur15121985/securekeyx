@@ -42,6 +42,8 @@ export default function KeyProtection() {
   const [completed, setCompleted] = useState(false);
   const navigate = useNavigate();
 
+  const [serial, setSerial] = useState<number | null>(null);
+
   const handleProtect = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!passphrase) return toast.error('Passphrase required');
@@ -71,8 +73,10 @@ export default function KeyProtection() {
       });
 
       if (res.ok) {
+        const data = await res.json();
+        setSerial(data.serialNumber);
         setCompleted(true);
-        toast.success('Key protected and stored securely');
+        toast.success(`Key secured and assigned Tactical SN #${data.serialNumber}`);
       } else {
         const data = await res.json();
         toast.error(data.error || 'Failed to store key');
@@ -96,8 +100,11 @@ export default function KeyProtection() {
         </motion.div>
         <div className="space-y-6">
           <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">Mission Accomplished</h1>
+          <div className="inline-block px-8 py-3 bg-primary text-primary-foreground font-mono font-black text-xl mb-4">
+            ASSET SN: #{serial || '---'}
+          </div>
           <p className="text-xl font-bold max-w-xl mx-auto leading-relaxed uppercase tracking-widest">
-            Cryptographic asset has been encapsulated with personal passphrase and committed to the secure vault enclave.
+            Cryptographic asset has been encapsulated and committed to the secure vault enclave.
           </p>
         </div>
         <Button 
